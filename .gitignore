@@ -1,3 +1,5 @@
 *.pyc
 venv
 *__pyccache__
+dump.rdb
+celerybeat-schedule.db
