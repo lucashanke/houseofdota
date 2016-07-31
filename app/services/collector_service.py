@@ -2,6 +2,8 @@ import requests
 
 from dota2py import api
 from pymongo import MongoClient
+from app.models import Match, Slot
+from django.core.exceptions import ObjectDoesNotExist
 
 from app.util.matchutil import is_valid_match, get_match_patch, is_match_from_patch
 
@@ -70,27 +72,25 @@ class CollectorService:
 
     @staticmethod
     def get_matches_from_history(match_history):
-        matches = match_history['matches']
+
+        matches = match_history['matches'] if match_history != {} else None
 
         if len(matches) is 0:
             return None
         else:
             return matches
 
-    def fill_additional_info_and_record(self, match):
-        match = self.fill_additional_info(match)
-        if self.matches_collection.insert_one(match).inserted_id is not None:
-            return match
-        else:
-            return None
+    def fill_additional_info_and_record(self, match_json):
+        match_json = self.fill_additional_info(match_json)
+        match = Match.create_from_json(match_json)
 
-    def fill_additional_info(self, match):
-        if self._patch is not None and is_match_from_patch(match, self._patch):
-            match['patch'] = self._patch
+    def fill_additional_info(self, match_json):
+        if self._patch is not None and is_match_from_patch(match_json, self._patch):
+            match_json['patch'] = self._patch
         else:
-            match['patch'] = get_match_patch(match)
-        match['skill'] = self._skill
-        return match
+            match_json['patch'] = get_match_patch(match_json)
+        match_json['skill'] = self._skill
+        return match_json
 
     def check_and_record_match_details(self, gmd, matches_recorded):
         if is_valid_match(gmd, patch=self._patch, public=self._public, league=self._league, team=self._team,\
@@ -112,4 +112,7 @@ class CollectorService:
         return matches_recorded
 
     def check_if_match_is_recorded(self, match_id):
-        return self.matches_collection.find({'match_id': match_id}).count() is not 0
+        try:
+            return Match.objects.get(pk=match_id) != None
+        except ObjectDoesNotExist as e:
+            return False

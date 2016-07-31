@@ -1,6 +1,7 @@
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
+from app.services.collector_service import CollectorService
 
 logger = get_task_logger(__name__)
 
