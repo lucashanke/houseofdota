@@ -5,13 +5,13 @@ from app.services.collector_service import CollectorService
 
 logger = get_task_logger(__name__)
 
-
 @periodic_task(
     run_every=(crontab()),
-    name="one minute task",
+    name="collect Very High AP and RAP matches task",
 )
-def task_save_latest_flickr_image():
+def task_collect_very_high_ap_rap_matches():
     """
-    One minute period task
+    Collect Very High AP and RAP matches task
     """
-    logger.info("Executed one minute period task")
+    very_high_collector = CollectorService(3, ap=True, rap=True)
+    matches_recorded =very_high_collector.collect_from_last_100()
