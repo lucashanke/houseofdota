@@ -31,7 +31,7 @@ class Match(models.Model):
         match = Match(
             match_id=match_json['match_id'], \
             match_seq_num=match_json['match_seq_num'], \
-            radiant_win=(match_json['radiant_win']=='1'), \
+            radiant_win=match_json['radiant_win'], \
             duration=match_json['duration'], \
             start_time=datetime.datetime.fromtimestamp(match_json['start_time']), \
             patch=match_json['patch'], \
