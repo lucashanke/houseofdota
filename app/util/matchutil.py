@@ -111,9 +111,13 @@ def convert_match_result(radiant_win):
 
 
 patches = {
+    '6.88b': {
+        'start_date': datetime.datetime(2016, 7, 12),
+        'end_date': None,
+    },
     '6.87': {
         'start_date': datetime.datetime(2016, 4, 25),
-        'end_date': None,
+        'end_date': datetime.datetime(2016, 7, 12),
     },
     '6.86f': {
         'start_date': datetime.datetime(2016, 2, 21),
