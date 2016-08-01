@@ -27,6 +27,7 @@ class Match(models.Model):
     dire_score = models.IntegerField()
     pass
 
+    @staticmethod
     def create_from_json(match_json):
         match = Match(
             match_id = match_json['match_id'], \
@@ -77,6 +78,7 @@ class Slot(models.Model):
     tower_damage = models.IntegerField()
     hero_healing = models.IntegerField()
 
+    @staticmethod
     def create_from_json(slot_json, match):
         slot = Slot( \
             match = match, \
