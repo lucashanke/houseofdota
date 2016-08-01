@@ -1,7 +1,6 @@
 import requests
 
 from dota2py import api
-from pymongo import MongoClient
 from app.models import Match, Slot
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -29,10 +28,6 @@ class CollectorService:
         API_KEY = "6A4B23E0046B2FCFAAFD91E8B30904FA"
         api.set_api_key(API_KEY)
 
-        client = MongoClient()
-        db = client.house_of_dota
-        self.matches_collection = db.matches_collection
-
     def collect_from_last_100(self):
 
         gmh = self.get_gmh_from_api()
@@ -44,9 +39,6 @@ class CollectorService:
         else:
             print ('%s matches found: ' % len(matches))
             return self.get_and_record_detailed_matches(matches)
-
-    def get_collection_data(self):
-        return self.matches_collection.find({})
 
     def get_gmh_from_api(self):
         try:
