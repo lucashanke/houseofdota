@@ -83,6 +83,7 @@ class CollectorService:
     def fill_additional_info_and_record(self, match_json):
         match_json = self.fill_additional_info(match_json)
         match = Match.create_from_json(match_json)
+        return match
 
     def fill_additional_info(self, match_json):
         if self._patch is not None and is_match_from_patch(match_json, self._patch):

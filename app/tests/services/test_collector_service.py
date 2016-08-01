@@ -4,6 +4,7 @@ import pymongo
 from unittest import TestCase
 from unittest.mock import patch
 from app.services.collector_service import CollectorService
+from app.models import Match
 from pymongo.results import InsertOneResult
 
 class CollectorServiceTest(TestCase):
@@ -224,18 +225,6 @@ class CollectorServiceTest(TestCase):
         mock_api.get_match_details.side_effect = requests.exceptions.HTTPError()
         self.assertEqual(self.collector.get_gmd_from_api(1), None)
 
-    @patch.object(pymongo.collection.Collection, 'insert_one', autospec=True)
-    def test_fill_additional_info_and_record_sucessful_return_match(self, mock_insert):
-        mock_insert.return_value = InsertOneResult(1, True)
-        self.assertEqual(self.collector.fill_additional_info_and_record(
-            {'start_time': 1457382658}), {'start_time': 1457382658, 'patch': '6.86f', 'skill': 3})
-
-    @patch.object(pymongo.collection.Collection, 'insert_one', autospec=True)
-    def test_fill_additional_info_and_record_fail_return_none(self, mock_insert):
-        mock_insert.return_value = InsertOneResult(None, True)
-        self.assertEqual(self.collector.fill_additional_info_and_record(
-            {'start_time': 1457382658}), None)
-
     def test_fill_additional_info_return_patch_and_skill_filled(self):
         self.assertEqual(self.collector.fill_additional_info({'start_time': 1457382658}),
                          {'start_time': 1457382658, 'patch': '6.86f', 'skill': 3})
@@ -252,11 +241,11 @@ class CollectorServiceTest(TestCase):
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
-    @patch.object(pymongo.collection.Collection, 'insert_one', autospec=True)
-    def test_get_and_record_detailed_matches_all_new_return_all(self, mock_insert, mock_api, mock_check):
+    @patch.object(Match, 'create_from_json', autospec=True)
+    def test_get_and_record_detailed_matches_all_new_return_all(self, mock_create, mock_api, mock_check):
         mock_check.return_value = False
         mock_api.side_effect = self.all_valid_matches
-        mock_insert.return_value = InsertOneResult(1, True)
+        mock_create.return_value = Match()
         return_matches = [
             {
                 'match_id': 1,
@@ -319,15 +308,16 @@ class CollectorServiceTest(TestCase):
                 ]
             }
         ]
-        self.assertEqual(self.collector.get_and_record_detailed_matches(self.all_valid_matches), return_matches)
+        matches = self.collector.get_and_record_detailed_matches(self.all_valid_matches)
+        self.assertEqual(len(matches),len(return_matches))
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
-    @patch.object(pymongo.collection.Collection, 'insert_one', autospec=True)
-    def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(self, mock_insert, mock_api, mock_check):
+    @patch.object(Match, 'create_from_json', autospec=True)
+    def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
-        mock_insert.return_value = InsertOneResult(1, True)
+        mock_create.return_value = Match()
         return_matches = [
             {
                 'match_id': 1,
@@ -370,15 +360,16 @@ class CollectorServiceTest(TestCase):
                 ]
             }
         ]
-        self.assertEqual(self.collector.get_and_record_detailed_matches(self.one_repeated_match), return_matches)
+        matches = self.collector.get_and_record_detailed_matches(self.one_repeated_match)
+        self.assertEqual(len(matches), len(return_matches))
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
-    @patch.object(pymongo.collection.Collection, 'insert_one', autospec=True)
-    def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(self, mock_insert, mock_api, mock_check):
+    @patch.object(Match, 'create_from_json', autospec=True)
+    def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
-        mock_insert.return_value = InsertOneResult(1, True)
+        mock_create.return_value = Match()
         return_matches = [
             {
                 'match_id': 1,
@@ -421,4 +412,5 @@ class CollectorServiceTest(TestCase):
                 ]
             }
         ]
-        self.assertEqual(self.collector.get_and_record_detailed_matches(self.one_invalid_match), return_matches)
+        matches = self.collector.get_and_record_detailed_matches(self.one_invalid_match)
+        self.assertEqual(len(matches), len(return_matches))

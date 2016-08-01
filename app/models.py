@@ -29,12 +29,12 @@ class Match(models.Model):
 
     def create_from_json(match_json):
         match = Match(
-            match_id=match_json['match_id'], \
-            match_seq_num=match_json['match_seq_num'], \
-            radiant_win=match_json['radiant_win'], \
-            duration=match_json['duration'], \
-            start_time=datetime.datetime.fromtimestamp(match_json['start_time']), \
-            patch=match_json['patch'], \
+            match_id = match_json['match_id'], \
+            match_seq_num = match_json['match_seq_num'], \
+            radiant_win = match_json['radiant_win'], \
+            duration = match_json['duration'], \
+            start_time = datetime.datetime.fromtimestamp(match_json['start_time']), \
+            patch = match_json['patch'], \
             tower_status_radiant = match_json['tower_status_radiant'], \
             tower_status_dire = match_json['tower_status_dire'], \
             barracks_status_radiant = match_json['barracks_status_radiant'], \
