@@ -18,7 +18,7 @@ module.exports = {
       path: path.resolve(__dirname, 'public/bundles'),
       filename: "[name]-[hash].js",
       publicPath: process.env.NODE_ENV === 'development' ?
-        'http://localhost:3000/assets/bundles/' : '/static/',
+        'http://localhost:3000/assets/bundles/' : '/static/bundles/',
     },
 
     plugins: [
