@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.validators import validate_comma_separated_integer_list
 from app.util.dotautil import HEROES_LIST, GAME_MODES, LOBBY_TYPES
 import datetime
 
@@ -58,11 +59,11 @@ class Match(models.Model):
 
 
 class Slot(models.Model):
-    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='slots')
     team = models.CharField(max_length=10)
     account_id = models.BigIntegerField()
     hero_id = models.IntegerField()
-    items = models.CommaSeparatedIntegerField(max_length=255)
+    items = models.CharField(max_length=255, validators=[validate_comma_separated_integer_list])
     kills = models.IntegerField()
     deaths = models.IntegerField()
     assists = models.IntegerField()
