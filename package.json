@@ -1,0 +1,34 @@
+{
+  "name": "houseofdota",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js --progress --colors",
+    "dev": "node dev-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucashanke/houseofdota.git"
+  },
+  "author": "Lucas Hanke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucashanke/houseofdota/issues"
+  },
+  "homepage": "https://github.com/lucashanke/houseofdota#readme",
+  "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "jquery": "^3.1.0",
+    "material-ui": "^0.15.2",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-tap-event-plugin": "^1.0.0",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.13.1",
+    "webpack-bundle-tracker": "^0.0.93"
+  }
+}

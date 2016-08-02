@@ -3,3 +3,5 @@ venv
 *__pyccache__
 dump.rdb
 celerybeat-schedule.db
+node_modules
+webpack-stats.json
