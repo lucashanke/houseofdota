@@ -3,23 +3,40 @@ var webpack = require('webpack')
 var BundleTracker = require('webpack-bundle-tracker')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+function isDevelopmentEnvironment(){
+  return process.env.NODE_ENV === 'development'
+}
+
+function buildEntry(){
+  entry = {
+    app: [ './javascript/src/index.js']
+  }
+
+  if (isDevelopmentEnvironment()) {
+    Object.keys(entry).forEach(function (key) {
+      entry[key].unshift('webpack/hot/only-dev-server');
+      entry[key].unshift('webpack-dev-server/client?http://localhost:3000');
+    });
+  }
+
+  return entry;
+}
+
+function buildOutput(){
+  return {
+    path: path.resolve(__dirname, 'public/bundles'),
+    filename: "[name]-[hash].js",
+    publicPath: isDevelopmentEnvironment() ?
+      'http://localhost:3000/assets/bundles/' : '/static/bundles/',
+  };
+}
+
 module.exports = {
     context: path.resolve(__dirname, 'app/assets/'),
 
-    entry: {
-      app: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
-        './javascript/src/index.js'
-      ]
-    },
+    entry: buildEntry(),
 
-    output: {
-      path: path.resolve(__dirname, 'public/bundles'),
-      filename: "[name]-[hash].js",
-      publicPath: process.env.NODE_ENV === 'development' ?
-        'http://localhost:3000/assets/bundles/' : '/static/bundles/',
-    },
+    output: buildOutput(),
 
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
