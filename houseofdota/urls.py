@@ -20,12 +20,14 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
 
 from app.api.match_viewset import MatchViewset
+from app.api.statistics_view import heroes_statistics
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
+    url(r'^statistics/heroes/', heroes_statistics),
     url(r'^admin/', admin.site.urls),
 ]
 urlpatterns += router.urls
