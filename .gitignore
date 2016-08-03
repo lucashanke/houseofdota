@@ -5,3 +5,4 @@ dump.rdb
 celerybeat-schedule.db
 node_modules
 webpack-stats.json
+public/bundles

@@ -5,7 +5,8 @@ cd /opt/houseofdota
 
 source venv/bin/activate
 pip install -r requirements.txt
+npm install
 
-chmod -R +x infra/scripts/
+npm run build
 
-cp infra/supervisor/houseofdota.conf /etc/supervisor/conf.d/
+supervisorctl gunicorn restart
