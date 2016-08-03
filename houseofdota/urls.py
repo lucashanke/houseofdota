@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
+    url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^admin/', admin.site.urls),
     url(r'matches', MatchesList.as_view()),
 ]

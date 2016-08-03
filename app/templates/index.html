@@ -1,11 +1,18 @@
 {% load render_bundle from webpack_loader %}
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>House of Dota</title>
-    </head>
-    <body>
-        <div id="app"></div>
-        {% render_bundle 'app' %}
-    </body>
+<html lang="en">
+  <head>
+      <title>House of DOTA</title>
+  </head>
+
+  <body>
+      <div id="app-bar" ></div>
+
+      <div id="content">
+          {% block content %}{% endblock %}
+      </div>
+
+      {% render_bundle 'app' %}
+  </body>
 </html>
