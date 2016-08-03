@@ -3,10 +3,10 @@
 rsync -R . /opt/houseofdota
 cd /opt/houseofdota
 
-source venv/bin/activate
 pip install -r requirements.txt
-npm install
 
+rm -rf node_modules/
+npm install
 npm run build
 
-supervisorctl gunicorn restart
+supervisorctl restart gunicorn
