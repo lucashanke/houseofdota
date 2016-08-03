@@ -4,6 +4,7 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import appTheme from '../AppTheme.js';
 
 export default class AppBar extends React.Component {
 
@@ -33,12 +34,15 @@ export default class AppBar extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={ appTheme }>
         <div>
           <Bar
-            title="House of DOTA"
+            title="HOUSE o' DOTA"
+            className='app-bar'
             onLeftIconButtonTouchTap={this.handleTouchTap}
-            />
+            >
+            <img className='logo' src='/static/images/logo_dota.png'/>
+          </Bar>
           <Popover
             open={this.state.open}
             anchorEl={this.state.anchorEl}

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import AppBar from './AppBar.jsx';
+import AppBar from './components/AppBar.jsx';
 
 import '../../scss/index.scss';
 
