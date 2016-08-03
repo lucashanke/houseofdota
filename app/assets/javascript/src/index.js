@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import AppBar from './components/AppBar.jsx';
+import Statistics from './statistics/components/Statistics.jsx';
 
 import '../../scss/index.scss';
 
@@ -11,3 +12,4 @@ import '../../scss/index.scss';
 injectTapEventPlugin();
 
 ReactDOM.render(<AppBar />, document.getElementById('app-bar'));
+ReactDOM.render(<Statistics />, document.getElementById('statistics'));

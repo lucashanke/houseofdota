@@ -33,7 +33,7 @@ export default class AppBar extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider muiTheme={ appTheme }>
+      <MuiThemeProvider muiTheme={ appTheme } >
         <div>
           <Bar
             title="HOUSE o' DOTA"
