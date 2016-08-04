@@ -27,7 +27,7 @@ router.register(r'matches', MatchViewset)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
-    url(r'^statistics', TemplateView.as_view(template_name='statistics.html')),
+    url(r'^statistics$', TemplateView.as_view(template_name='statistics.html')),
     url(r'^statistics/heroes/', heroes_statistics),
     url(r'^admin/', admin.site.urls),
 ]
