@@ -1,14 +1,15 @@
 body {
   margin: 0px !important;
-}
+  background-color: #eee;
 
-.app-bar {
-  h1 {
-    font-weight: bold !important;
-  }
+  .app-bar {
+    h1 {
+      font-weight: bold !important;
+    }
 
-  img.logo {
-    height: 3em;
-    margin: .5em;
+    img.logo {
+      height: 3em;
+      margin: .5em;
+    }
   }
 }

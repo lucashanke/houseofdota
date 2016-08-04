@@ -9,11 +9,13 @@ export default class ContentHolder extends React.Component {
     super(props);
   }
 
-
   render(){
 
     const style = {
-      margin: 30,
+      marginTop: 30,
+      marginLeft: 70,
+      marginRight: 70,
+      marginBottom: 30,
       textAlign: 'center',
       display: 'inline-block',
     };
