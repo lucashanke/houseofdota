@@ -4,7 +4,7 @@ import datetime
 import operator
 
 from app.repositories.match_repository import MatchRepository
-from app.util.dotautil import NUMBER_OF_HEROES
+from app.util.dotautil import NUMBER_OF_HEROES, HEROES_LIST
 
 class HeroesStatistics(object):
     def __init__(self, matches):
@@ -30,19 +30,22 @@ class HeroesStatistics(object):
                     (slot.team == 'dire' and radiant_win is False):
                     matches_won[slot.hero_id] += 1
 
-        matches_played_sorted = sorted(matches_played.items(), key=operator.itemgetter(1), reverse=True)
         matches_won_sorted = sorted(matches_won.items(), key=operator.itemgetter(1), reverse=True)
 
-        for i in range(0, NUMBER_OF_HEROES +1):
-            self.statistics.append({})
-            self.statistics[i]['hero_id'] = matches_won_sorted[i][0]
-            self.statistics[i]['played'] = matches_played[self.statistics[i]['hero_id']]
-            self.statistics[i]['won'] = matches_won[self.statistics[i]['hero_id']]
-            self.statistics[i]['pick_rate'] = '{0:.2f}'.format((self.statistics[i]['played']/self._matches.count())*100)
-            if self.statistics[i]['played'] is not 0:
-                self.statistics[i]['win_rate'] = '{0:.2f}'.format((self.statistics[i]['won']/self.statistics[i]['played'])*100)
-            else:
-                self.statistics[i]['win_rate'] = 0
+        for i in range(0, NUMBER_OF_HEROES + 1):
+            if matches_won_sorted[i][0] in HEROES_LIST:
+                hero_id = matches_won_sorted[i][0]
+                played = matches_played[hero_id]
+                won = matches_won[hero_id]
+                hero_data = {
+                    'hero_id': hero_id,
+                    'hero_name': HEROES_LIST[hero_id]['localized_name'],
+                    'played': played,
+                    'won': won,
+                    'pick_rate' : (played/self._matches.count())*100,
+                    'win_rate': (won/played)*100 if played is not 0 else 0
+                }
+                self.statistics.append(hero_data)
 
 
 class StatisticsService:
