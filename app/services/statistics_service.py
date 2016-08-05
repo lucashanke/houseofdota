@@ -7,14 +7,17 @@ from app.repositories.match_repository import MatchRepository
 from app.util.dotautil import NUMBER_OF_HEROES, HEROES_LIST
 
 class HeroesStatistics(object):
-    def __init__(self, matches):
 
+    def __new__(self, matches):
+        if matches is None:
+            return None
         self._matches = matches
         self.match_quantity = len(matches)
-        self.statistics = []
-        self._extract_heroes_statistics()
+        self.statistics = self._extract_heroes_statistics(self) if self.match_quantity is not 0 else None
+        return self
 
     def _extract_heroes_statistics(self):
+        statistics = []
         matches_played = {}
         matches_won = {}
 
@@ -30,11 +33,8 @@ class HeroesStatistics(object):
                     (slot.team == 'dire' and radiant_win is False):
                     matches_won[slot.hero_id] += 1
 
-        matches_won_sorted = sorted(matches_won.items(), key=operator.itemgetter(1), reverse=True)
-
-        for i in range(0, NUMBER_OF_HEROES + 1):
-            if matches_won_sorted[i][0] in HEROES_LIST:
-                hero_id = matches_won_sorted[i][0]
+        for hero_id in range(0, NUMBER_OF_HEROES + 1):
+            if hero_id in HEROES_LIST:
                 played = matches_played[hero_id]
                 won = matches_won[hero_id]
                 hero_data = {
@@ -42,10 +42,12 @@ class HeroesStatistics(object):
                     'hero_name': HEROES_LIST[hero_id]['localized_name'],
                     'played': played,
                     'won': won,
-                    'pick_rate' : (played/self._matches.count())*100,
+                    'pick_rate' : (played/self.match_quantity)*100,
                     'win_rate': (won/played)*100 if played is not 0 else 0
                 }
-                self.statistics.append(hero_data)
+                statistics.append(hero_data)
+
+        return statistics
 
 
 class StatisticsService:

@@ -1,0 +1,230 @@
+[
+  {
+    "model": "app.match",
+    "pk": 1,
+    "fields": {
+      "match_seq_num": 2222276373,
+      "radiant_win": true,
+      "duration": 283,
+      "patch": "6.88b",
+      "tower_status_radiant": 2047,
+      "tower_status_dire": 455,
+      "barracks_status_radiant": 63,
+      "barracks_status_dire": 51,
+      "cluster": 161,
+      "first_blood_time": 107,
+      "lobby_type": "Public matchmaking",
+      "human_players": 10,
+      "leagueid": 0,
+      "game_mode": "All Pick",
+      "flags": 0,
+      "engine": 1,
+      "radiant_score": 5,
+      "dire_score": 2
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 1,
+    "fields": {
+      "match_id": 1,
+      "team": "radiant",
+      "hero_id": 1
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 2,
+    "fields": {
+      "match_id": 1,
+      "team": "radiant",
+      "hero_id": 2
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 3,
+    "fields": {
+      "match_id": 1,
+      "team": "radiant",
+      "hero_id": 3
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 4,
+    "fields": {
+      "match_id": 1,
+      "team": "radiant",
+      "hero_id": 4
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 5,
+    "fields": {
+      "match_id": 1,
+      "team": "radiant",
+      "hero_id": 5
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 6,
+    "fields": {
+      "match_id": 1,
+      "team": "dire",
+      "hero_id": 6
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 7,
+    "fields": {
+      "match_id": 1,
+      "team": "dire",
+      "hero_id": 7
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 8,
+    "fields": {
+      "match_id": 1,
+      "team": "dire",
+      "hero_id": 8
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 9,
+    "fields": {
+      "match_id": 1,
+      "team": "dire",
+      "hero_id": 9
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 10,
+    "fields": {
+      "match_id": 1,
+      "team": "dire",
+      "hero_id": 10
+    }
+  },
+  {
+    "model": "app.match",
+    "pk": 2,
+    "fields": {
+      "match_seq_num": 2222276373,
+      "radiant_win": false,
+      "duration": 283,
+      "patch": "6.88b",
+      "tower_status_radiant": 2047,
+      "tower_status_dire": 455,
+      "barracks_status_radiant": 63,
+      "barracks_status_dire": 51,
+      "cluster": 161,
+      "first_blood_time": 107,
+      "lobby_type": "Public matchmaking",
+      "human_players": 10,
+      "leagueid": 0,
+      "game_mode": "All Pick",
+      "flags": 0,
+      "engine": 1,
+      "radiant_score": 5,
+      "dire_score": 2
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 11,
+    "fields": {
+      "match_id": 2,
+      "team": "radiant",
+      "hero_id": 1
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 12,
+    "fields": {
+      "match_id": 2,
+      "team": "radiant",
+      "hero_id": 2
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 13,
+    "fields": {
+      "match_id": 2,
+      "team": "radiant",
+      "hero_id": 3
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 14,
+    "fields": {
+      "match_id": 2,
+      "team": "radiant",
+      "hero_id": 4
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 15,
+    "fields": {
+      "match_id": 2,
+      "team": "radiant",
+      "hero_id": 5
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 16,
+    "fields": {
+      "match_id": 2,
+      "team": "dire",
+      "hero_id": 6
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 17,
+    "fields": {
+      "match_id": 2,
+      "team": "dire",
+      "hero_id": 7
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 18,
+    "fields": {
+      "match_id": 2,
+      "team": "dire",
+      "hero_id": 8
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 19,
+    "fields": {
+      "match_id": 2,
+      "team": "dire",
+      "hero_id": 9
+    }
+  },
+  {
+    "model": "app.slot",
+    "pk": 20,
+    "fields": {
+      "match_id": 2,
+      "team": "dire",
+      "hero_id": 10
+    }
+  }
+]
