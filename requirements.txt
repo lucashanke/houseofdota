@@ -13,3 +13,4 @@ djangorestframework
 django-webpack-loader==0.2.4
 django-nose
 coverage
+djangorestframework-camel-case

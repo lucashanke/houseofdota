@@ -19,7 +19,7 @@ export default class HeroesStatisticsWidget extends React.Component {
       this.service.fetchHeroesStatistics()
     ).done(result => {
       this.setState({
-        matchQuantity: result.match_quantity,
+        matchQuantity: result.matchQuantity,
         statistics: result.statistics,
       });
     });

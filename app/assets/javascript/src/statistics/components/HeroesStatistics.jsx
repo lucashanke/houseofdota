@@ -23,13 +23,13 @@ export default class HeroesStatistics extends React.Component {
 
   orderByPickRate(){
     this.setState({
-      orderBy: 'pick_rate',
+      orderBy: 'pickRate',
     })
   }
 
   orderByWinRate(){
     this.setState({
-      orderBy: 'win_rate',
+      orderBy: 'winRate',
     })
   }
 
@@ -61,22 +61,22 @@ export default class HeroesStatistics extends React.Component {
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
             {statistics.map( (row) => (
-              <TableRow key={row.hero_id} >
+              <TableRow key={row.heroId} >
                 <TableRowColumn style={{width: '10%'}}>
-                  <img src={'/static/images/' + row.hero_id + '.png'} style={{height: '3em'}}/>
+                  <img src={'/static/images/' + row.heroId + '.png'} style={{height: '3em'}}/>
                 </TableRowColumn>
                 <TableRowColumn style={{width: '25%'}}>
-                  { row.hero_name }
+                  { row.heroName }
                 </TableRowColumn>
                 <TableRowColumn style={{width: '10%'}}>{ row.played }</TableRowColumn>
                 <TableRowColumn>
-                  { _.round(row.pick_rate, 2) }
-                  <LinearProgress mode="determinate" value={ _.round(row.pick_rate, 2) } />
+                  { _.round(row.pickRate, 2) }
+                  <LinearProgress mode="determinate" value={ _.round(row.pickRate, 2) } />
                 </TableRowColumn>
                 <TableRowColumn style={{width: '10%'}}>{ row.won }</TableRowColumn>
                 <TableRowColumn>
-                  { _.round(row.win_rate, 2) }
-                  <LinearProgress mode="determinate" value={ _.round(row.win_rate, 2) } />
+                  { _.round(row.winRate, 2) }
+                  <LinearProgress mode="determinate" value={ _.round(row.winRate, 2) } />
                 </TableRowColumn>
               </TableRow>
             ))}
