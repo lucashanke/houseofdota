@@ -1,3 +1,5 @@
+.coverage
+app/migrations
 *.pyc
 venv
 *__pyccache__
