@@ -11,7 +11,7 @@ export default class HeroesStatistics extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      orderBy: 'pick_rate',
+      orderBy: 'pickRate',
     }
     this.orderByPickRate = this.orderByPickRate.bind(this);
     this.orderByWinRate = this.orderByWinRate.bind(this);
