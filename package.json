@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack",
+    "coverage": "NODE_ENV=development istanbul cover _mocha -- -R spec --recursive --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
     "dev": "NODE_ENV=development node dev-server.js",
-    "test": "mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
-    "test:watch": "mocha --no-deprecation --recursive --reporter spec --watch --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')"
+    "test": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
+    "test:watch": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
     "enzyme": "^2.4.1",
+    "istanbul": "^1.0.0-alpha.2",
     "jsdom": "^8.0.1",
     "mocha": "^3.0.1",
     "react-addons-test-utils": "^15.3.0",
