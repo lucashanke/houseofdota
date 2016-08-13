@@ -79,18 +79,7 @@ def check_game_mode(match, ap=None, cm=None, ar=None, rap=None):
 
 
 def get_heroes_in_match(match):
-    return convert_hero_list(get_heroes_list(match))
-
-
-def get_heroes_list(match):
-    heroes = []
-    for player in match['players']:
-        if player['hero_id'] is not 0 and player['hero_id'] is not None:
-            heroes.append(player['hero_id'])
-        else:
-            return None
-    return heroes
-
+    return convert_hero_list(match.get_heroes_list())
 
 def convert_hero_list(list):
     input = [0] * NUMBER_OF_HEROES

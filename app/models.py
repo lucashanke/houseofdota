@@ -57,6 +57,15 @@ class Match(models.Model):
             slot = Slot.create_from_json(slot_json, match)
         return match
 
+    def get_heroes_list(self):
+        heroes = []
+        for slot in self.slots.all():
+            if slot.hero_id is not 0 and slot.hero_id is not None:
+                heroes.append(slot.hero_id)
+            else:
+                return None
+        return heroes
+
 
 class Slot(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE, related_name='slots')
