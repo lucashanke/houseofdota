@@ -113,3 +113,13 @@ class Slot(models.Model):
             hero_healing = slot_json['hero_healing'] \
         )
         slot.save()
+
+class NnTrainingResult(models.Model):
+    patch = models.CharField(max_length=255)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    training_matches = models.BigIntegerField()
+    testing_matches = models.BigIntegerField()
+    training_accuracy = models.FloatField()
+    testing_accuracy = models.FloatField()
+    radiant_win_test_percentage = models.FloatField()

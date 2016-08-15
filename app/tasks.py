@@ -16,9 +16,10 @@ def task_collect_very_high_ap_rap_matches():
     matches_recorded =very_high_collector.collect_from_last_100()
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour='*/12')),
+    run_every=(crontab(minute=0, hour='*/6')),
     name="train the neural network for the current patch",
 )
-def task_collect_very_high_ap_rap_matches():
+def task_train_nn_for_current_patch():
     nn_trainer = NNTrainer('6.88b')
-    nn_trainer.train()
+    training_result = nn_trainer.train()
+    training_result.save()
