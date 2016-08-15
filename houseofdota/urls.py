@@ -21,9 +21,11 @@ from rest_framework import routers
 
 from app.api.match_viewset import MatchViewset
 from app.api.statistics_view import heroes_statistics
+from app.api.nn_training_result_view import NnTrainingResultViewset
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
+router.register(r'nn_performance', NnTrainingResultViewset)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
