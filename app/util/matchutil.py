@@ -78,27 +78,6 @@ def check_game_mode(match, ap=None, cm=None, ar=None, rap=None):
     return False
 
 
-def get_heroes_in_match(match):
-    return convert_hero_list(match.get_heroes_list())
-
-def convert_hero_list(list):
-    input = [0] * NUMBER_OF_HEROES
-
-    for id in list:
-        if list.index(id) < 5:
-            input[id-1] = 1
-        else:
-            input[id-1] = -1
-    return input
-
-
-def convert_match_result(radiant_win):
-    if radiant_win is 1:
-        return 1
-    else:
-        return -1
-
-
 patches = {
     '6.88b': {
         'start_date': datetime.datetime(2016, 7, 12),

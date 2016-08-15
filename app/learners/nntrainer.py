@@ -10,7 +10,7 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.utilities import percentError
 
 from app.util.dotautil import NUMBER_OF_HEROES
-from app.util.matchutil import get_heroes_in_match
+from app.util.nn_util import get_nn_input, get_nn_output
 
 from app.repositories.match_repository import MatchRepository
 
@@ -22,14 +22,17 @@ class NNTrainer:
         self._patch = patch
         self._file_path = NNTrainer.NEURAL_NETWORKS_FOLDER + patch + '.nn'
 
+    @staticmethod
+    def _build_dataset(matches):
+        ds = SupervisedDataSet(NUMBER_OF_HEROES, 1)
+        for match in matches:
+            ds.addSample(get_nn_input(match), get_nn_output(match))
+        return ds
+
     def train(self):
         matches = MatchRepository.fetch_from_patch(self._patch)
 
-        ds = SupervisedDataSet(NUMBER_OF_HEROES, 1)
-
-        for match in matches:
-            ds.addSample(get_heroes_in_match(match), match.radiant_win)
-
+        ds = NNTrainer._build_dataset(matches)
         test_data, train_data = ds.splitWithProportion(0.3)
 
         net = self.load_nn()
@@ -67,16 +70,13 @@ class NNTrainer:
             "  train error: %5.2f%%" % trn_result, \
             "  test error: %5.2f%%" % tst_result)
 
-
     def test(self, matches):
         net = load_nn('current.nn')
 
         if net is None:
             return 100
         else:
-            ds = SupervisedDataSet(NUMBER_OF_HEROES, 1)
-            for match in matches:
-                ds.addSample(get_heroes_in_match(match), match['radiant_win'])
+            ds = NNTrainer._build_dataset(matches)
             output = net.activateOnDataset(ds)
             prediction_output = [int(round(n[0])) for n in output]
             result = percentError(prediction_output, ds['target'])
@@ -106,7 +106,7 @@ class NNTrainer:
 
     def load_nn(self):
         if os.path.exists(self._file_path):
-            file_object = open(self._file_path, 'r')
+            file_object = open(self._file_path, 'rb')
         else:
             return None
         net = pickle.load(file_object)
