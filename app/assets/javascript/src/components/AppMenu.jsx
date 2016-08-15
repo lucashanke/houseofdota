@@ -3,6 +3,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import TrendingUp from 'material-ui/svg-icons/action/trending-up';
 import ThumbsUpDown from 'material-ui/svg-icons/action/thumbs-up-down';
+import DeviceHub from 'material-ui/svg-icons/hardware/device-hub';
 
 export default class AppMenu extends React.Component {
 
@@ -23,6 +24,11 @@ export default class AppMenu extends React.Component {
           href="#"
           primaryText="Recommendation"
           leftIcon={<ThumbsUpDown />} />
+        <MenuItem
+          linkButton={true}
+          href="/nn_performance"
+          primaryText="NN Performance"
+          leftIcon={<DeviceHub />} />
       </Menu>
     );
   }

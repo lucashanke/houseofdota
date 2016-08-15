@@ -25,11 +25,12 @@ from app.api.nn_training_result_view import NnTrainingResultViewset
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
-router.register(r'nn_performance', NnTrainingResultViewset)
+router.register(r'nn_results', NnTrainingResultViewset)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^statistics/$', TemplateView.as_view(template_name='statistics.html')),
+    url(r'^nn_performance/$', TemplateView.as_view(template_name='nn_performance.html')),
     url(r'^statistics/heroes/', heroes_statistics),
     url(r'^admin/', admin.site.urls),
 ]

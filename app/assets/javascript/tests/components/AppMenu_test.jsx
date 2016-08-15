@@ -9,7 +9,7 @@ describe('<AppMenu />', () => {
 
   it('renders two items', () => {
     const wrapper = shallow(<AppMenu />);
-    expect(wrapper.find(MenuItem)).to.have.length(2);
+    expect(wrapper.find(MenuItem)).to.have.length(3);
   });
 
   it('buttons have correct links', () => {

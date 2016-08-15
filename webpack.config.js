@@ -9,7 +9,9 @@ function isDevelopmentEnvironment(){
 
 function buildEntry(){
   entry = {
-    app: [ './javascript/src/index.js']
+    app: [ './javascript/src/index.js'],
+    statistics: [ './javascript/src/statistics/index.js'],
+    nn_performance: [ './javascript/src/nn_performance/index.js']
   }
 
   if (isDevelopmentEnvironment()) {
