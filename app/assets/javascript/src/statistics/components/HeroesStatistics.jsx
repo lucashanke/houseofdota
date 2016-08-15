@@ -17,10 +17,6 @@ export default class HeroesStatistics extends React.Component {
     this.orderByWinRate = this.orderByWinRate.bind(this);
   }
 
-  shouldCompnentUpdate() {
-    return !_.isEmpty(statistics);
-  }
-
   orderByPickRate(){
     this.setState({
       orderBy: 'pickRate',
