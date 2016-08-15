@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from app.util.matchutil import check_lobby_type, check_abandon, check_game_mode, \
-    get_match_patch, get_heroes_in_match
+from app.util.matchutil import check_lobby_type, check_abandon, \
+    check_game_mode, get_match_patch
 
 from app.util.dotautil import NUMBER_OF_HEROES
 
