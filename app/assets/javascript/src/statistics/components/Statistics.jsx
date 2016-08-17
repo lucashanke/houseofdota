@@ -1,5 +1,4 @@
 import React from 'react';
-import ContentHolder from '../../components/ContentHolder.jsx';
 import HeroesStatisticsWidget from './HeroesStatisticsWidget.jsx'
 
 export default class Statistics extends React.Component {
@@ -10,9 +9,7 @@ export default class Statistics extends React.Component {
 
   render(){
     return(
-      <ContentHolder>
-        <HeroesStatisticsWidget />
-      </ContentHolder>
+      <HeroesStatisticsWidget />
     );
   }
 }

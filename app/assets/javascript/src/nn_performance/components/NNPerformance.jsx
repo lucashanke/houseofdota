@@ -1,5 +1,4 @@
 import React from 'react';
-import ContentHolder from '../../components/ContentHolder.jsx';
 import NNPerformanceWidget from  './NNPerformanceWidget.jsx';
 
 export default class NNPerformance extends React.Component {
@@ -10,9 +9,7 @@ export default class NNPerformance extends React.Component {
 
   render(){
     return(
-      <ContentHolder>
         <NNPerformanceWidget />
-      </ContentHolder>
     );
   }
 }

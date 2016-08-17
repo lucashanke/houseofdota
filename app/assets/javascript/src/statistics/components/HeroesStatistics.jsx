@@ -6,6 +6,9 @@ import Star from 'material-ui/svg-icons/toggle/star';
 import CheckBox from 'material-ui/svg-icons/toggle/check-box';
 import _ from 'lodash';
 
+import ContentHolder from '../../components/ContentHolder.jsx';
+
+
 export default class HeroesStatistics extends React.Component {
 
   constructor(props){
@@ -32,7 +35,7 @@ export default class HeroesStatistics extends React.Component {
   render(){
     const statistics = _.orderBy(this.props.statistics, [this.state.orderBy], ['desc']);
     return(
-      <div>
+      <ContentHolder>
         <Tabs>
           <Tab
             icon={<CheckBox />}
@@ -78,7 +81,7 @@ export default class HeroesStatistics extends React.Component {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </ContentHolder>
     );
   }
 }

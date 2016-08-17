@@ -22,7 +22,7 @@ export default class NNCurrentStatus extends React.Component {
     const trainingAccuracy = lastTrainingResult != undefined ? lastTrainingResult.trainingAccuracy : '';
     const testingAccuracy = lastTrainingResult != undefined ? lastTrainingResult.testingAccuracy : '';
     return (
-      <Card style={{width: '50%', textAlign: 'left'}}>
+      <Card style={{textAlign: 'left'}}>
         <CardHeader
           title="Neural Network Training"
           subtitle={"Latest Result: " + new Date(endTime)}

@@ -1,6 +1,7 @@
 import React from 'react';
 import NNTrainingResultService from '../services/NNTrainingResultService.js';
 import NNCurrentStatus from './NNCurrentStatus.jsx';
+import ContentHolder from '../../components/ContentHolder.jsx';
 
 import $ from 'jquery';
 
@@ -29,8 +30,12 @@ export default class NNPerformanceWidget extends React.Component {
   render(){
     const lastTrainingResult = this.state.results[0];
     return(
-      <NNCurrentStatus
-        lastTrainingResult={ lastTrainingResult }/>
+      <div>
+        <ContentHolder style={{width: '42.5%', marginRight: '2.5%'}}>
+          <NNCurrentStatus
+            lastTrainingResult={ lastTrainingResult }/>
+        </ContentHolder>
+      </div>
     );
   }
 }

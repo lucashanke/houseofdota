@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import appTheme from '../AppTheme.js';
+import _ from 'lodash';
 
 
 export default class ContentHolder extends React.Component {
@@ -13,16 +14,16 @@ export default class ContentHolder extends React.Component {
 
     const style = {
       marginTop: 30,
-      marginLeft: 70,
-      marginRight: 70,
+      marginLeft: '5%',
+      marginRight: '5%',
       marginBottom: 30,
-      textAlign: 'center',
       display: 'inline-block',
+      verticalAlign: 'top'
     };
 
     return (
       <MuiThemeProvider muiTheme={ appTheme } >
-        <Paper style={ style } zDepth={2} >
+        <Paper style={ _.merge(style, this.props.style) } zDepth={2} >
           {this.props.children}
         </Paper>
       </MuiThemeProvider>
