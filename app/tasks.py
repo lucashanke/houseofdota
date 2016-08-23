@@ -20,6 +20,6 @@ def task_collect_very_high_ap_rap_matches():
     name="train the neural network for the current patch",
 )
 def task_train_nn_for_current_patch():
-    nn_trainer = NNTrainer('6.88b')
+    nn_trainer = NNTrainer('6.88c')
     training_result = nn_trainer.train()
     training_result.save()

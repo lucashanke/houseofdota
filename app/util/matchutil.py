@@ -79,9 +79,13 @@ def check_game_mode(match, ap=None, cm=None, ar=None, rap=None):
 
 
 patches = {
+    '6.88c': {
+        'start_date': datetime.datetime(2016, 8, 19),
+        'end_date': None,
+    },
     '6.88b': {
         'start_date': datetime.datetime(2016, 7, 12),
-        'end_date': None,
+        'end_date': datetime.datetime(2016, 8, 19),
     },
     '6.87': {
         'start_date': datetime.datetime(2016, 4, 25),

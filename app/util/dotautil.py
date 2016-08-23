@@ -425,10 +425,10 @@ HEROES_LIST = {
         "name": "earth_spirit",
         "localized_name": "Earth Spirit"
     },
-    # 108: {
-    #     "name": "abyssal_underlord",
-    #     "localized_name": "Abyssal Underlord"
-    # },
+    108: {
+        "name": "abyssal_underlord",
+        "localized_name": "Abyssal Underlord"
+    },
     109: {
         "name": "terrorblade",
         "localized_name": "Terrorblade"
@@ -437,7 +437,6 @@ HEROES_LIST = {
         "name": "phoenix",
         "localized_name": "Phoenix"
     },
-
     111: {
         "name": "oracle",
         "localized_name": "Oracle"
