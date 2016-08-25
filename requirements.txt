@@ -17,3 +17,4 @@ djangorestframework-camel-case
 atlas==0.27.0
 numpy==1.11.1
 git+https://github.com/pybrain/pybrain.git@0.3.3
+lxml

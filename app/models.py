@@ -123,3 +123,7 @@ class NnTrainingResult(models.Model):
     training_accuracy = models.FloatField()
     testing_accuracy = models.FloatField()
     radiant_win_test_percentage = models.FloatField()
+
+class Patch(models.Model):
+    version = models.CharField(primary_key=True, max_length=255)
+    start_date = models.DateTimeField()

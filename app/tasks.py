@@ -4,6 +4,7 @@ from celery.utils.log import get_task_logger
 
 from app.services.collector_service import CollectorService
 from app.learners.nntrainer import NNTrainer
+from app.scrapers.patches_scraper import PatchesCollector
 
 logger = get_task_logger(__name__)
 
@@ -23,3 +24,10 @@ def task_train_nn_for_current_patch():
     nn_trainer = NNTrainer('6.88c')
     training_result = nn_trainer.train()
     training_result.save()
+
+@periodic_task(
+    run_every=(crontab(hour='*/24')),
+    name="sync Dota 2 patches",
+)
+def task_sync_dota2_patches():
+    PatchesCollector.sync_patches();
