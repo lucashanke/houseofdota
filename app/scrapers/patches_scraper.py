@@ -37,5 +37,4 @@ class PatchesCollector:
                 patch = Patch(version=patch['version'], start_date=patch['date'])
                 patch.save()
                 new_patches.append(patch)
-        print(new_patches)
         return new_patches

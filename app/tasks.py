@@ -14,7 +14,7 @@ logger = get_task_logger(__name__)
 )
 def task_collect_very_high_ap_rap_matches():
     very_high_collector = CollectorService(3, ap=True, rap=True)
-    matches_recorded =very_high_collector.collect_from_last_100()
+    matches_recorded = very_high_collector.collect_from_last_100()
 
 @periodic_task(
     run_every=(crontab(minute=0, hour='*/6')),
@@ -30,4 +30,4 @@ def task_train_nn_for_current_patch():
     name="sync Dota 2 patches",
 )
 def task_sync_dota2_patches():
-    PatchesCollector.sync_patches();
+    new_patches = PatchesCollector.sync_patches();
