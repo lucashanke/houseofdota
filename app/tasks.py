@@ -26,7 +26,7 @@ def task_train_nn_for_current_patch():
     training_result.save()
 
 @periodic_task(
-    run_every=(crontab(hour='*/24')),
+    run_every=(crontab(minute=0, hour=0)),
     name="sync Dota 2 patches",
 )
 def task_sync_dota2_patches():
