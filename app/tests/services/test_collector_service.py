@@ -225,18 +225,8 @@ class CollectorServiceTest(TestCase):
         self.assertEqual(self.collector.get_gmd_from_api(1), None)
 
     def test_fill_additional_info_return_patch_and_skill_filled(self):
-        self.assertEqual(self.collector.fill_additional_info({'start_time': 1457382658}),
-                         {'start_time': 1457382658, 'patch': '6.86f', 'skill': 3})
-
-    def test_fill_additional_info_return_patch_and_skill_filled(self):
-        self.collector._patch = '6.87'
-        self.assertEqual(self.collector.fill_additional_info({'start_time': 1457382658}),
-                         {'start_time': 1457382658, 'patch': '6.86f', 'skill': 3})
-
-    def test_fill_additional_info_with_no_start_time_return_only_skill_filled(self):
-        self.collector._patch = '6.86f'
-        self.assertEqual(self.collector.fill_additional_info({'start_time': None}),
-                         {'start_time': None, 'patch': None, 'skill': 3})
+        self.assertEqual(self.collector.fill_additional_info({'start_time': 1472314312}),
+                         {'start_time': 1472314312, 'patch': '6.88b', 'skill': 3})
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')

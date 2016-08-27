@@ -226,5 +226,12 @@
       "team": "dire",
       "hero_id": 10
     }
+  },
+  {
+    "model": "app.patch",
+    "pk": "6.88b",
+    "fields": {
+      "start_date": "2016-07-11 21:00:00-03"
+    }
   }
 ]
