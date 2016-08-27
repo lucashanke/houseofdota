@@ -10,7 +10,7 @@ from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.utilities import percentError
 
-from app.models import NnTrainingResult
+from app.models import NnTrainingResult, Patch
 from app.util.dota_util import NUMBER_OF_HEROES
 from app.util.nn_util import get_nn_input, get_nn_output
 
@@ -21,7 +21,7 @@ class NNTrainer:
     NEURAL_NETWORKS_FOLDER = 'files/nn/'
 
     def __init__(self, patch):
-        self._patch = patch
+        self._patch = Patch.objects.get(pk=patch)
         self._file_path = NNTrainer.NEURAL_NETWORKS_FOLDER + patch + '.nn'
 
     @staticmethod

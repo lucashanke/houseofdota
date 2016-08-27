@@ -5,6 +5,7 @@ from celery.utils.log import get_task_logger
 from app.services.collector_service import CollectorService
 from app.learners.nntrainer import NNTrainer
 from app.scrapers.patches_scraper import PatchesCollector
+from app.models import Patch
 
 logger = get_task_logger(__name__)
 
@@ -21,7 +22,7 @@ def task_collect_very_high_ap_rap_matches():
     name="train the neural network for the current patch",
 )
 def task_train_nn_for_current_patch():
-    nn_trainer = NNTrainer('6.88c')
+    nn_trainer = NNTrainer(Patch.get_current_patch())
     training_result = nn_trainer.train()
     training_result.save()
 

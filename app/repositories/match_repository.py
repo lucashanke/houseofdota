@@ -22,13 +22,13 @@ class MatchRepository:
         cursor = connection.cursor()
         cursor.execute("select count(s.hero_id), s.hero_id \
             from app_match m inner join app_slot s on s.match_id=m.match_id \
-            where m.patch_id like %s group by s.hero_id order by s.hero_id", [patch])
+            where m.patch_id like %s group by s.hero_id order by s.hero_id", [patch.version])
         rows_played = cursor.fetchall()
 
         cursor.execute("select count(s.hero_id), s.hero_id \
             from app_match m inner join app_slot s on s.match_id=m.match_id \
             where m.patch_id like %s and (s.team='dire' and m.radiant_win=false \
-            or s.team='radiant' and m.radiant_win=true) group by s.hero_id order by s.hero_id", [patch])
+            or s.team='radiant' and m.radiant_win=true) group by s.hero_id order by s.hero_id", [patch.version])
         rows_won = cursor.fetchall()
 
         matches = {}

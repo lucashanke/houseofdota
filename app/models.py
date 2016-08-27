@@ -12,6 +12,11 @@ class Patch(models.Model):
     version = models.CharField(primary_key=True, max_length=255)
     start_date = models.DateTimeField()
 
+    @staticmethod
+    def get_current_patch():
+        patches = Patch.objects.all().order_by('-start_date')
+        return patches[0] if len(patches) > 0 else None 
+
 class Match(models.Model):
     match_id = models.BigIntegerField(primary_key=True)
     match_seq_num = models.BigIntegerField(null=True)
