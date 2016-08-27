@@ -11,12 +11,13 @@ from app.util.dota_util import NUMBER_OF_HEROES, HEROES_LIST
 class HeroesStatistics(object):
 
     def __new__(self):
+        self.match_quantity = 0
         self.statistics = self._extract_heroes_statistics(self)
         return self
 
     def _extract_heroes_statistics(self):
         statistics = []
-        match_quantity = len((MatchRepository.fetch_from_patch(Patch.get_current_patch())))
+        self.match_quantity = len((MatchRepository.fetch_from_patch(Patch.get_current_patch())))
         heroes_matches = MatchRepository.get_heroes_matches(Patch.get_current_patch())
 
         for hero_id in range(0, NUMBER_OF_HEROES + 1):
@@ -28,7 +29,7 @@ class HeroesStatistics(object):
                     'hero_name': HEROES_LIST[hero_id]['localized_name'],
                     'played': played,
                     'won': won,
-                    'pick_rate' : (played/match_quantity)*100,
+                    'pick_rate' : (played/self.match_quantity)*100,
                     'win_rate': (won/played)*100 if played is not 0 else 0
                 }
                 statistics.append(hero_data)
