@@ -20,6 +20,7 @@ class MatchRepository:
     @staticmethod
     def get_heroes_matches(patch):
         cursor = connection.cursor()
+
         cursor.execute("select count(s.hero_id), s.hero_id \
             from app_match m inner join app_slot s on s.match_id=m.match_id \
             where m.patch_id like %s group by s.hero_id order by s.hero_id", [patch.version])

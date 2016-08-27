@@ -1,12 +1,13 @@
 import requests
 import mock
 
-from unittest import TestCase
+from django.test import TestCase
 from mock import patch
 from app.services.collector_service import CollectorService
-from app.models import Match
+from app.models import Match, Patch
 
 class CollectorServiceTest(TestCase):
+    fixtures = ['matches.json']
 
     def setUp(self):
         self.collector = CollectorService(3, ap=True, rap=True)
@@ -225,8 +226,9 @@ class CollectorServiceTest(TestCase):
         self.assertEqual(self.collector.get_gmd_from_api(1), None)
 
     def test_fill_additional_info_return_patch_and_skill_filled(self):
+        print(Patch.objects.all())
         self.assertEqual(self.collector.fill_additional_info({'start_time': 1472314312}),
-                         {'start_time': 1472314312, 'patch': '6.88b', 'skill': 3})
+                         {'start_time': 1472314312, 'patch': Patch.objects.get(pk='6.88b'), 'skill': 3})
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
