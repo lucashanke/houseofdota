@@ -5,7 +5,7 @@ from mock import patch
 
 from app.models import Match
 from app.services.statistics_service import HeroesStatistics
-from app.util.dotautil import HEROES_LIST
+from app.util.dota_util import HEROES_LIST
 
 class HeroesStatisticsServiceTest(TestCase):
     fixtures = ['matches.json']

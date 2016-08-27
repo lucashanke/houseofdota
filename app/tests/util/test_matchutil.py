@@ -1,9 +1,9 @@
 from django.test import TestCase
 
-from app.util.matchutil import check_lobby_type, check_abandon, \
+from app.util.match_util import check_lobby_type, check_abandon, \
     check_game_mode, get_match_patch
 
-from app.util.dotautil import NUMBER_OF_HEROES
+from app.util.dota_util import NUMBER_OF_HEROES
 
 class MatchUtilTest(TestCase):
 

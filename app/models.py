@@ -1,9 +1,12 @@
 from __future__ import unicode_literals
+import datetime
+import pytz
 
 from django.db import models
 from django.core.validators import validate_comma_separated_integer_list
-from app.util.dotautil import HEROES_LIST, GAME_MODES, LOBBY_TYPES
-import datetime
+
+from app.util.dota_util import HEROES_LIST, GAME_MODES, LOBBY_TYPES
+
 
 class Patch(models.Model):
     version = models.CharField(primary_key=True, max_length=255)
@@ -34,13 +37,14 @@ class Match(models.Model):
 
     @staticmethod
     def create_from_json(match_json):
+        utc=pytz.UTC
         match = Match(
             match_id = match_json['match_id'], \
             match_seq_num = match_json['match_seq_num'], \
             radiant_win = match_json['radiant_win'], \
             duration = match_json['duration'], \
-            start_time = datetime.datetime.fromtimestamp(match_json['start_time']), \
-            patch = Patch.objects.get(pk=match_json['patch']), \
+            start_time = utc.localize(datetime.datetime.fromtimestamp(match_json['start_time'])), \
+            patch = match_json['patch'], \
             tower_status_radiant = match_json['tower_status_radiant'], \
             tower_status_dire = match_json['tower_status_dire'], \
             barracks_status_radiant = match_json['barracks_status_radiant'], \

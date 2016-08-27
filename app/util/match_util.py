@@ -1,42 +1,23 @@
 from __future__ import division
 
 import datetime
+import pytz
 
-from .dotautil import NUMBER_OF_HEROES
+from .dota_util import NUMBER_OF_HEROES
+from app.models import Patch
 
-def is_match_from_patch(match, patch):
-    if patch is None:
-        return True
-    if patch not in patches:
-        return False
-    start_date = patches[patch]['start_date']
-    end_date = patches[patch]['end_date']
-    if end_date is None:
-        end_date = datetime.datetime.now()
-    start_time = match['start_time']
-    if start_time is not None:
-        match_time = datetime.datetime.fromtimestamp(start_time)
-        if start_date < match_time < end_date:
-            return True
-        else:
-            return False
-    else:
-        return False
-
-
-def get_match_patch(match):
-    for patch in patches:
-        if is_match_from_patch(match, patch):
+def get_match_patch(match_date):
+    utc=pytz.UTC
+    match_date = utc.localize(datetime.datetime.fromtimestamp(match_date))
+    for patch in Patch.objects.all().order_by('-start_date'):
+        if patch.start_date <= match_date:
             return patch
     return None
-
 
 def is_valid_match(gmd, patch=None, public=None, league=None, team=None, solo=None, ranked=None, ap=None, cm=None, ar=None, rap=None):
     return check_lobby_type(gmd, public, league, team, solo, ranked) is True \
         and check_game_mode(gmd, ap, cm, ar, rap) is True \
-        and check_abandon(gmd) is False \
-        and is_match_from_patch(gmd, patch) is True
-
+        and check_abandon(gmd) is False
 
 def check_lobby_type(match, public=None, league=None, team=None, solo=None, ranked=None):
     if public is None and league is None and team is None and solo is None and ranked is None:

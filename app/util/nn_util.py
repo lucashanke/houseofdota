@@ -1,4 +1,4 @@
-from app.util.dotautil import NUMBER_OF_HEROES
+from app.util.dota_util import NUMBER_OF_HEROES
 
 def get_nn_input(match):
     return convert_slots(match.slots.all())

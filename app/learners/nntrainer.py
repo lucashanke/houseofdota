@@ -11,7 +11,7 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.utilities import percentError
 
 from app.models import NnTrainingResult
-from app.util.dotautil import NUMBER_OF_HEROES
+from app.util.dota_util import NUMBER_OF_HEROES
 from app.util.nn_util import get_nn_input, get_nn_output
 
 from app.repositories.match_repository import MatchRepository

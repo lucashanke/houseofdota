@@ -4,7 +4,7 @@ from dota2py import api
 from app.models import Match, Slot
 from django.core.exceptions import ObjectDoesNotExist
 
-from app.util.matchutil import is_valid_match, get_match_patch, is_match_from_patch
+from app.util.match_util import is_valid_match, get_match_patch
 
 class CollectorService:
     """Class responsible to collect Dota2 matches according to the desired filters"""
@@ -13,7 +13,6 @@ class CollectorService:
                  public=None, league=None, team=None, solo=None, ranked=None,
                  ap=None, cm=None, ar=None, rap=None):
         self._skill = skill
-        self._patch = patch
 
         self._public = public
         self._league = league
@@ -78,15 +77,12 @@ class CollectorService:
         return match
 
     def fill_additional_info(self, match_json):
-        if self._patch is not None and is_match_from_patch(match_json, self._patch):
-            match_json['patch'] = self._patch
-        else:
-            match_json['patch'] = get_match_patch(match_json)
+        match_json['patch'] = get_match_patch(match_json['start_time'])
         match_json['skill'] = self._skill
         return match_json
 
     def check_and_record_match_details(self, gmd, matches_recorded):
-        if is_valid_match(gmd, patch=self._patch, public=self._public, league=self._league, team=self._team,\
+        if is_valid_match(gmd, public=self._public, league=self._league, team=self._team,\
                           solo=self._solo, ranked=self._ranked, ap=self._ap, cm=self._cm, ar=self._ar, rap=self._rap):
             recorded = self.fill_additional_info_and_record(gmd)
             if recorded is not None:

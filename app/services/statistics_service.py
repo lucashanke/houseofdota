@@ -4,7 +4,7 @@ import datetime
 import operator
 
 from app.repositories.match_repository import MatchRepository
-from app.util.dotautil import NUMBER_OF_HEROES, HEROES_LIST
+from app.util.dota_util import NUMBER_OF_HEROES, HEROES_LIST
 
 class HeroesStatistics(object):
 
