@@ -13,6 +13,6 @@ pip install -r requirements.txt
 npm install
 npm run build
 
-cp infra/supervisor/houseofdota.conf /etc/houseofdota/conf.d/
+cp infra/supervisor/houseofdota.conf /etc/supervisor/conf.d/
 
 supervisorctl restart gunicorn beat worker
