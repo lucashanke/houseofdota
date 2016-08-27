@@ -3,21 +3,24 @@ from app.models import Patch
 import requests
 from operator import itemgetter
 from django.core.exceptions import ObjectDoesNotExist
+from bs4 import BeautifulSoup
 
 class PatchesCollector:
     @staticmethod
     def scrape():
         page = requests.get('http://dota2.gamepedia.com/Game_Versions')
-        tree = html.fromstring(page.content)
+        soup = BeautifulSoup(page.content, 'html.parser')
 
         patches = []
+        table = soup.find_all('table', class_="wikitable")[0]
 
-        versions = tree.xpath('//table[@class="wikitable"][1]/tr/td[1]//text()[2]')
-
-        for i, version in enumerate(versions):
-            date = tree.xpath('//table[@class="wikitable"][1]/tr[{}]/td[3]//text()[2]'.format(i+3))
-            if len(date) != 0:
-                patches.append({"version": version, "date": date[0]})
+        for line in table.find_all('tr'):
+            columns = line.find_all('td')
+            if len(columns) > 3:
+                version = columns[0].get_text().rstrip().strip()
+                date = columns[2].get_text().rstrip().strip()
+                if date is not '-':
+                    patches.append({"version": version, "date": date})
         return patches
 
     @staticmethod
