@@ -5,13 +5,17 @@ from django.core.validators import validate_comma_separated_integer_list
 from app.util.dotautil import HEROES_LIST, GAME_MODES, LOBBY_TYPES
 import datetime
 
+class Patch(models.Model):
+    version = models.CharField(primary_key=True, max_length=255)
+    start_date = models.DateTimeField()
+
 class Match(models.Model):
     match_id = models.BigIntegerField(primary_key=True)
     match_seq_num = models.BigIntegerField(null=True)
     radiant_win = models.BooleanField()
     duration = models.IntegerField(null=True)
     start_time = models.DateTimeField(null=True)
-    patch = models.CharField(max_length=255, null=True)
+    patch = models.ForeignKey(Patch, on_delete=models.PROTECT, related_name='matches')
     tower_status_radiant = models.IntegerField(null=True)
     tower_status_dire = models.IntegerField(null=True)
     barracks_status_radiant = models.IntegerField(null=True)
@@ -36,7 +40,7 @@ class Match(models.Model):
             radiant_win = match_json['radiant_win'], \
             duration = match_json['duration'], \
             start_time = datetime.datetime.fromtimestamp(match_json['start_time']), \
-            patch = match_json['patch'], \
+            patch = Patch.objects.get(pk=match_json['patch']), \
             tower_status_radiant = match_json['tower_status_radiant'], \
             tower_status_dire = match_json['tower_status_dire'], \
             barracks_status_radiant = match_json['barracks_status_radiant'], \
@@ -115,7 +119,7 @@ class Slot(models.Model):
         slot.save()
 
 class NnTrainingResult(models.Model):
-    patch = models.CharField(max_length=255)
+    patch = models.ForeignKey(Patch, on_delete=models.PROTECT, related_name='nn_results')
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     training_matches = models.BigIntegerField()
@@ -123,7 +127,3 @@ class NnTrainingResult(models.Model):
     training_accuracy = models.FloatField()
     testing_accuracy = models.FloatField()
     radiant_win_test_percentage = models.FloatField()
-
-class Patch(models.Model):
-    version = models.CharField(primary_key=True, max_length=255)
-    start_date = models.DateTimeField()
