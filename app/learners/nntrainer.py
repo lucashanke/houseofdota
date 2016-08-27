@@ -21,8 +21,8 @@ class NNTrainer:
     NEURAL_NETWORKS_FOLDER = 'files/nn/'
 
     def __init__(self, patch):
-        self._patch = Patch.objects.get(pk=patch)
-        self._file_path = NNTrainer.NEURAL_NETWORKS_FOLDER + patch + '.nn'
+        self._patch = patch
+        self._file_path = NNTrainer.NEURAL_NETWORKS_FOLDER + patch.version + '.nn'
 
     @staticmethod
     def _build_dataset(matches):
