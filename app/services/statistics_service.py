@@ -5,7 +5,7 @@ import operator
 import pdb
 
 from app.repositories.match_repository import MatchRepository
-from app.models import Patch
+from app.business.patch_business import PatchBusiness
 from app.util.dota_util import NUMBER_OF_HEROES, HEROES_LIST
 
 class HeroesStatistics(object):
@@ -17,8 +17,8 @@ class HeroesStatistics(object):
 
     def _extract_heroes_statistics(self):
         statistics = []
-        self.match_quantity = len((MatchRepository.fetch_from_patch(Patch.get_current_patch())))
-        heroes_matches = MatchRepository.get_heroes_matches(Patch.get_current_patch())
+        self.match_quantity = len((MatchRepository.fetch_from_patch(PatchBusiness.get_current_patch())))
+        heroes_matches = MatchRepository.get_heroes_matches(PatchBusiness.get_current_patch())
 
         for hero_id in range(0, NUMBER_OF_HEROES + 1):
             if hero_id in heroes_matches:

@@ -15,8 +15,6 @@ class MatchRepository:
     def fetch_from_patch(patch):
         return Match.objects.filter(patch=patch).order_by('start_time')
 
-    from django.db import connection
-
     @staticmethod
     def get_heroes_matches(patch):
         cursor = connection.cursor()

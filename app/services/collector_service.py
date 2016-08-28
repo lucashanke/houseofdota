@@ -2,6 +2,7 @@ import requests
 
 from dota2py import api
 from app.models import Match, Slot
+from app.business.match_business import MatchBusiness
 from django.core.exceptions import ObjectDoesNotExist
 
 from app.util.match_util import is_valid_match, get_match_patch
@@ -73,7 +74,7 @@ class CollectorService:
 
     def fill_additional_info_and_record(self, match_json):
         match_json = self.fill_additional_info(match_json)
-        match = Match.create_from_json(match_json)
+        match = MatchBusiness.create_from_json(match_json)
         return match
 
     def fill_additional_info(self, match_json):

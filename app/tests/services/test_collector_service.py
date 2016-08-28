@@ -5,6 +5,7 @@ from django.test import TestCase
 from mock import patch
 from app.services.collector_service import CollectorService
 from app.models import Match, Patch
+from app.business.match_business import MatchBusiness
 
 class CollectorServiceTest(TestCase):
     fixtures = ['matches.json']
@@ -232,7 +233,7 @@ class CollectorServiceTest(TestCase):
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
-    @patch.object(Match, 'create_from_json', autospec=False)
+    @patch.object(MatchBusiness, 'create_from_json', autospec=False)
     def test_get_and_record_detailed_matches_all_new_return_all(self, mock_create, mock_api, mock_check):
         mock_check.return_value = False
         mock_api.side_effect = self.all_valid_matches
@@ -304,7 +305,7 @@ class CollectorServiceTest(TestCase):
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
-    @patch.object(Match, 'create_from_json', autospec=False)
+    @patch.object(MatchBusiness, 'create_from_json', autospec=False)
     def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
@@ -356,7 +357,7 @@ class CollectorServiceTest(TestCase):
 
     @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
     @patch.object(CollectorService, 'get_gmd_from_api')
-    @patch.object(Match, 'create_from_json', autospec=False)
+    @patch.object(MatchBusiness, 'create_from_json', autospec=False)
     def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
