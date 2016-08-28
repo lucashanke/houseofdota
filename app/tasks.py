@@ -6,7 +6,7 @@ from app.services.collector_service import CollectorService
 from app.learners.nntrainer import NNTrainer
 from app.scrapers.patches_scraper import PatchesCollector
 from app.business.patch_business import PatchBusiness
-from app.business.patch_statistics_business import update_patch_statistics
+from app.business.statistics_business import StatisticsBusiness
 
 logger = get_task_logger(__name__)
 
@@ -17,7 +17,7 @@ logger = get_task_logger(__name__)
 def task_collect_very_high_ap_rap_matches():
     very_high_collector = CollectorService(3, ap=True, rap=True)
     matches_recorded = very_high_collector.collect_from_last_100()
-    update_patch_statistics(PatchBusiness.get_current_patch())
+    StatisticsBusiness.update_patch_statistics(PatchBusiness.get_current_patch())
 
 @periodic_task(
     run_every=(crontab(minute=0, hour='*/6')),
