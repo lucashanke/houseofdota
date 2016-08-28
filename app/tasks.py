@@ -15,8 +15,8 @@ logger = get_task_logger(__name__)
     name="collect Very High AP and RAP matches task",
 )
 def task_collect_very_high_ap_rap_matches():
-    # very_high_collector = CollectorService(3, ap=True, rap=True)
-    # matches_recorded = very_high_collector.collect_from_last_100()
+    very_high_collector = CollectorService(3, ap=True, rap=True)
+    matches_recorded = very_high_collector.collect_from_last_100()
     StatisticsBusiness(PatchBusiness.get_current_patch()).update_statistics()
 
 @periodic_task(
