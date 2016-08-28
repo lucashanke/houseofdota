@@ -65,3 +65,15 @@ class NnTrainingResult(models.Model):
     training_accuracy = models.FloatField()
     testing_accuracy = models.FloatField()
     radiant_win_test_percentage = models.FloatField()
+
+class PatchStatistics(models.Model):
+    patch = models.OneToOneField(Patch, on_delete=models.PROTECT, primary_key=True, related_name="statistics")
+    match_quantity = models.BigIntegerField()
+
+class HeroesStatistics(models.Model):
+    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='heroes_statistics')
+    hero_combination = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
+    matches_played = models.BigIntegerField()
+    pick_rate = models.FloatField()
+    matches_won = models.BigIntegerField()
+    win_rate = models.FloatField()
