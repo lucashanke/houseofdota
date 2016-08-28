@@ -1,11 +1,7 @@
 from __future__ import unicode_literals
-import datetime
-import pytz
 
 from django.db import models
 from django.core.validators import validate_comma_separated_integer_list
-
-from app.util.dota_util import HEROES_LIST, GAME_MODES, LOBBY_TYPES
 
 class Patch(models.Model):
     version = models.CharField(primary_key=True, max_length=255)
