@@ -16,6 +16,10 @@ class MatchRepository:
         return Match.objects.filter(patch=patch).order_by('start_time')
 
     @staticmethod
+    def fetch_not_analysed(patch):
+        return Match.objects.filter(patch=patch, analysed=False)
+
+    @staticmethod
     def get_heroes_matches(patch):
         cursor = connection.cursor()
 

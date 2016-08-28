@@ -28,6 +28,7 @@ class Match(models.Model):
     engine = models.IntegerField(null=True)
     radiant_score = models.IntegerField(null=True)
     dire_score = models.IntegerField(null=True)
+    analysed = models.BooleanField(default=False)
     pass
 
 
