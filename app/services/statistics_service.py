@@ -1,12 +1,7 @@
 from __future__ import division
 
-import datetime
-import operator
-import pdb
-
 from app.repositories.match_repository import MatchRepository
-from app.business.patch_business import PatchBusiness
-from app.business.statistics_business import StatisticsBusiness
+from app.repositories.patch_statistics_repository import PatchStatisticsRepository
 from app.util.dota_util import HEROES_LIST
 
 class StatisticsService:
@@ -16,7 +11,7 @@ class StatisticsService:
 
     def get_heroes_statistics(self):
         statistics = []
-        patch_statistics = StatisticsBusiness.get_patch_statistics(self._patch)
+        patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
         for heroes_statistics in patch_statistics.heroes_statistics.all():
             heroes = int(heroes_statistics.hero_combination)

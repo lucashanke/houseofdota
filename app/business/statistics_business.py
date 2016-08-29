@@ -1,7 +1,6 @@
-from django.core.exceptions import ObjectDoesNotExist
-
-from app.models import PatchStatistics, HeroesStatistics
+from app.models import HeroesStatistics
 from app.repositories.match_repository import MatchRepository
+from app.repositories.patch_statistics_repository import PatchStatisticsRepository
 from app.util.dota_util import HEROES_LIST
 
 class StatisticsBusiness:
@@ -15,14 +14,8 @@ class StatisticsBusiness:
         new_matches_count = self._count_new_matches(matches_count)
         self._update_heroes_statistics(patch_statistics, new_matches_count)
 
-    def get_patch_statistics(self):
-        try:
-            return PatchStatistics.objects.get(pk=self._patch.version)
-        except ObjectDoesNotExist as e:
-            return PatchStatistics(patch=self._patch)
-
     def _update_patch_statistics(self):
-        patch_statistics = self.get_patch_statistics()
+        patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
         match_quantity = len(MatchRepository.fetch_from_patch(self._patch))
         patch_statistics.match_quantity = match_quantity
         patch_statistics.save()
