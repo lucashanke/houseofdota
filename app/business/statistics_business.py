@@ -33,7 +33,7 @@ class StatisticsBusiness:
         hero_statistics = HeroesStatistics(hero_combination=hero_id,
             patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
         hero_statistics.pick_rate = rates['pick_rate'][hero_id]
-        hero_statistics.win_rate = rates['win_rate'][hero_id]
+        hero_statistics.win_rate = rates['confidence'][hero_id]/rates['pick_rate'][hero_id]
         hero_statistics.confidence = rates['confidence'][hero_id]
         hero_statistics.save()
 
@@ -46,7 +46,6 @@ class StatisticsBusiness:
         winning_data = list(apriori(self._construct_matches_list_for_winning_teams(), min_support=0.0001, max_length=1))
         for winning_relation in winning_data:
             hero_id, = winning_relation.items
-            heroes_rates['win_rate'][hero_id] = winning_relation.support
             heroes_rates['confidence'][hero_id] = winning_relation.ordered_statistics[0].confidence
         return heroes_rates
 
