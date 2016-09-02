@@ -26,7 +26,7 @@ export default class HeroesStatistics extends React.Component {
 
   orderByWinRate(){
     this.setState({
-      orderBy: 'pickRate',
+      orderBy: 'winRate',
     });
   }
 
