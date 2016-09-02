@@ -15,21 +15,25 @@ export default class HeroesStatistics extends React.Component {
     super(props);
     this.state = {
       orderBy: 'pickRate',
-    }
-    this.orderByPickRate = this.orderByPickRate.bind(this);
-    this.orderByWinRate = this.orderByWinRate.bind(this);
+    };
   }
 
   orderByPickRate(){
     this.setState({
       orderBy: 'pickRate',
-    })
+    });
   }
 
   orderByWinRate(){
     this.setState({
-      orderBy: 'winRate',
-    })
+      orderBy: 'pickRate',
+    });
+  }
+
+  orderByConfidence(){
+    this.setState({
+      orderBy: 'confidence',
+    });
   }
 
   render(){
@@ -40,22 +44,26 @@ export default class HeroesStatistics extends React.Component {
           <Tab
             icon={<CheckBox />}
             label="MOST PICKED"
-            onActive={ this.orderByPickRate }
+            onActive={ this.orderByPickRate.bind(this) }
             />
           <Tab
             icon={<Star />}
             label="MOST SUCCESSFUL"
-            onActive={ this.orderByWinRate }
+            onActive={ this.orderByWinRate.bind(this) }
+            />
+          <Tab
+            icon={<Star />}
+            label="MOST CONFIDENT"
+            onActive={ this.orderByConfidence.bind(this) }
             />
         </Tabs>
         <Table>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn colSpan={2} style={{width: '35%'}}>Hero</TableHeaderColumn>
-              <TableHeaderColumn style={{width: '10%'}}>Matches Played</TableHeaderColumn>
               <TableHeaderColumn>Pick Rate</TableHeaderColumn>
-              <TableHeaderColumn style={{width: '10%'}}>Matches Won</TableHeaderColumn>
               <TableHeaderColumn>Win Rate</TableHeaderColumn>
+              <TableHeaderColumn>Confidence</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false}>
@@ -67,15 +75,17 @@ export default class HeroesStatistics extends React.Component {
                 <TableRowColumn style={{width: '25%'}}>
                   { row.heroName }
                 </TableRowColumn>
-                <TableRowColumn style={{width: '10%'}}>{ row.played }</TableRowColumn>
                 <TableRowColumn>
                   { _.round(row.pickRate, 2) }
                   <LinearProgress mode="determinate" value={ _.round(row.pickRate, 2) } />
                 </TableRowColumn>
-                <TableRowColumn style={{width: '10%'}}>{ row.won }</TableRowColumn>
                 <TableRowColumn>
                   { _.round(row.winRate, 2) }
                   <LinearProgress mode="determinate" value={ _.round(row.winRate, 2) } />
+                </TableRowColumn>
+                <TableRowColumn>
+                  { _.round(row.confidence, 2) }
+                  <LinearProgress mode="determinate" value={ _.round(row.confidence, 2) } />
                 </TableRowColumn>
               </TableRow>
             ))}
