@@ -17,6 +17,12 @@ logger = get_task_logger(__name__)
 def task_collect_very_high_ap_rap_matches():
     very_high_collector = CollectorService(3, ap=True, rap=True)
     matches_recorded = very_high_collector.collect_from_last_100()
+
+@periodic_task(
+    run_every=(crontab(minute='*/15')),
+    name="update statistics related to the current patch",
+)
+def task_update_statistics():
     StatisticsBusiness(PatchRepository.fetch_current_patch()).update_statistics()
 
 @periodic_task(
