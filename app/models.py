@@ -70,7 +70,6 @@ class PatchStatistics(models.Model):
 class HeroesStatistics(models.Model):
     patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='heroes_statistics')
     hero_combination = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
-    matches_played = models.BigIntegerField()
-    pick_rate = models.FloatField()
-    matches_won = models.BigIntegerField()
-    win_rate = models.FloatField()
+    pick_rate = models.FloatField(default=0.0)
+    win_rate = models.FloatField(default=0.0)
+    confidence = models.FloatField(default=0.0)

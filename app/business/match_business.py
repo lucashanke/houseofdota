@@ -38,10 +38,9 @@ class MatchBusiness:
 
     @staticmethod
     def get_heroes_list(match):
-        heroes = []
-        for slot in match.slots.all():
-            if slot.hero_id is not 0 and slot.hero_id is not None:
-                heroes.append(slot.hero_id)
-            else:
-                return None
-        return heroes
+        return [slot.hero_id for slot in match.slots.all()]
+
+    @staticmethod
+    def get_winning_team_heroes_list(match):
+        team = 'radiant' if match.radiant_win else 'dire'
+        return sorted([slot.hero_id for slot in match.slots.filter(team=team)])

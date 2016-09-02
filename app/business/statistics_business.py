@@ -1,4 +1,8 @@
+import itertools
+from apyori import apriori
+
 from app.models import HeroesStatistics
+from app.business.match_business import MatchBusiness
 from app.repositories.match_repository import MatchRepository
 from app.repositories.patch_statistics_repository import PatchStatisticsRepository
 from app.util.dota_util import HEROES_LIST
@@ -10,9 +14,7 @@ class StatisticsBusiness:
 
     def update_statistics(self):
         patch_statistics = self._update_patch_statistics()
-        matches_count = self._initialize_matches_count(patch_statistics)
-        new_matches_count = self._count_new_matches(matches_count)
-        self._update_heroes_statistics(patch_statistics, new_matches_count)
+        self._update_heroes_statistics(patch_statistics)
 
     def _update_patch_statistics(self):
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
@@ -21,38 +23,35 @@ class StatisticsBusiness:
         patch_statistics.save()
         return patch_statistics
 
-    def _initialize_matches_count(self, patch_statistics):
-        matches_count = {
-            'played' : {},
-            'won' : {}
-        }
+    def _update_heroes_statistics(self, patch_statistics):
+        heroes_rates = self._extract_statistics_from_association_rules()
         for hero_id in HEROES_LIST.keys():
-            hero_statistics = patch_statistics.heroes_statistics.filter(hero_combination=hero_id)
-            matches_count['played'][hero_id] = 0 if len(hero_statistics) == 0 else hero_statistics[0].matches_played
-            matches_count['won'][hero_id] = 0 if len(hero_statistics) == 0 else hero_statistics[0].matches_won
-        return matches_count
+            self._update_hero_statistics(hero_id, patch_statistics, heroes_rates)
 
-    def _count_new_matches(self, matches_count):
-        for match in MatchRepository.fetch_not_analysed(self._patch):
-            radiant_win = match.radiant_win
-            for slot in match.slots.all():
-                matches_count['played'][slot.hero_id] += 1
-                if (slot.team == 'radiant' and radiant_win is True) or \
-                    (slot.team == 'dire' and radiant_win is False):
-                    matches_count['won'][slot.hero_id] += 1
-            match.analysed = True
-            match.save()
-        return matches_count
+    def _update_hero_statistics(self, hero_id, patch_statistics, rates):
+        hero_statistics = patch_statistics.heroes_statistics.filter(hero_combination=hero_id)
+        hero_statistics = HeroesStatistics(hero_combination=hero_id,
+            patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
+        hero_statistics.pick_rate = rates['pick_rate'][hero_id]
+        hero_statistics.win_rate = rates['win_rate'][hero_id]
+        hero_statistics.confidence = rates['confidence'][hero_id]
+        hero_statistics.save()
 
-    def _update_heroes_statistics(self, patch_statistics, match_count):
-        for hero_id in HEROES_LIST.keys():
-            played = match_count['played'][hero_id]
-            won = match_count['won'][hero_id]
-            hero_statistics = patch_statistics.heroes_statistics.filter(hero_combination=hero_id)
-            hero_statistics = HeroesStatistics(hero_combination=hero_id,
-                patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
-            hero_statistics.matches_played = played
-            hero_statistics.matches_won = won
-            hero_statistics.pick_rate = (played/patch_statistics.match_quantity)*100
-            hero_statistics.win_rate = (won/played)*100 if played is not 0 else 0.0
-            hero_statistics.save()
+    def _extract_statistics_from_association_rules(self):
+        heroes_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
+        picking_data = list(apriori(self._construct_matches_list(), min_support=0.0001, max_length=1))
+        for picking_relation in picking_data:
+            hero_id, = picking_relation.items
+            heroes_rates['pick_rate'][hero_id] = picking_relation.support
+        winning_data = list(apriori(self._construct_matches_list_for_winning_teams(), min_support=0.0001, max_length=1))
+        for winning_relation in winning_data:
+            hero_id, = winning_relation.items
+            heroes_rates['win_rate'][hero_id] = winning_relation.support
+            heroes_rates['confidence'][hero_id] = winning_relation.ordered_statistics[0].confidence
+        return heroes_rates
+
+    def _construct_matches_list(self):
+        return [ MatchBusiness.get_heroes_list(match) for match in MatchRepository.fetch_from_patch(self._patch) ]
+
+    def _construct_matches_list_for_winning_teams(self):
+        return [ MatchBusiness.get_winning_team_heroes_list(match) for match in MatchRepository.fetch_from_patch(self._patch) ]

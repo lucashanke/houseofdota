@@ -11,7 +11,7 @@ from app.business.statistics_business import StatisticsBusiness
 logger = get_task_logger(__name__)
 
 @periodic_task(
-    run_every=(crontab(minute='*/1')),
+    run_every=(crontab(minute='*/5')),
     name="collect Very High AP and RAP matches task",
 )
 def task_collect_very_high_ap_rap_matches():

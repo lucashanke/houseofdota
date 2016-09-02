@@ -16,18 +16,16 @@ class StatisticsService:
         for heroes_statistics in patch_statistics.heroes_statistics.all():
             heroes = int(heroes_statistics.hero_combination)
             heroes_names = HEROES_LIST[heroes]['localized_name']
-            played = heroes_statistics.matches_played
-            won = heroes_statistics.matches_won
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
+            confidence = heroes_statistics.confidence
 
             hero_data = {
                 'hero_id': heroes,
                 'hero_name': heroes_names,
-                'played': played,
-                'won': won,
-                'pick_rate' : pick_rate,
-                'win_rate': win_rate
+                'pick_rate' : pick_rate*100,
+                'win_rate': win_rate*100,
+                'confidence': confidence*100
             }
             statistics.append(hero_data)
 
