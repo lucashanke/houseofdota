@@ -25,28 +25,30 @@ class StatisticsBusiness:
 
     def _update_heroes_statistics(self, patch_statistics):
         heroes_rates = self._extract_statistics_from_association_rules()
-        for hero_id in HEROES_LIST.keys():
-            self._update_hero_statistics(hero_id, patch_statistics, heroes_rates)
+        for hero_ids in heroes_rates['pick_rate'].keys():
+            self._update_hero_statistics(hero_ids, patch_statistics, heroes_rates)
 
-    def _update_hero_statistics(self, hero_id, patch_statistics, rates):
-        hero_statistics = patch_statistics.heroes_statistics.filter(hero_combination=hero_id)
-        hero_statistics = HeroesStatistics(hero_combination=hero_id,
+    def _update_hero_statistics(self, hero_ids, patch_statistics, rates):
+        hero_statistics = patch_statistics.heroes_statistics.filter(hero_bundle=hero_ids)
+        hero_statistics = HeroesStatistics(hero_bundle=hero_ids,
             patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
-        hero_statistics.pick_rate = rates['pick_rate'][hero_id]
-        hero_statistics.win_rate = rates['confidence'][hero_id]/rates['pick_rate'][hero_id]
-        hero_statistics.confidence = rates['confidence'][hero_id]
+        hero_statistics.pick_rate = rates['pick_rate'][hero_ids]
+        hero_statistics.win_rate = rates['confidence'][hero_ids]/rates['pick_rate'][hero_ids]
+        hero_statistics.confidence = rates['confidence'][hero_ids]
+        hero_statistics.bundle_size = len(hero_ids.split(','))
         hero_statistics.save()
 
     def _extract_statistics_from_association_rules(self):
         heroes_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
-        picking_data = self._extract_association_rules(self._construct_matches_list(), 1)
-        for picking_relation in picking_data:
-            hero_id, = picking_relation.items
-            heroes_rates['pick_rate'][hero_id] = picking_relation.support
-        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(), 1)
-        for winning_relation in winning_data:
-            hero_id, = winning_relation.items
-            heroes_rates['confidence'][hero_id] = winning_relation.ordered_statistics[0].confidence
+        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(), 2)
+        for winning_association in winning_data:
+            hero_ids = self._get_association_heroes(winning_association)
+            heroes_rates['confidence'][hero_ids] = winning_association.support
+        picking_data = self._extract_association_rules(self._construct_matches_list(), 2)
+        for picking_association in picking_data:
+            hero_ids = self._get_association_heroes(picking_association)
+            if hero_ids in heroes_rates['confidence'].keys():
+                heroes_rates['pick_rate'][hero_ids] = picking_association.support
         return heroes_rates
 
     def _construct_matches_list(self):
@@ -57,3 +59,14 @@ class StatisticsBusiness:
 
     def _extract_association_rules(self, matches, max_length):
         return list(apriori(matches, min_support=0.0001, max_length=max_length))
+
+    def _get_association_heroes(self, relation):
+        return str(sorted(relation.items)).strip("[]")
+
+    @staticmethod
+    def get_heroes_ids(heroes_statistics):
+        return [ int(hero_id) for hero_id in heroes_statistics.hero_bundle.split(',') ]
+
+    @staticmethod
+    def get_heroes_names(heroes_statistics):
+        return [ HEROES_LIST[int(hero_id)]['localized_name'] for hero_id in heroes_statistics.hero_bundle.split(',') ]

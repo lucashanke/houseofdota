@@ -33,4 +33,5 @@ cp infra/supervisor/houseofdota.conf /etc/supervisor/conf.d/
 
 echo 'Restarting services (gunicorn, beat, workers)...'
 
-supervisorctl restart gunicorn beat worker
+supervisorctl restart gunicorn
+# supervisorctl restart beat worker
