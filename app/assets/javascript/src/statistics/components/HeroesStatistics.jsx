@@ -4,34 +4,16 @@ import LinearProgress from 'material-ui/LinearProgress';
 import _ from 'lodash';
 
 import ContentHolder from '../../components/ContentHolder.jsx';
-import HeroesStatisticsToolBar from './HeroesStatisticsToolBar.jsx';
 
 export default class HeroesStatistics extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {
-      orderBy: 'pickRate',
-    };
-  }
-
-  handleOrderChange(event, key, value){
-    this.setState({
-      orderBy: value,
-    });
   }
 
   render(){
-    const statistics = _.orderBy(this.props.statistics, [this.state.orderBy], ['desc']);
+    const statistics = _.orderBy(this.props.statistics, [this.props.orderBy], ['desc']);
     return(
-      <div>
-        <ContentHolder style={{ width: '90%' }}>
-          <HeroesStatisticsToolBar
-            orderBy={ this.state.orderBy }
-            matchQuantity={ this.props.matchQuantity }
-            onOrderChange={ this.handleOrderChange.bind(this) } >
-          </HeroesStatisticsToolBar>
-        </ContentHolder>
         <ContentHolder>
           <Table>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -60,7 +42,7 @@ export default class HeroesStatistics extends React.Component {
                   <TableRowColumn>
                     { _.round(row.pickRate, 2) }%
                     <LinearProgress
-                      color={ this.state.orderBy == 'pickRate' ? 'rgb(183, 28, 28)' : ''  }
+                      color={ this.props.orderBy == 'pickRate' ? 'rgb(183, 28, 28)' : ''  }
                       mode="determinate"
                       value={ _.round(row.pickRate, 2) }
                     />
@@ -68,14 +50,14 @@ export default class HeroesStatistics extends React.Component {
                   <TableRowColumn>
                     { _.round(row.winRate, 2) }%
                     <LinearProgress
-                      color={ this.state.orderBy == 'winRate' ? 'rgb(183, 28, 28)' : ''  }
+                      color={ this.props.orderBy == 'winRate' ? 'rgb(183, 28, 28)' : ''  }
                       mode="determinate"
                       value={ _.round(row.winRate, 2) } />
                   </TableRowColumn>
                   <TableRowColumn>
                     { _.round(row.confidence, 2) }%
                     <LinearProgress
-                      color={ this.state.orderBy == 'confidence' ? 'rgb(183, 28, 28)' : ''  }
+                      color={ this.props.orderBy == 'confidence' ? 'rgb(183, 28, 28)' : ''  }
                       mode="determinate" value={ _.round(row.confidence, 2) } />
                   </TableRowColumn>
                 </TableRow>
@@ -83,13 +65,12 @@ export default class HeroesStatistics extends React.Component {
             </TableBody>
           </Table>
         </ContentHolder>
-      </div>
 
     );
   }
 }
 
 HeroesStatistics.propTypes = {
-  matchQuantity: React.PropTypes.number.isRequired,
   statistics: React.PropTypes.array.isRequired,
+  orderBy: React.PropTypes.string.isRequired,
 };

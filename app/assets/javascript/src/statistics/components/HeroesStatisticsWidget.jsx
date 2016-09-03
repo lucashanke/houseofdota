@@ -1,6 +1,8 @@
 import React from 'react';
 import StatisticsService from '../services/StatisticsService.js';
 import HeroesStatistics from './HeroesStatistics.jsx';
+import HeroesStatisticsToolBar from './HeroesStatisticsToolBar.jsx';
+
 import $ from 'jquery';
 
 export default class HeroesStatisticsWidget extends React.Component {
@@ -11,6 +13,7 @@ export default class HeroesStatisticsWidget extends React.Component {
     this.state = {
       matchQuantity: 0,
       statistics: [],
+      orderBy: 'pickRate',
     }
   }
 
@@ -25,11 +28,24 @@ export default class HeroesStatisticsWidget extends React.Component {
     });
   }
 
+  handleOrderChange(event, key, value){
+    this.setState({
+      orderBy: value,
+    });
+  }
+
   render(){
     return(
-      <HeroesStatistics
-        matchQuantity={ this.state.matchQuantity }
-        statistics={ this.state.statistics }/>
+      <div>
+        <HeroesStatisticsToolBar
+          orderBy={ this.state.orderBy }
+          matchQuantity={ this.state.matchQuantity }
+          onOrderChange={ this.handleOrderChange.bind(this) } >
+        </HeroesStatisticsToolBar>
+        <HeroesStatistics
+          statistics={ this.state.statistics }
+          orderBy={ this.state.orderBy }/>
+      </div>
     );
   }
 }
