@@ -19,7 +19,7 @@ def task_collect_very_high_ap_rap_matches():
     matches_recorded = very_high_collector.collect_from_last_100()
 
 @periodic_task(
-    run_every=(crontab(minute='*/15')),
+    run_every=(crontab(minute=0, hour='*/1')),
     name="update statistics related to the current patch",
 )
 def task_update_statistics():
