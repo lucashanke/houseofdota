@@ -3,15 +3,15 @@ import mock
 
 from django.test import TestCase
 from mock import patch
-from app.services.collector_service import CollectorService
+from app.collectors.matches_collector import MatchesCollector
 from app.models import Match, Patch
 from app.business.match_business import MatchBusiness
 
-class CollectorServiceTest(TestCase):
+class MatchesCollectorTest(TestCase):
     fixtures = ['matches.json']
 
     def setUp(self):
-        self.collector = CollectorService(3, ap=True, rap=True)
+        self.collector = MatchesCollector(3, ap=True, rap=True)
         self.all_valid_matches = [
             {
                 'match_id': 1,
@@ -183,17 +183,17 @@ class CollectorServiceTest(TestCase):
             }
         ]
 
-    @patch('app.services.collector_service.api', autospec=True)
+    @patch('app.collectors.matches_collector.api', autospec=True)
     def test_gmh_from_api_when_succesful_return_gmh_with_status_1(self, mock_api):
         mock_api.get_match_history.return_value = {'result': {'status': 1}}
         self.assertEqual(self.collector.get_gmh_from_api(), {'status': 1})
 
-    @patch('app.services.collector_service.api', autospec=True)
+    @patch('app.collectors.matches_collector.api', autospec=True)
     def test_gmh_from_api_when_status_not_one_return_none(self, mock_api):
         mock_api.get_match_history.return_value = {'result': {'status': 0}}
         self.assertEqual(self.collector.get_gmh_from_api(), None)
 
-    @patch('app.services.collector_service.api', autospec=True)
+    @patch('app.collectors.matches_collector.api', autospec=True)
     def test_gmh_from_api_when_connection_error_return_none(self, mock_api):
         mock_api.get_match_history.side_effect = requests.exceptions.HTTPError()
         self.assertEqual(self.collector.get_gmh_from_api(), None)
@@ -216,12 +216,12 @@ class CollectorServiceTest(TestCase):
         }
         self.assertEqual(self.collector.get_matches_from_history(gmh), None)
 
-    @patch('app.services.collector_service.api', autospec=True)
+    @patch('app.collectors.matches_collector.api', autospec=True)
     def test_gmd_from_api_when_succesful_return_full_gmd(self, mock_api):
         mock_api.get_match_details.return_value = {'result': {'match_id': 1}}
         self.assertEqual(self.collector.get_gmd_from_api(1), {'match_id': 1})
 
-    @patch('app.services.collector_service.api', autospec=True)
+    @patch('app.collectors.matches_collector.api', autospec=True)
     def test_gmd_from_api_when_connection_error_return_none(self, mock_api):
         mock_api.get_match_details.side_effect = requests.exceptions.HTTPError()
         self.assertEqual(self.collector.get_gmd_from_api(1), None)
@@ -231,8 +231,8 @@ class CollectorServiceTest(TestCase):
         self.assertEqual(self.collector.fill_additional_info({'start_time': 1472314312}),
                          {'start_time': 1472314312, 'patch': Patch.objects.get(pk='6.88b'), 'skill': 3})
 
-    @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
-    @patch.object(CollectorService, 'get_gmd_from_api')
+    @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
+    @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch.object(MatchBusiness, 'create_from_json', autospec=False)
     def test_get_and_record_detailed_matches_all_new_return_all(self, mock_create, mock_api, mock_check):
         mock_check.return_value = False
@@ -303,8 +303,8 @@ class CollectorServiceTest(TestCase):
         matches = self.collector.get_and_record_detailed_matches(self.all_valid_matches)
         self.assertEqual(len(matches),len(return_matches))
 
-    @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
-    @patch.object(CollectorService, 'get_gmd_from_api')
+    @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
+    @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch.object(MatchBusiness, 'create_from_json', autospec=False)
     def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
@@ -355,8 +355,8 @@ class CollectorServiceTest(TestCase):
         matches = self.collector.get_and_record_detailed_matches(self.one_repeated_match)
         self.assertEqual(len(matches), len(return_matches))
 
-    @patch.object(CollectorService, 'check_if_match_is_recorded', autospec=True)
-    @patch.object(CollectorService, 'get_gmd_from_api')
+    @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
+    @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch.object(MatchBusiness, 'create_from_json', autospec=False)
     def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]

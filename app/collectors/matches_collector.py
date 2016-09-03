@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from app.util.match_util import is_valid_match, get_match_patch
 
-class CollectorService:
+class MatchesCollector:
     """Class responsible to collect Dota2 matches according to the desired filters"""
 
     def __init__(self, skill, patch=None,

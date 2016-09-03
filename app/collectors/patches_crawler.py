@@ -5,9 +5,9 @@ from operator import itemgetter
 from django.core.exceptions import ObjectDoesNotExist
 from bs4 import BeautifulSoup
 
-class PatchesCollector:
+class PatchesCrawler:
     @staticmethod
-    def scrape():
+    def _crawl():
         page = requests.get('http://dota2.gamepedia.com/Game_Versions')
         soup = BeautifulSoup(page.content, 'html.parser')
 
@@ -32,7 +32,7 @@ class PatchesCollector:
 
     @staticmethod
     def sync_patches():
-        patches_scraped = PatchesCollector.scrape()
+        patches_scraped = PatchesCollector._crawl()
         patches_scraped.sort(key=itemgetter('date'))
         new_patches = []
         for patch in patches_scraped:
