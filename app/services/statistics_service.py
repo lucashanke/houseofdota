@@ -11,7 +11,7 @@ class StatisticsService:
     def __init__(self, patch):
         self._patch = patch
 
-    def get_heroes_statistics(self, bundle_size=1):
+    def get_heroes_statistics(self, bundle_size):
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
