@@ -4,7 +4,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import appTheme from '../AppTheme.js';
 import _ from 'lodash';
 
-
 export default class ContentHolder extends React.Component {
   constructor(props){
     super(props);
@@ -16,7 +15,6 @@ export default class ContentHolder extends React.Component {
       marginTop: 30,
       marginLeft: '5%',
       marginRight: '5%',
-      marginBottom: 30,
       display: 'inline-block',
       verticalAlign: 'top'
     };
