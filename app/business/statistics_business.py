@@ -39,11 +39,11 @@ class StatisticsBusiness:
 
     def _extract_statistics_from_association_rules(self):
         heroes_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
-        picking_data = list(apriori(self._construct_matches_list(), min_support=0.0001, max_length=1))
+        picking_data = self._extract_association_rules(self._construct_matches_list(), 1)
         for picking_relation in picking_data:
             hero_id, = picking_relation.items
             heroes_rates['pick_rate'][hero_id] = picking_relation.support
-        winning_data = list(apriori(self._construct_matches_list_for_winning_teams(), min_support=0.0001, max_length=1))
+        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(), 1)
         for winning_relation in winning_data:
             hero_id, = winning_relation.items
             heroes_rates['confidence'][hero_id] = winning_relation.ordered_statistics[0].confidence
@@ -54,3 +54,6 @@ class StatisticsBusiness:
 
     def _construct_matches_list_for_winning_teams(self):
         return [ MatchBusiness.get_winning_team_heroes_list(match) for match in MatchRepository.fetch_from_patch(self._patch) ]
+
+    def _extract_association_rules(self, matches, max_length):
+        return list(apriori(matches, min_support=0.0001, max_length=max_length))
