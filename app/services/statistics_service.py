@@ -23,6 +23,7 @@ class StatisticsService:
             confidence = heroes_statistics.confidence
 
             hero_data = {
+                'id': heroes_statistics.id,
                 'hero_bundle': heroes,
                 'pick_rate' : pick_rate*100,
                 'win_rate': win_rate*100,

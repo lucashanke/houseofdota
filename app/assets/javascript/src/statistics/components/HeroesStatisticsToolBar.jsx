@@ -21,8 +21,9 @@ const HeroesStatisticsToolBar = (props) => {
           </DropDownMenu>
         <ToolbarSeparator />
           <FontIcon className="material-icons">group_work</FontIcon>
-          <DropDownMenu value={ 1 }>
+          <DropDownMenu value={ props.bundleSize } onChange={ props.onBundleSizeChange }>
             <MenuItem value={ 1 } label="Bundle size: 1 hero" primaryText="1 hero" />
+            <MenuItem value={ 2 } label="Bundle size: 2 heroes" primaryText="2 heroes" />
           </DropDownMenu>
         </ToolbarGroup>
       </Toolbar>
@@ -32,8 +33,10 @@ const HeroesStatisticsToolBar = (props) => {
 
 HeroesStatisticsToolBar.propTypes = {
   orderBy: PropTypes.string.isRequired,
+  bundleSize: PropTypes.number.isRequired,
   matchQuantity: PropTypes.number.isRequired,
   onOrderChange: PropTypes.func.isRequired,
+  onBundleSizeChange: PropTypes.func.isRequired,
 }
 
 export default HeroesStatisticsToolBar;

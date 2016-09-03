@@ -6,13 +6,13 @@ import _ from 'lodash';
 import ContentHolder from '../../components/ContentHolder.jsx';
 
 const HeroesStatistics = (props) => {
-  const statistics = _.orderBy([props.statistics, props.orderBy], ['desc']);
+  const statistics = _.orderBy( props.statistics ,[props.orderBy], ['desc']);
   return(
     <ContentHolder>
       <Table>
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
-            <TableHeaderColumn colSpan={2} style={{width: '35%'}}>Hero</TableHeaderColumn>
+            <TableHeaderColumn style={{ textAlign: 'center', width: "40%" }}>Heroes</TableHeaderColumn>
             <TableHeaderColumn style={{ textAlign: 'center' }}>
               Pick Rate
             </TableHeaderColumn>
@@ -25,13 +25,14 @@ const HeroesStatistics = (props) => {
           </TableRow>
         </TableHeader>
         <TableBody displayRowCheckbox={false} showRowHover={true}>
-          { props.statistics.map( (row) => (
-            <TableRow key={row.heroId} >
-              <TableRowColumn style={{width: '10%'}}>
-                <img src={'/static/images/' + row.heroId + '.png'} style={{height: '3em'}}/>
-              </TableRowColumn>
-              <TableRowColumn style={{width: '25%'}}>
-                { row.heroName }
+          { statistics.map( (row) => (
+            <TableRow key={row.id}  >
+              <TableRowColumn style={{ textAlign: 'center', width: "40%" }}>
+              { row.heroBundle.map( (hero) => (
+                <div style={ { float: "left" } } key={ row.id + hero.id }>
+                  <img src={'/static/images/' + hero.id + '.png'} style={{height: '3em', marginRight: '1em'}}/>
+                </div>
+              ))}
               </TableRowColumn>
               <TableRowColumn>
                 { _.round(row.pickRate, 2) }%
