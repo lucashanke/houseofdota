@@ -64,9 +64,8 @@ class StatisticsBusiness:
         return str(sorted(relation.items)).strip("[]")
 
     @staticmethod
-    def get_heroes_ids(heroes_statistics):
-        return [ int(hero_id) for hero_id in heroes_statistics.hero_bundle.split(',') ]
-
-    @staticmethod
-    def get_heroes_names(heroes_statistics):
-        return [ HEROES_LIST[int(hero_id)]['localized_name'] for hero_id in heroes_statistics.hero_bundle.split(',') ]
+    def get_heroes_bundle(heroes_statistics):
+        return [ {
+            'id': int(hero_id),
+            'name': HEROES_LIST[int(hero_id)]['localized_name']
+        } for hero_id in heroes_statistics.hero_bundle.split(',') ]

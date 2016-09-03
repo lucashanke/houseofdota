@@ -17,15 +17,13 @@ class StatisticsService:
 
         for heroes_statistics in patch_statistics.heroes_statistics.filter(
                 bundle_size=bundle_size).order_by('-confidence')[:150]:
-            heroes = StatisticsBusiness.get_heroes_ids(heroes_statistics)
-            heroes_names = StatisticsBusiness.get_heroes_names(heroes_statistics)
+            heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
             confidence = heroes_statistics.confidence
 
             hero_data = {
-                'hero_id': heroes,
-                'hero_name': heroes_names,
+                'hero_bundle': heroes,
                 'pick_rate' : pick_rate*100,
                 'win_rate': win_rate*100,
                 'confidence': confidence*100
