@@ -27,8 +27,11 @@ class StatisticsBusiness:
         heroes_rates = self._extract_statistics_from_association_rules()
         for hero_ids in heroes_rates['pick_rate'].keys():
             self._update_hero_statistics(hero_ids, patch_statistics, heroes_rates)
+        counter_rates = self._extract_counter_picks_from_association_rules()
+        for hero_ids in counter_rates['pick_rate'].keys():
+            self._update_hero_statistics(hero_ids, patch_statistics, counter_rates, counter_rate=True)
 
-    def _update_hero_statistics(self, hero_ids, patch_statistics, rates):
+    def _update_hero_statistics(self, hero_ids, patch_statistics, rates, counter_rate=False):
         hero_statistics = patch_statistics.heroes_statistics.filter(hero_bundle=hero_ids)
         hero_statistics = HeroesStatistics(hero_bundle=hero_ids,
             patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
@@ -36,6 +39,7 @@ class StatisticsBusiness:
         hero_statistics.win_rate = rates['confidence'][hero_ids]/rates['pick_rate'][hero_ids]
         hero_statistics.confidence = rates['confidence'][hero_ids]
         hero_statistics.bundle_size = len(hero_ids.split(','))
+        hero_statistics.counter_pick = counter_rate
         hero_statistics.save()
 
     def _extract_statistics_from_association_rules(self):
@@ -49,10 +53,25 @@ class StatisticsBusiness:
             hero_ids = self._get_association_heroes(picking_association)
             if hero_ids in heroes_rates['confidence'].keys():
                 heroes_rates['pick_rate'][hero_ids] = picking_association.support
+                print('=>' + str(picking_association.ordered_statistics))
         return heroes_rates
 
-    def _construct_matches_list(self):
-        return [ MatchBusiness.get_heroes_list(match) for match in MatchRepository.fetch_from_patch(self._patch) ]
+    def _extract_counter_picks_from_association_rules(self):
+        counter_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
+        associations = self._extract_association_rules(self._construct_matches_list(counter_pick=True), 2)
+        for association in associations:
+            if self._is_counter_association(association):
+                hero_ids = self._get_association_heroes(association)
+                counter_rates['pick_rate'][hero_ids] = association.support
+                counter_rates['confidence'][hero_ids] = association.ordered_statistics[0].confidence
+        return counter_rates
+
+    def _construct_matches_list(self, counter_pick=False):
+        matches = MatchRepository.fetch_from_patch(self._patch)
+        if counter_pick:
+            return [ MatchBusiness.get_heroes_list_with_winning_team_info(match) for match in matches ]
+        else:
+            return [ MatchBusiness.get_heroes_list(match) for match in matches]
 
     def _construct_matches_list_for_winning_teams(self):
         return [ MatchBusiness.get_winning_team_heroes_list(match) for match in MatchRepository.fetch_from_patch(self._patch) ]
@@ -60,12 +79,16 @@ class StatisticsBusiness:
     def _extract_association_rules(self, matches, max_length):
         return list(apriori(matches, min_support=0.0001, max_length=max_length))
 
-    def _get_association_heroes(self, relation):
-        return str(sorted(relation.items)).strip("[]")
+    def _get_association_heroes(self, association, string=True):
+        return str(sorted(association.items)).strip("[]") if string else sorted(association.items)
+
+    def _is_counter_association(self, association):
+        hero_ids = self._get_association_heroes(association, string=False)
+        return len(hero_ids) == 2 and hero_ids[0] < 0 and hero_ids[1] > 0
 
     @staticmethod
     def get_heroes_bundle(heroes_statistics):
         return [ {
-            'id': int(hero_id),
-            'name': HEROES_LIST[int(hero_id)]['localized_name']
+            'id': abs(int(hero_id)),
+            'name': HEROES_LIST[abs(int(hero_id))]['localized_name']
         } for hero_id in heroes_statistics.hero_bundle.split(',') ]
