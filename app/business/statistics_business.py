@@ -53,7 +53,6 @@ class StatisticsBusiness:
             hero_ids = self._get_association_heroes(picking_association)
             if hero_ids in heroes_rates['confidence'].keys():
                 heroes_rates['pick_rate'][hero_ids] = picking_association.support
-                print('=>' + str(picking_association.ordered_statistics))
         return heroes_rates
 
     def _extract_counter_picks_from_association_rules(self):
