@@ -95,8 +95,10 @@ export default class Home extends React.Component {
                 avatar={'https://avatars3.githubusercontent.com/u/5628437?v=3&s=460'}
                 />
               <CardText>
-                Hello, I'm Lucas! I'm a master student at Universidade Federal de Minas Gerais, Brazil
-                and House of Dota is the result of my dissertation project! I am passionate about technology, data science,
+                Hey Folks, I'm Lucas! I'm studying for my master's degree at Universidade Federal de Minas Gerais, Brazil
+                and House of Dota is the result of my dissertation project!
+                <br></br>
+                I am passionate about technology, data science,
                 machine learning and (of course) Dota 2. I am currently also a consultant developer at ThoughtWorks.
               </CardText>
               <CardActions>
