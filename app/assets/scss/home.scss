@@ -1,0 +1,32 @@
+.crop {
+  width: 90%;
+  overflow: hidden;
+  &.slide1 {
+    height: 55vh;
+    img {
+      width: 120%;
+      margin: -2.5vh 0 0 -10%;
+    }
+  }
+  &.slide2 {
+    height: 55vh;
+    img {
+      width: 100%;
+      margin: -23vh 0 0 0;
+    }
+  }
+  &.slide3 {
+    height: 36vh;
+    img {
+      width: 100%;
+      margin: -30vh 0 0 0;
+    }
+  }
+  &.slide4 {
+    height: 43vh;
+    img {
+      width: 100%;
+      margin: -23vh 0 0 0;
+    }
+  }
+}

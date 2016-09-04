@@ -10,7 +10,7 @@ describe('<Statistics />', () => {
 
   it('renders a ContentHolder with a HeroesStatisticsWidget as child', () => {
     const wrapper = shallow(<Statistics />);
-    expect(wrapper.find(ContentHolder).find(HeroesStatisticsWidget)).to.have.length(1);
+    expect(wrapper.find(HeroesStatisticsWidget)).to.have.length(1);
   });
 
 });

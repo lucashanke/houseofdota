@@ -35,6 +35,8 @@
     "rd3": "^0.7.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
+    "react-motion": "^0.4.4",
+    "react-swipeable-views": "^0.7.3",
     "react-tap-event-plugin": "^1.0.0",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",

@@ -9,13 +9,13 @@ describe('<AppMenu />', () => {
 
   it('renders two items', () => {
     const wrapper = shallow(<AppMenu />);
-    expect(wrapper.find(MenuItem)).to.have.length(3);
+    expect(wrapper.find(MenuItem)).to.have.length(4);
   });
 
   it('buttons have correct links', () => {
     const wrapper = shallow(<AppMenu />);
     const buttons = wrapper.find(MenuItem);
-    expect(buttons.at(0).props().href).to.equal('/statistics');
+    expect(buttons.at(0).props().href).to.equal('/');
   });
 
 });

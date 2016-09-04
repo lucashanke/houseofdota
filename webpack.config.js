@@ -11,7 +11,8 @@ function buildEntry(){
   entry = {
     app: [ './javascript/src/index.js'],
     statistics: [ './javascript/src/statistics/index.js'],
-    nn_performance: [ './javascript/src/nn_performance/index.js']
+    nn_performance: [ './javascript/src/nn_performance/index.js'],
+    home: [ './javascript/src/home/index.js'],
   }
 
   if (isDevelopmentEnvironment()) {
