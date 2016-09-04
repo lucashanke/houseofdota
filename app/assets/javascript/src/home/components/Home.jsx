@@ -15,11 +15,11 @@ export default class Home extends React.Component {
   }
 
   componentDidMount(){
-    setTimeout(this.forward.bind(this), 3000);
+    setTimeout(this.forward.bind(this), 7000);
   }
 
   componentDidUpdate() {
-    setTimeout(this.forward.bind(this), 3000);
+    setTimeout(this.forward.bind(this), 5000);
   }
 
   forward(){
