@@ -16,7 +16,7 @@ class StatisticsService:
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
         for heroes_statistics in patch_statistics.heroes_statistics.filter(
-                bundle_size=bundle_size, counter_pick=False).order_by('-confidence')[:150]:
+                bundle_size=bundle_size).order_by('-confidence')[:150]:
             heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
