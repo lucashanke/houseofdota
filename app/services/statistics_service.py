@@ -40,21 +40,20 @@ class StatisticsService:
         counter_picks = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        for heroes_statistics in patch_statistics.heroes_statistics.filter(
-                counter_pick=True).filter(hero_bundle__endswith=', '+hero_id).order_by('-confidence'):
-            heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
-            support = heroes_statistics.pick_rate
-            confidence = heroes_statistics.confidence
+        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by('counter')
 
+        for counter in hero_counters:
             hero_data = {
-                'id': heroes_statistics.id,
-                'counter': heroes[0],
-                'support' : support*100,
-                'confidence': confidence*100
+                'counter_id': counter.counter,
+                'counter_name': HEROES_LIST[counter.counter]['localized_name'],
+                'support' : counter.support*100,
+                'confidence_hero': counter.confidence_hero*100,
+                'confidence_counter': counter.confidence_counter*100,
+                'lift': counter.lift
             }
             counter_picks.append(hero_data)
 
         return {
             'match_quantity' : patch_statistics.match_quantity,
-            'counter_picks' : counter_picks
+            'counter_picks' : sorted(counter_picks, key=lambda c: c['lift'], reverse=True)
         }

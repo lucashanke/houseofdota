@@ -71,7 +71,15 @@ class HeroesStatistics(models.Model):
     patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='heroes_statistics')
     hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
     bundle_size = models.IntegerField(default=1)
-    counter_pick = models.BooleanField(default=False)
     pick_rate = models.FloatField(default=0.0)
     win_rate = models.FloatField(default=0.0)
     confidence = models.FloatField(default=0.0)
+
+class CounterStatistics(models.Model):
+    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='counter_statistics')
+    hero = models.IntegerField()
+    counter = models.IntegerField()
+    support = models.FloatField(default=0.0)
+    confidence_counter = models.FloatField(default=0.0)
+    confidence_hero = models.FloatField(default=0.0)
+    lift = models.FloatField(default=0.0)
