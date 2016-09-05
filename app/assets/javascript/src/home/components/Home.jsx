@@ -76,7 +76,7 @@ export default class Home extends React.Component {
                 </div>
               </CardMedia>
               <CardText>
-                We periodically collect valid and very high matches from Steam API. From this data,
+                We periodically collect valid and very high skill matches from Steam API. From this data,
                 we analyze and run our machine learning algorithms in order to better understand the meta
                 and make predictions and statistical analysis of the game.
               </CardText>
@@ -127,7 +127,7 @@ export default class Home extends React.Component {
                     subtitle={
                       <a style={{ color:'white' }}
                         href="https://www.youtube.com/watch?v=9qbp2F-wN5M">
-                        '"Giff me support"'
+                        "Giff me support"
                       </a>
                     }
                   />
