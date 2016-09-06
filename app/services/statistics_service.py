@@ -50,7 +50,7 @@ class StatisticsService:
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
-                'counter_coefficient': counter.lift*counter.confidence_counter/counter.confidence_hero
+                'counter_coefficient': (counter.lift-1)*counter.confidence_counter/counter.confidence_hero
             }
             counter_picks.append(hero_data)
 
