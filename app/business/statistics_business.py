@@ -35,11 +35,11 @@ class StatisticsBusiness:
         for winning_association in winning_data:
             hero_ids = self._get_association_heroes(winning_association)
             heroes_rates['confidence'][hero_ids] = winning_association.support
-        picking_data = self._extract_association_rules(self._construct_matches_list(), 2)
+        picking_data = self._extract_association_rules(self._construct_teams_list(), 2)
         for picking_association in picking_data:
             hero_ids = self._get_association_heroes(picking_association)
             if hero_ids in heroes_rates['confidence'].keys():
-                heroes_rates['pick_rate'][hero_ids] = picking_association.support
+                heroes_rates['pick_rate'][hero_ids] = picking_association.support*2
         return heroes_rates
 
     def _update_hero_statistics(self, hero_ids, patch_statistics, rates):
@@ -91,6 +91,10 @@ class StatisticsBusiness:
             return [ MatchBusiness.get_heroes_list_with_winning_team_info(match) for match in matches ]
         else:
             return [ MatchBusiness.get_heroes_list(match) for match in matches]
+
+    def _construct_teams_list(self):
+        matches = MatchRepository.fetch_from_patch(self._patch)
+        return [ team for match in matches for team in MatchBusiness.get_teams_heroes_list(match) ]
 
     def _construct_matches_list_for_winning_teams(self):
         return [ MatchBusiness.get_winning_team_heroes_list(match) for match in MatchRepository.fetch_from_patch(self._patch) ]

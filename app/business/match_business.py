@@ -46,6 +46,13 @@ class MatchBusiness:
         return [(-slot.hero_id if slot.team == team else slot.hero_id) for slot in match.slots.all()]
 
     @staticmethod
+    def get_teams_heroes_list(match):
+        teams = []
+        for team in ['radiant', 'dire']:
+            teams.append(sorted([slot.hero_id for slot in match.slots.filter(team=team)]))
+        return teams
+
+    @staticmethod
     def get_winning_team_heroes_list(match):
         team = 'radiant' if match.radiant_win else 'dire'
         return sorted([slot.hero_id for slot in match.slots.filter(team=team)])
