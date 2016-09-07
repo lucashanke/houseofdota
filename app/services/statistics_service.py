@@ -41,8 +41,14 @@ class StatisticsService:
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
         hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by('counter')
+        hero_as_counters = patch_statistics.counter_statistics.filter(counter=hero_id).order_by('hero')
 
-        for counter in hero_counters:
+        for counter, as_counter in zip(hero_counters, hero_as_counters) :
+            counterhero_statistics = patch_statistics.heroes_statistics.filter(hero_bundle=counter.counter)[0]
+            rate_advantage = counter.support/(counter.support+as_counter.support)
+            rate_advantage_normalized = rate_advantage/counterhero_statistics.win_rate
+            counter_coefficient = (counter.lift-1)*rate_advantage_normalized;
+
             hero_data = {
                 'counter_id': counter.counter,
                 'counter_name': HEROES_LIST[counter.counter]['localized_name'],
@@ -50,7 +56,8 @@ class StatisticsService:
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
-                'counter_coefficient': (counter.lift-1)*counter.confidence_counter/counter.confidence_hero
+                'counter_coefficient': counter_coefficient,
+                'rate_advantage_normalized': rate_advantage_normalized 
             }
             counter_picks.append(hero_data)
 
