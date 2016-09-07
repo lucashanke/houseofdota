@@ -16,11 +16,12 @@ export default class ContentHolder extends React.Component {
       marginLeft: '5%',
       marginRight: '5%',
       display: 'inline-block',
-      verticalAlign: 'top'
+      verticalAlign: 'top',
+      width: '90%',
     };
 
     return (
-      <MuiThemeProvider muiTheme={ appTheme } >
+      <MuiThemeProvider muiTheme={ appTheme }>
         <Paper style={ _.merge(style, this.props.style) } zDepth={2} >
           {this.props.children}
         </Paper>
