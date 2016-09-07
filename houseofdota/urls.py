@@ -22,6 +22,7 @@ from rest_framework import routers
 from app.api.match_viewset import MatchViewset
 from app.api.statistics_view import *
 from app.api.nn_training_result_view import NnTrainingResultViewset
+from app.api.heroes_view import *
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
@@ -31,6 +32,7 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^statistics/$', TemplateView.as_view(template_name='statistics.html')),
     url(r'^nn_performance/$', TemplateView.as_view(template_name='nn_performance.html')),
+    url(r'^heroes/$', heroes_list),
     url(r'^statistics/heroes/$', heroes_statistics),
     url(r'^statistics/counter/$', counter_pick_statistics),
     url(r'^admin/', admin.site.urls),
