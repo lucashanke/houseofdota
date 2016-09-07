@@ -6,7 +6,7 @@ import ContentHolder from '../../components/ContentHolder.jsx';
 
 const HeroesStatisticsToolBar = (props) => {
   return (
-    <ContentHolder style={{ width: '90%' }}>
+    <ContentHolder style={{ marginTop: 0 }}>
       <Toolbar>
         <ToolbarGroup firstChild={false}>
           <ToolbarTitle text= { "Matches Collected: " + props.matchQuantity } />
