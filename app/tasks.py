@@ -26,7 +26,7 @@ def task_update_statistics():
     StatisticsBusiness(PatchRepository.fetch_current_patch()).update_statistics()
 
 @periodic_task(
-    run_every=(crontab(minute=0, hour='*/6')),
+    run_every=(crontab(minute=0, hour='*/12')),
     name="train the neural network for the current patch",
 )
 def task_train_nn_for_current_patch():
