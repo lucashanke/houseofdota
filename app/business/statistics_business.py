@@ -31,11 +31,11 @@ class StatisticsBusiness:
 
     def _extract_statistics_from_association_rules(self):
         heroes_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
-        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(), 2)
+        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(), 3)
         for winning_association in winning_data:
             hero_ids = self._get_association_heroes(winning_association)
             heroes_rates['confidence'][hero_ids] = winning_association.support
-        picking_data = self._extract_association_rules(self._construct_teams_list(), 2)
+        picking_data = self._extract_association_rules(self._construct_teams_list(), 3)
         for picking_association in picking_data:
             hero_ids = self._get_association_heroes(picking_association)
             if hero_ids in heroes_rates['confidence'].keys():
