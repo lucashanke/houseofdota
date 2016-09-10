@@ -12,7 +12,7 @@ from pybrain.utilities import percentError
 
 from app.models import NnTrainingResult, Patch
 from app.util.dota_util import NUMBER_OF_HEROES
-from app.util.nn_util import get_nn_input, get_nn_output
+from app.util.nn_util import get_nn_input, get_nn_output, get_nn_input_for_line_up
 
 from app.repositories.match_repository import MatchRepository
 
@@ -111,6 +111,10 @@ class NNTrainer:
                     if conn.paramdim > 0:
                         print("- parameters", conn.params)
 
+    def get_result_for_line_up(self, team, allies, enemies, hero):
+        net = self.load_nn()
+        line_up_input = get_nn_input_for_line_up(team, allies, enemies, hero)
+        return net.activate(line_up_input)
 
     def save_nn(self, net):
         file_object = open(self._file_path, 'wb')
