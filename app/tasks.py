@@ -8,14 +8,11 @@ from app.collectors.patches_crawler import PatchesCrawler
 from app.learners.nntrainer import NNTrainer
 from app.repositories.patch_repository import PatchRepository
 
-log = logging.getLogger('celery')
-
 @periodic_task(
     run_every=(crontab(minute='*/5')),
     name="collect Very High AP and RAP matches task",
 )
 def task_collect_very_high_ap_rap_matches():
-    log.info('Task Collect')
     very_high_collector = MatchesCollector(3, ap=True, rap=True)
     matches_recorded = very_high_collector.collect_from_last_100()
 
