@@ -55,13 +55,13 @@ class NNTrainer:
 
         trainer = BackpropTrainer(net, train_data)
 
-        trainer.train()
-        trn_output = net.activateOnDataset(train_data)
-        trn_prediction_output = [int(round(n[0])) for n in trn_output]
-        trn_result = percentError(trn_prediction_output, train_data['target'])
-        print("epoch: %4d" % trainer.totalepochs, \
-            "  train error: %5.2f%%" % trn_result)
-        self.save_nn(net)
+        while trainer.totalepochs < 10:
+            trainer.train()
+            trn_output = net.activateOnDataset(train_data)
+            trn_prediction_output = [int(round(n[0])) for n in trn_output]
+            trn_result = percentError(trn_prediction_output, train_data['target'])
+            print("epoch: %4d" % trainer.totalepochs, \
+                "  train error: %5.2f%%" % trn_result)
 
         self.save_nn(net)
         tst_output = net.activateOnDataset(test_data)
