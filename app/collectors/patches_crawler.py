@@ -32,11 +32,11 @@ class PatchesCrawler:
 
     @staticmethod
     def sync_patches():
-        patches_scraped = PatchesCollector._crawl()
+        patches_scraped = PatchesCrawler._crawl()
         patches_scraped.sort(key=itemgetter('date'))
         new_patches = []
         for patch in patches_scraped:
-            if not PatchesCollector.is_patch_recorded(patch['version']):
+            if not PatchesCrawler.is_patch_recorded(patch['version']):
                 patch = Patch(version=patch['version'], start_date=patch['date'])
                 patch.save()
                 new_patches.append(patch)
