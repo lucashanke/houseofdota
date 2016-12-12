@@ -10,7 +10,7 @@ def get_match_patch(match_date):
     utc=pytz.UTC
     match_date = utc.localize(datetime.datetime.fromtimestamp(match_date))
     for patch in Patch.objects.all().order_by('-start_date'):
-        if patch.start_date <= match_date:
+        if patch.start_date < match_date:
             return patch
     return None
 
