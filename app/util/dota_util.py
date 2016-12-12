@@ -448,6 +448,10 @@ HEROES_LIST = {
     113: {
         "name": "npc_dota_hero_arc_warden",
         "localized_name": "Arc Warden"
+    },
+    114: {
+        "name": "monkey_king",
+        "localized_name": "Monkey King"
     }
 }
 
@@ -490,4 +494,4 @@ LOBBY_TYPES = {
     8: "Solo Mid 1vs1",
 }
 
-NUMBER_OF_HEROES = 113
+NUMBER_OF_HEROES = 114
