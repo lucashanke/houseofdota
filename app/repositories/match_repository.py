@@ -12,8 +12,8 @@ class MatchRepository:
         return Match.objects.all().order_by('-start_time')
 
     @staticmethod
-    def fetch_from_patch(patch):
-        return Match.objects.filter(patch=patch).order_by('start_time')
+    def fetch_from_patch(patch, max_matches):
+        return Match.objects.filter(patch=patch).order_by('-start_time')[:max_matches]
 
     @staticmethod
     def fetch_not_analysed(patch):

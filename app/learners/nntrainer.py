@@ -18,6 +18,8 @@ from app.repositories.match_repository import MatchRepository
 
 class NNTrainer:
 
+    MAX_MATCHES = 150000
+
     NEURAL_NETWORKS_FOLDER = 'files/nn/'
 
     def __init__(self, patch):
@@ -34,7 +36,7 @@ class NNTrainer:
     def train(self):
         start_time = datetime.now()
 
-        matches = MatchRepository.fetch_from_patch(self._patch)
+        matches = MatchRepository.fetch_from_patch(self._patch, max_matches=NNTrainer.MAX_MATCHES)
 
         ds = NNTrainer._build_dataset(matches)
         test_data, train_data = ds.splitWithProportion(0.3)
