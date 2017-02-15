@@ -25,6 +25,7 @@ const HeroesStatisticsToolBar = (props) => {
             <MenuItem value={ 1 } label="Bundle size: 1 hero" primaryText="1 hero" />
             <MenuItem value={ 2 } label="Bundle size: 2 heroes" primaryText="2 heroes" />
             <MenuItem value={ 3 } label="Bundle size: 3 heroes" primaryText="3 heroes" />
+            <MenuItem value={ 4 } label="Bundle size: 4 heroes" primaryText="4 heroes" />
           </DropDownMenu>
         </ToolbarGroup>
       </Toolbar>
