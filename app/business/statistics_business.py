@@ -10,6 +10,7 @@ from app.util.dota_util import HEROES_LIST
 class StatisticsBusiness:
 
     MAX_MATCHES = 150000
+    MAX_BUNDLE_SIZE = 4
 
     def __init__(self, patch):
         self._patch = patch
@@ -33,15 +34,18 @@ class StatisticsBusiness:
 
     def _extract_statistics_from_association_rules(self, matches):
         heroes_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
-        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(matches), 3)
+
+        winning_data = self._extract_association_rules(self._construct_matches_list_for_winning_teams(matches), StatisticsBusiness.MAX_BUNDLE_SIZE)
         for winning_association in winning_data:
             hero_ids = self._get_association_heroes(winning_association)
             heroes_rates['confidence'][hero_ids] = winning_association.support
-        picking_data = self._extract_association_rules(self._construct_teams_list(matches), 3)
+
+        picking_data = self._extract_association_rules(self._construct_teams_list(matches), StatisticsBusiness.MAX_BUNDLE_SIZE)
         for picking_association in picking_data:
             hero_ids = self._get_association_heroes(picking_association)
             if hero_ids in heroes_rates['confidence'].keys():
                 heroes_rates['pick_rate'][hero_ids] = picking_association.support*2
+
         return heroes_rates
 
     def _update_hero_statistics(self, hero_ids, patch_statistics, rates):
