@@ -9,11 +9,13 @@ from app.util.dota_util import HEROES_LIST
 
 class StatisticsBusiness:
 
+    MAX_MATCHES = 150000
+
     def __init__(self, patch):
         self._patch = patch
 
     def update_statistics(self):
-        matches =  MatchRepository.fetch_from_patch(self._patch)
+        matches = MatchRepository.fetch_from_patch(self._patch, max_matches=StatisticsBusiness.MAX_MATCHES)
         patch_statistics = self._update_patch_statistics(matches)
         self._update_heroes_statistics(patch_statistics, matches)
         self._update_counters_statistics(patch_statistics, matches)
