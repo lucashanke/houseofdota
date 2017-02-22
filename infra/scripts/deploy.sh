@@ -9,7 +9,7 @@ echo 'Activating virtual environment (venv)...'
 
 source venv/bin/activate
 export LC_ALL=C
-export DJANGO_SETTINGS_MODULE='production_settings.py'
+export DJANGO_SETTINGS_MODULE='houseofdota.production_settings'
 
 echo 'Installing Python dependencies...'
 
