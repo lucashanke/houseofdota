@@ -16,6 +16,8 @@ export default class Recommendation extends React.Component {
       selectedAllies: [],
       selectedEnemies: [],
       heroes: [],
+      searchAlly: '',
+      searchEnemy: '',
     };
     this.fetchHeroesList();
   }
@@ -35,6 +37,7 @@ export default class Recommendation extends React.Component {
     this.setState({
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedAllies: this.state.selectedAllies.concat(hero),
+      searchAlly: '',
     });
   }
 
@@ -43,8 +46,21 @@ export default class Recommendation extends React.Component {
     this.setState({
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedEnemies: this.state.selectedEnemies.concat(hero),
+      searchEnemy: '',
     });
   }
+
+  handleUpdateInputAlly(searchText) {
+    this.setState({
+      searchAlly: searchText,
+    });
+  };
+
+  handleUpdateInputEnemy(searchText) {
+    this.setState({
+      searchEnemy: searchText,
+    });
+  };
 
   constructHeroesOptions() {
     if (this.state.heroes !== undefined) return this.state.heroes.map( (hero) => {
@@ -74,6 +90,8 @@ export default class Recommendation extends React.Component {
                 openOnFocus={true}
                 dataSource={this.constructHeroesOptions()}
                 hintText="Select an Ally"
+                searchText={this.state.searchAlly}
+                onUpdateInput={this.handleUpdateInputAlly.bind(this)}
                 onNewRequest={this.selectAlly.bind(this)} />
               <ToolbarSeparator />
             </ToolbarGroup>
@@ -86,6 +104,8 @@ export default class Recommendation extends React.Component {
                 openOnFocus={true}
                 dataSource={ this.constructHeroesOptions() }
                 hintText="Select an Enemy"
+                searchText={this.state.searchEnemy}
+                onUpdateInput={this.handleUpdateInputEnemy.bind(this)}
                 onNewRequest={this.selectEnemy.bind(this)} />
             </ToolbarGroup>
           </Toolbar>
