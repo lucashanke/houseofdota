@@ -13,6 +13,7 @@ function buildEntry(){
     statistics: [ './javascript/src/statistics/index.js'],
     nn_performance: [ './javascript/src/nn_performance/index.js'],
     home: [ './javascript/src/home/index.js'],
+    recommendation: [ './javascript/src/recommendation/index.js'],
   }
 
   if (isDevelopmentEnvironment()) {
