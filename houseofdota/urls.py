@@ -32,6 +32,7 @@ router.register(r'nn_results', NnTrainingResultViewset)
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
     url(r'^statistics/$', TemplateView.as_view(template_name='statistics.html')),
+    url(r'^recommendation/$', TemplateView.as_view(template_name='recommendation.html')),
     url(r'^nn_performance/$', TemplateView.as_view(template_name='nn_performance.html')),
     url(r'^heroes/$', heroes_list),
     url(r'^statistics/heroes/$', heroes_statistics),
