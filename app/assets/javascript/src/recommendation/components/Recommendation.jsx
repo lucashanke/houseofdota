@@ -1,5 +1,7 @@
 import React from 'react';
 import LineUp from './LineUp.jsx';
+import Recommended from './Recommended.jsx';
+
 import ContentHolder from '../../components/ContentHolder.jsx';
 import $ from 'jquery';
 
@@ -19,7 +21,12 @@ export default class Recommendation extends React.Component {
       team: 'radiant',
       searchAlly: '',
       searchEnemy: '',
+      recommendedAllies: [],
+      recommendedCounters: [],
     };
+  }
+
+  componentWillMount() {
     this.fetchHeroesList();
   }
 
@@ -31,6 +38,54 @@ export default class Recommendation extends React.Component {
         heroes: result.heroes,
       });
     });
+  }
+
+  fetchBundleRecommendation() {
+    $.when(
+      this.statisticsService.fetchHeroesStatisticsRecommendation(this.state.selectedAllies)
+    ).done(result => {
+      const recommended = result.statistics.map(s => s.recommended[0]);
+      this.setState({
+        recommendedAllies: recommended.filter(r => !this.state.selectedEnemies.map(e => e.heroId).includes(r.id)).slice(0,5),
+      });
+    });
+  }
+
+  fetchCounterPicks() {
+    $.when(
+      this.statisticsService.fetchEnemiesCounterStatistics(this.state.selectedEnemies)
+    ).done(response => {
+      this.setState({
+        recommendedCounters: this.getCounters(response.results),
+      })
+    });
+  }
+
+  getRecommendation() {
+    this.fetchBundleRecommendation();
+    this.fetchCounterPicks();
+  }
+
+  getUnavailableHeroes() {
+    return this.state.selectedAllies.concat(this.state.selectedEnemies).map(h => h.heroId);
+  }
+
+  getCounters(results) {
+    let counters = results.reduce((allCounters, heroCounter) => {
+      return allCounters.concat(heroCounter.counterPicks);
+    }, [])
+    counters = _.orderBy( counters ,['counterCoefficient'], ['desc']);
+    debugger;
+    const unavailableCounters = this.getUnavailableHeroes();
+    let selectedCounters = [];
+    for (let i = 0; i < counters.length && selectedCounters.length < 5; i++){
+      const counterId = counters[i].counterId;
+      if(!unavailableCounters.includes(counterId)
+        && !selectedCounters.map(s => s.heroId).includes(counterId)) {
+          selectedCounters.push(counters[i]);
+        }
+    }
+    return selectedCounters;
   }
 
   selectAlly(chosen, index) {
@@ -85,7 +140,36 @@ export default class Recommendation extends React.Component {
   }
 
   render() {
+    let recommendedAllies = null;
+    if (this.state.recommendedAllies.length > 0) {
+      recommendedAllies = (
+        <ContentHolder style={{width: '42.5%', marginRight: '2.5%'}}>
+          <Toolbar>
+            <ToolbarTitle text="Recommended based on Allies"/>
+          </Toolbar>
+          <Recommended
+            recommended={this.state.recommendedAllies}
+          />
+        </ContentHolder>
+      );
+    }
+
+    let recommendedCounters = null;
+    if (this.state.recommendedCounters.length > 0) {
+      recommendedCounters = (
+        <ContentHolder style={{width: '42.5%', marginLeft: '2.5%', float: 'right'}}>
+          <Toolbar>
+            <ToolbarTitle text="Recommended based on Enemies"/>
+          </Toolbar>
+          <Recommended
+            recommended={this.state.recommendedCounters}
+          />
+        </ContentHolder>
+      );
+    }
+
     return (
+      <div>
       <ContentHolder>
         <Toolbar>
           <ToolbarGroup>
@@ -102,6 +186,7 @@ export default class Recommendation extends React.Component {
               onNewRequest={this.selectAlly.bind(this)} />
             <ToolbarSeparator />
           </ToolbarGroup>
+          <ToolbarTitle text="Line-Up Selection"/>
           <ToolbarGroup>
             <ToolbarSeparator />
             <FontIcon className="material-icons"
@@ -123,6 +208,7 @@ export default class Recommendation extends React.Component {
         />
         <Toolbar>
           <ToolbarGroup>
+            <ToolbarTitle text="Select your Team"/>
             <DropDownMenu
               value={this.state.team}
               onChange={this.handleTeamChange.bind(this)}
@@ -132,10 +218,15 @@ export default class Recommendation extends React.Component {
             </DropDownMenu>
           </ToolbarGroup>
           <ToolbarGroup>
-            <RaisedButton label="Get Recommendations" primary={true}/>
+            <RaisedButton
+              onTouchTap={this.getRecommendation.bind(this)}
+              label="Get Recommendations" primary={true}/>
           </ToolbarGroup>
         </Toolbar>
       </ContentHolder>
+      {recommendedAllies}
+      {recommendedCounters}
+    </div>
     );
   }
 }
