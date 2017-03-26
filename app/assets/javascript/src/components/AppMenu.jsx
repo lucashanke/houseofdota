@@ -27,7 +27,7 @@ export default class AppMenu extends React.Component {
           leftIcon={<TrendingUp />}/>
         <MenuItem
           linkButton={true}
-          href="#"
+          href="/recommendation"
           primaryText="Recommendation"
           leftIcon={<ThumbsUpDown />} />
         <MenuItem
