@@ -27,12 +27,12 @@ const CounterStatistics = (props) => {
         </TableHeader>
         <TableBody displayRowCheckbox={false} showRowHover={true}>
           { counters.map( (row) => (
-            <TableRow key={row.counterId}  >
+            <TableRow key={row.id}  >
               <TableRowColumn style={{ textAlign: 'center', width: "20%"}}>
-                  <img src={'/static/images/' + row.counterId + '.png'} style={{height: '3em', marginRight: '1em'}}/>
+                  <img src={'/static/images/' + row.id + '.png'} style={{height: '3em', marginRight: '1em'}}/>
               </TableRowColumn>
               <TableRowColumn style={{ width: "20%" }}>
-                { row.counterName }
+                { row.name }
               </TableRowColumn>
               <TableRowColumn>
                 { _.round(row.counterCoefficient, 2) }

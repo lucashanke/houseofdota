@@ -28,8 +28,8 @@ export default class HeroesStatisticsWidget extends React.Component {
       ).done(result => {
         this.setState({
           heroId: heroId,
-          matchQuantity: result.matchQuantity,
-          counterPicks: result.counterPicks,
+          matchQuantity: result.results[0].matchQuantity,
+          counterPicks: result.results[0].counterPicks,
         });
       });
     }
