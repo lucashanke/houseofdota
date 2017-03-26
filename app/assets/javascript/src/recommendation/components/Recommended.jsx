@@ -1,9 +1,10 @@
 import React from 'react';
-import { GridList, GridTile } from 'material-ui/GridList';
+import { GridList, GridTile, IconButton } from 'material-ui';
+import Add from 'material-ui/svg-icons/content/add';
 
 const styles = {
   titleStyle: {
-    color: 'rgb(0, 188, 212)',
+    color: '#fff',
   },
 };
 
@@ -35,6 +36,11 @@ export default class Recommended extends React.Component {
                 key={hero.id}
                 title={hero.name}
                 titleStyle={styles.titleStyle}
+                actionIcon={
+                  <IconButton onTouchTap={() => this.props.onPickAction(hero.id)}>
+                    <Add color={styles.titleStyle.color}/>
+                  </IconButton>
+                }
                 titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
               >
                 <img src={'/static/images/' + (hero.id) + '.png'} />
@@ -49,5 +55,5 @@ export default class Recommended extends React.Component {
 
 Recommended.propTypes = {
   recommended: React.PropTypes.array.isRequired,
-  onAction: React.PropTypes.func.isRequired,
+  onPickAction: React.PropTypes.func.isRequired,
 }

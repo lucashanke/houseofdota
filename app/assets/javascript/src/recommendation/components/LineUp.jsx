@@ -1,9 +1,10 @@
 import React from 'react';
-import { GridList, GridTile } from 'material-ui/GridList';
+import { GridList, GridTile, IconButton } from 'material-ui';
+import Clear from 'material-ui/svg-icons/content/clear';
 
 const styles = {
   titleStyle: {
-    color: 'rgb(0, 188, 212)',
+    color: '#fff',
   },
 };
 
@@ -36,6 +37,11 @@ export default class LineUp extends React.Component {
                 title={ally.localizedName}
                 titleStyle={styles.titleStyle}
                 titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                actionIcon={
+                  <IconButton onTouchTap={() => this.props.onAction(ally.heroId)}>
+                    <Clear color={styles.titleStyle.color}/>
+                  </IconButton>
+                }
               >
                 <img src={'/static/images/' + ally.heroId + '.png'} />
               </GridTile>
@@ -53,6 +59,11 @@ export default class LineUp extends React.Component {
                 title={enemy.localizedName}
                 titleStyle={styles.titleStyle}
                 titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                actionIcon={
+                  <IconButton onTouchTap={() => this.props.onAction(enemy.heroId)}>
+                    <Clear color={styles.titleStyle.color}/>
+                  </IconButton>
+                }
               >
                 <img src={'/static/images/' + enemy.heroId + '.png'} />
               </GridTile>

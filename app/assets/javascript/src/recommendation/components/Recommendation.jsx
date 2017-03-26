@@ -62,8 +62,8 @@ export default class Recommendation extends React.Component {
   }
 
   getRecommendation() {
-    this.fetchBundleRecommendation();
-    this.fetchCounterPicks();
+    if(this.state.selectedAllies.length > 0) this.fetchBundleRecommendation();
+    if(this.state.selectedEnemies.length > 0) this.fetchCounterPicks();
   }
 
   getUnavailableHeroes() {
@@ -75,7 +75,6 @@ export default class Recommendation extends React.Component {
       return allCounters.concat(heroCounter.counterPicks);
     }, [])
     counters = _.orderBy( counters ,['counterCoefficient'], ['desc']);
-    debugger;
     const unavailableCounters = this.getUnavailableHeroes();
     let selectedCounters = [];
     for (let i = 0; i < counters.length && selectedCounters.length < 5; i++){
@@ -97,11 +96,33 @@ export default class Recommendation extends React.Component {
     });
   }
 
+  handleTapOfRecommended(heroId) {
+    const hero = this.state.heroes.filter((h) => h.heroId === heroId);
+    this.setState({
+      heroes: this.state.heroes.filter((h) => h.heroId !== heroId),
+      selectedAllies: this.state.selectedAllies.concat(hero),
+      searchAlly: '',
+    });
+  }
+
   selectEnemy(chosen, index) {
     const hero = this.state.heroes.filter((h) => h.heroId === chosen.valueKey);
     this.setState({
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedEnemies: this.state.selectedEnemies.concat(hero),
+      searchEnemy: '',
+    });
+  }
+
+  unselectHero(heroId) {
+    const hero = this.state.selectedAllies.filter((h) => h.heroId === heroId).concat(
+      this.state.selectedEnemies.filter((h) => h.heroId === heroId)
+    );
+    this.setState({
+      heroes: this.state.heroes.concat(hero),
+      selectedEnemies: this.state.selectedEnemies.filter((h) => h.heroId !== heroId),
+      selectedAllies: this.state.selectedAllies.filter((h) => h.heroId !== heroId),
+      searchAlly: '',
       searchEnemy: '',
     });
   }
@@ -149,6 +170,7 @@ export default class Recommendation extends React.Component {
           </Toolbar>
           <Recommended
             recommended={this.state.recommendedAllies}
+            onPickAction={this.handleTapOfRecommended.bind(this)}
           />
         </ContentHolder>
       );
@@ -163,6 +185,7 @@ export default class Recommendation extends React.Component {
           </Toolbar>
           <Recommended
             recommended={this.state.recommendedCounters}
+            onPickAction={this.handleTapOfRecommended.bind(this)}
           />
         </ContentHolder>
       );
@@ -205,6 +228,7 @@ export default class Recommendation extends React.Component {
         <LineUp
           allies={this.state.selectedAllies}
           enemies={this.state.selectedEnemies}
+          onAction={this.unselectHero.bind(this)}
         />
         <Toolbar>
           <ToolbarGroup>
