@@ -49,7 +49,7 @@ class StatisticsService:
 
         for heroes_statistics in patch_statistics.heroes_statistics.filter(
                 q_objects, bundle_size=len(hero_ids)+1,
-            ).order_by('-confidence')[:5]:
+            ).order_by('-confidence')[:10]:
 
             heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
@@ -70,7 +70,7 @@ class StatisticsService:
         }
 
 
-    def get_counter_pick_statistics(self, hero_id):
+    def get_hero_counter_pick_statistics(self, hero_id):
         counter_picks = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
@@ -84,14 +84,15 @@ class StatisticsService:
             counter_coefficient = (counter.lift-1)*rate_advantage_normalized;
 
             hero_data = {
-                'counter_id': counter.counter,
-                'counter_name': HEROES_LIST[counter.counter]['localized_name'],
+                'id': counter.counter,
+                'hero_id': int(hero_id),
+                'name': HEROES_LIST[counter.counter]['localized_name'],
                 'support' : counter.support*100,
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
                 'counter_coefficient': counter_coefficient,
-                'rate_advantage_normalized': rate_advantage_normalized 
+                'rate_advantage_normalized': rate_advantage_normalized
             }
             counter_picks.append(hero_data)
 
@@ -99,3 +100,6 @@ class StatisticsService:
             'match_quantity' : patch_statistics.match_quantity,
             'counter_picks' : sorted(counter_picks, key=lambda c: c['counter_coefficient'], reverse=True)
         }
+
+    def get_counter_pick_statistics(self, hero_ids):
+        return list(map(lambda hero: self.get_hero_counter_pick_statistics(hero_id=hero), hero_ids))
