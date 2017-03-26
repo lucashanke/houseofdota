@@ -79,7 +79,7 @@ export default class Recommendation extends React.Component {
     const unavailableCounters = this.getUnavailableHeroes();
     let selectedCounters = [];
     for (let i = 0; i < counters.length && selectedCounters.length < 5; i++){
-      const counterId = counters[i].counterId;
+      const counterId = counters[i].id;
       if(!unavailableCounters.includes(counterId)
         && !selectedCounters.map(s => s.heroId).includes(counterId)) {
           selectedCounters.push(counters[i]);
