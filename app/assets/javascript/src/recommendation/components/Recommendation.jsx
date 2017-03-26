@@ -64,7 +64,7 @@ export default class Recommendation extends React.Component {
   };
 
   constructHeroesOptions() {
-    if (this.state.heroes !== undefined) return this.state.heroes.map( (hero) => {
+    if (this.state.heroes !== undefined) return this.state.heroes.map(hero => {
       return {
         valueKey: hero.heroId,
         text: hero.localizedName,
@@ -87,54 +87,54 @@ export default class Recommendation extends React.Component {
   render() {
     return (
       <ContentHolder>
-          <Toolbar>
-            <ToolbarGroup>
-              <FontIcon className="material-icons"
-                style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
-              <AutoComplete
-                filter={AutoComplete.fuzzyFilter}
-                openOnFocus={true}
-                dataSource={this.constructHeroesOptions()}
-                hintText="Select an Ally"
-                searchText={this.state.searchAlly}
-                disabled={this.state.selectedAllies.length === 5}
-                onUpdateInput={this.handleUpdateInputAlly.bind(this)}
-                onNewRequest={this.selectAlly.bind(this)} />
-              <ToolbarSeparator />
-            </ToolbarGroup>
-            <ToolbarGroup>
-              <ToolbarSeparator />
-              <FontIcon className="material-icons"
-                style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
-              <AutoComplete
-                filter={AutoComplete.fuzzyFilter}
-                openOnFocus={true}
-                dataSource={ this.constructHeroesOptions() }
-                hintText="Select an Enemy"
-                searchText={this.state.searchEnemy}
-                disabled={this.state.selectedEnemies.length === 5}
-                onUpdateInput={this.handleUpdateInputEnemy.bind(this)}
-                onNewRequest={this.selectEnemy.bind(this)} />
-            </ToolbarGroup>
-          </Toolbar>
-          <LineUp
-            allies={this.state.selectedAllies}
-            enemies={this.state.selectedEnemies}
-          />
-          <Toolbar>
-            <ToolbarGroup>
-              <DropDownMenu
-                value={this.state.team}
-                onChange={this.handleTeamChange.bind(this)}
-              >
-                <MenuItem value={'radiant'} label="Team: Radiant" primaryText="Radiant" />
-                <MenuItem value={'dire'} label="Team: Dire" primaryText="Dire" />
-              </DropDownMenu>
-            </ToolbarGroup>
-            <ToolbarGroup>
-              <RaisedButton label="Get Recommendations" primary={true}/>
-            </ToolbarGroup>
-          </Toolbar>
+        <Toolbar>
+          <ToolbarGroup>
+            <FontIcon className="material-icons"
+              style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
+            <AutoComplete
+              filter={AutoComplete.fuzzyFilter}
+              openOnFocus={true}
+              dataSource={this.constructHeroesOptions()}
+              hintText="Select an Ally"
+              searchText={this.state.searchAlly}
+              disabled={this.state.selectedAllies.length === 5}
+              onUpdateInput={this.handleUpdateInputAlly.bind(this)}
+              onNewRequest={this.selectAlly.bind(this)} />
+            <ToolbarSeparator />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <ToolbarSeparator />
+            <FontIcon className="material-icons"
+              style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
+            <AutoComplete
+              filter={AutoComplete.fuzzyFilter}
+              openOnFocus={true}
+              dataSource={ this.constructHeroesOptions() }
+              hintText="Select an Enemy"
+              searchText={this.state.searchEnemy}
+              disabled={this.state.selectedEnemies.length === 5}
+              onUpdateInput={this.handleUpdateInputEnemy.bind(this)}
+              onNewRequest={this.selectEnemy.bind(this)} />
+          </ToolbarGroup>
+        </Toolbar>
+        <LineUp
+          allies={this.state.selectedAllies}
+          enemies={this.state.selectedEnemies}
+        />
+        <Toolbar>
+          <ToolbarGroup>
+            <DropDownMenu
+              value={this.state.team}
+              onChange={this.handleTeamChange.bind(this)}
+            >
+              <MenuItem value={'radiant'} label="Team: Radiant" primaryText="Radiant" />
+              <MenuItem value={'dire'} label="Team: Dire" primaryText="Dire" />
+            </DropDownMenu>
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <RaisedButton label="Get Recommendations" primary={true}/>
+          </ToolbarGroup>
+        </Toolbar>
       </ContentHolder>
     );
   }
