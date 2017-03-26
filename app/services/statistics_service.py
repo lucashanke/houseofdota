@@ -36,6 +36,40 @@ class StatisticsService:
             'statistics' : statistics
         }
 
+    def get_heroes_statistics_recommendation(self, hero_ids):
+        statistics = []
+        patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
+
+        q_objects = Q()
+        for hero in hero_ids:
+            q_objects.add(
+                Q(hero_bundle__regex=r"(^{0},|, {0},|, {0}$|^{0}$)".format(hero)),
+                Q.AND
+            )
+
+        for heroes_statistics in patch_statistics.heroes_statistics.filter(
+                q_objects, bundle_size=len(hero_ids)+1,
+            ).order_by('-confidence')[:5]:
+
+            heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
+            pick_rate = heroes_statistics.pick_rate
+            win_rate = heroes_statistics.win_rate
+            confidence = heroes_statistics.confidence
+            hero_data = {
+                'id': heroes_statistics.id,
+                'hero_bundle': heroes,
+                'recommended': [hero for hero in heroes if str(hero['id']) not in hero_ids],
+                'pick_rate' : pick_rate*100,
+                'win_rate': win_rate*100,
+                'confidence': confidence*100
+            }
+            statistics.append(hero_data)
+        return {
+            'match_quantity' : patch_statistics.match_quantity,
+            'statistics' : statistics
+        }
+
+
     def get_counter_pick_statistics(self, hero_id):
         counter_picks = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
