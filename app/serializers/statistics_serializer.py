@@ -7,3 +7,6 @@ class HeroesStatisticsSerializer(serializers.Serializer):
 class CounterPickSerializer(serializers.Serializer):
     match_quantity = serializers.IntegerField()
     counter_picks = serializers.JSONField()
+
+class ListCounterPickSerializer(serializers.Serializer):
+    results = serializers.ListField(child=CounterPickSerializer())
