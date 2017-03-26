@@ -10,7 +10,7 @@ from app.util.dota_util import HEROES_LIST
 class StatisticsBusiness:
 
     MAX_MATCHES = 150000
-    MAX_BUNDLE_SIZE = 4
+    MAX_BUNDLE_SIZE = 5
 
     def __init__(self, patch):
         self._patch = patch
