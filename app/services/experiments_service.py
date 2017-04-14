@@ -36,21 +36,25 @@ class ExperimentsService:
                 enemies.append(enemy)
                 heroes_ids.remove(enemy)
 
-
             if len(allies) < 5:
-                recommended = self._statistics_service.get_heroes_statistics_recommendation(
+                recommended = []
+                recommended_allies = self._statistics_service.get_heroes_statistics_recommendation(
                     hero_ids=allies
                 )
-                if len(recommended['statistics']) > 0:
-                    recommended_ally = recommended['statistics'][0]['recommended'][0]['id']
+                for recommended_ally in recommended_allies['statistics']:
+                    if recommended_ally['recommended'][0]['id'] in heroes_ids:
+                        recommended.append(recommended_ally['recommended'][0]['id'])
+                        break
 
                 counters = self._statistics_service.get_counter_pick_statistics(
                     hero_ids=enemies
                 )
-                if len(counters) > 0:
-                    recommended_counter = counters[0]['counter_picks'][0]['hero_id']
+                for recommended_counter in counters[0]['counter_picks']:
+                    if recommended_counter['hero_id'] in heroes_ids:
+                        recommended.append(recommended_counter['hero_id'])
+                        break
 
-                ally = random.choice([recommended_ally, recommended_counter])
+                ally = random.choice(recommended)
                 allies.append(ally)
                 heroes_ids.remove(ally)
 
