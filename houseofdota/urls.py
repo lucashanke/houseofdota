@@ -24,6 +24,8 @@ from app.api.statistics_view import *
 from app.api.nn_training_result_view import NnTrainingResultViewset
 from app.api.heroes_view import *
 from app.api.recommendation_view import *
+from app.api.experiments_view import random_experiment
+
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
@@ -39,6 +41,7 @@ urlpatterns = [
     url(r'^statistics/heroes/$', heroes_statistics),
     url(r'^statistics/counter/$', counter_pick_statistics),
     url(r'^recommend/nn/$', nn_recommendation),
+    url(r'^experiments/random$', random_experiment),
     url(r'^admin/', admin.site.urls),
 ]
 urlpatterns += router.urls

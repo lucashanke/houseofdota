@@ -116,6 +116,11 @@ class NNTrainer:
         line_up_input = get_nn_input_for_line_up(team, allies, enemies, hero)
         return net.activate(line_up_input)
 
+    def get_result_for_full_line_up(self, team, allies, enemies):
+        net = self.load_nn()
+        line_up_input = get_nn_input_for_full_line_up(team, allies, enemies)
+        return net.activate(line_up_input)
+
     def save_nn(self, net):
         file_object = open(self._file_path, 'wb')
         pickle.dump(net, file_object)
