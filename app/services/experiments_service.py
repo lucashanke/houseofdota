@@ -70,6 +70,6 @@ class ExperimentsService:
             'experiment': {
                 'result': nn_prediction,
                 'team': team,
-                'winner': team is 'radiant' and nn_prediction >= 0.5
+                'won': (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
             }
         }

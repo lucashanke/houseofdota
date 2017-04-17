@@ -22,6 +22,10 @@ export default class StatisticsService {
       heroes.map(h => h.heroId.toString()).join(','));
   }
 
+  fetchExperiment(){
+    return $.getJSON('/experiments/random');
+  }
+
   fetchHeroes(){
     return $.getJSON('/heroes');
   }
