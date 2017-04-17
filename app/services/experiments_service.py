@@ -78,4 +78,6 @@ class ExperimentsService:
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
-        return victories/100.00
+        return {
+            'experiment': victories/100.00
+        }
