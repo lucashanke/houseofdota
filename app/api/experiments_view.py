@@ -6,6 +6,6 @@ from app.serializers.experiments_serializer import ExperimentSerializer
 
 @api_view()
 def random_experiment(request):
-    experiment = ExperimentsService().make_random_experiment()
+    experiment = ExperimentsService().make_random_experiments()
     serializer = ExperimentSerializer(experiment)
     return Response(serializer.data)

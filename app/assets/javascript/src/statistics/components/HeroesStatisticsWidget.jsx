@@ -21,19 +21,6 @@ export default class HeroesStatisticsWidget extends React.Component {
 
   componentWillMount(){
     this.updateStatistics(this.state.bundleSize);
-    const n = 100;
-    let victories = 0;
-    for(let i = 0; i < n ; i++){
-      $.when(
-        this.service.fetchExperiment()
-      ).done(result => {
-        console.log(result);
-        if(result.experiment.winner) {
-          victories++;
-        }
-        if (i === 99) console.log(victories);
-      });
-    }
   }
 
   updateStatistics(bundleSize){

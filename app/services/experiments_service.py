@@ -30,8 +30,6 @@ class ExperimentsService:
         heroes_ids.remove(first_pick)
 
         while len(enemies) < 5 or len(allies) < 5:
-            print(allies)
-            print(enemies)
             if len(enemies) < 5:
                 enemy = random.choice(heroes_ids)
                 enemies.append(enemy)
@@ -67,9 +65,15 @@ class ExperimentsService:
 
         nn_prediction = self._nn_trainer.get_result_for_full_line_up(team, allies, enemies)
         return {
-            'experiment': {
-                'result': nn_prediction,
-                'team': team,
-                'won': (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
-            }
+            'result': nn_prediction,
+            'team': team,
+            'won': (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
         }
+
+    def make_random_experiments(self):
+        victories = 0
+        while i < 100:
+            experiment = self.make_random_experiment()
+            if experiment['won']:
+                victories = victories + 1
+        return victories/100.00
