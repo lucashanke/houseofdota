@@ -1,11 +1,12 @@
 import random
+import itertools
+from operator import itemgetter
 
 from app.services.statistics_service import StatisticsService
 
 from app.util.dota_util import HEROES_LIST
 from app.repositories.patch_repository import PatchRepository
 from app.learners.nntrainer import NNTrainer
-
 
 class ExperimentsService:
 
@@ -46,12 +47,18 @@ class ExperimentsService:
                         recommended.append(recommended_ally['recommended'][0]['id'])
                         break
 
-                counters = self._statistics_service.get_counter_pick_statistics(
-                    hero_ids=enemies
+                counters = list(
+                    itertools.chain.from_iterable(
+                        list(map(lambda counters_for_hero: counters_for_hero['counter_picks'], self._statistics_service.get_counter_pick_statistics(
+                            hero_ids=enemies
+                        )))
+                    )
                 )
-                for recommended_counter in counters[0]['counter_picks']:
-                    if recommended_counter['hero_id'] in heroes_ids:
-                        recommended.append(recommended_counter['hero_id'])
+                counters = sorted(counters, key=itemgetter('counter_coefficient'), reverse=True)
+                print(counters)
+                for recommended_counter in counters:
+                    if recommended_counter['id'] in heroes_ids:
+                        recommended.append(recommended_counter['id'])
                         break
 
                 ally = random.choice(recommended)

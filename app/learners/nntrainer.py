@@ -12,7 +12,7 @@ from pybrain.utilities import percentError
 
 from app.models import NnTrainingResult, Patch
 from app.util.dota_util import NUMBER_OF_HEROES
-from app.util.nn_util import get_nn_input, get_nn_output, get_nn_input_for_line_up
+from app.util.nn_util import get_nn_input, get_nn_output, get_nn_input_for_line_up, get_nn_input_for_full_line_up
 
 from app.repositories.match_repository import MatchRepository
 

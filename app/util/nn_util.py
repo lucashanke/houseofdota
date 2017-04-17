@@ -26,7 +26,7 @@ def get_nn_input_for_line_up(team, allies, enemies, hero):
     input[hero-1] = allies_value
     return input
 
-def get_nn_input_for_line_up(team, allies, enemies, hero):
+def get_nn_input_for_full_line_up(team, allies, enemies):
     input = [0] * NUMBER_OF_HEROES
     allies_value = 1 if team == 'radiant' else -1
     enemies_value = -allies_value
