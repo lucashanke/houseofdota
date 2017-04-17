@@ -72,8 +72,10 @@ class ExperimentsService:
 
     def make_random_experiments(self):
         victories = 0
+        i = 0
         while i < 100:
             experiment = self.make_random_experiment()
             if experiment['won']:
                 victories = victories + 1
+            i = i + 1
         return victories/100.00
