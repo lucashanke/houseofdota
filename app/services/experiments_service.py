@@ -69,6 +69,7 @@ class ExperimentsService:
         return {
             'experiment': {
                 'result': nn_prediction,
-                'winner': team == 'radiant' and nn_prediction >= 0.5
+                'team': team,
+                'winner': team is 'radiant' and nn_prediction >= 0.5
             }
         }
