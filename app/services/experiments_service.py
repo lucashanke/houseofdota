@@ -53,7 +53,6 @@ class ExperimentsService:
                     )
                 )
                 counters = sorted(counters, key=itemgetter('counter_coefficient'), reverse=True)
-                print(counters)
                 for recommended_counter in counters:
                     if recommended_counter['id'] in heroes_ids:
                         recommended.append(recommended_counter['id'])
@@ -70,14 +69,15 @@ class ExperimentsService:
             'won': (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
         }
 
-    def make_random_experiments(self):
+    def make_random_experiments(self, quantity = 10):
         victories = 0
         i = 0
-        while i < 5:
+
+        while i < quantity:
             experiment = self.make_random_experiment()
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
         return {
-            'experiment': victories/5.00
+            'experiment': (victories/quantity)*100
         }
