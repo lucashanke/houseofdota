@@ -1,12 +1,14 @@
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 from celery.utils.log import get_task_logger
+import pickle
 
 from app.business.statistics_business import StatisticsBusiness
 from app.collectors.matches_collector import MatchesCollector
 from app.collectors.patches_crawler import PatchesCrawler
 from app.learners.nntrainer import NNTrainer
 from app.repositories.patch_repository import PatchRepository
+from app.services.experiments_service import ExperimentsService
 
 @periodic_task(
     run_every=(crontab(minute='*/5')),
@@ -22,6 +24,17 @@ def task_collect_very_high_ap_rap_matches():
 )
 def task_update_statistics():
     StatisticsBusiness(PatchRepository.fetch_current_patch()).update_statistics()
+
+@periodic_task(
+    run_every=(crontab(minute=0, hour=0)),
+    name="make random experiments",
+)
+def task_random_experiments():
+    result = ExperimentsService().make_random_experiments()
+    file_object = open('random_experiment.txt', 'wb')
+    pickle.dump(str(result), file_object)
+    file_object.close()
+    print(result)
 
 @periodic_task(
     run_every=(crontab(minute=0,hour='4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23')),
