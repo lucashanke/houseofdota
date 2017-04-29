@@ -88,7 +88,7 @@ class ExperimentsService:
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
-            print(str(i) 'th partial result:' + str((victories/quantity)*100) + '%')
+            print(str(i) + 'th partial result:' + str((victories/quantity)*100) + '%')
         return {
             'experiment': (victories/quantity)*100
         }
