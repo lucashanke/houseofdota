@@ -1,5 +1,6 @@
 import random
 import itertools
+from datetime import datetime
 from operator import itemgetter
 
 from app.services.statistics_service import StatisticsService
@@ -17,67 +18,77 @@ class ExperimentsService:
         self._nn_trainer = NNTrainer(PatchRepository.fetch_current_patch())
         heroes_ids = HEROES_LIST.keys()
 
-    def make_random_experiment(self):
+    def make_random_experiment(self, allies_criteria='-confidence'):
+        seed = datetime.now()
+        generator = random.Random(seed)
         allies = []
         enemies = []
         heroes_ids = list(HEROES_LIST.keys())
-        team=random.choice(['radiant','dire'])
+        team=generator.choice(['radiant','dire'])
 
-        first_pick = self._statistics_service.get_heroes_statistics(
-            bundle_size=1
-        )['statistics'][0]['hero_bundle'][0]['id']
+        first_pick = generator.choice(self._statistics_service.get_heroes_statistics(
+            bundle_size=1,
+            sort_by=allies_criteria
+        )['statistics'][:5])['hero_bundle'][0]['id']
         allies.append(first_pick)
         heroes_ids.remove(first_pick)
 
         while len(enemies) < 5 or len(allies) < 5:
             if len(enemies) < 5:
-                enemy = random.choice(heroes_ids)
+                enemy = generator.choice(heroes_ids)
                 enemies.append(enemy)
                 heroes_ids.remove(enemy)
 
             if len(allies) < 5:
                 recommended = []
                 recommended_allies = self._statistics_service.get_heroes_statistics_recommendation(
-                    hero_ids=allies
+                    hero_ids=allies,
+                    criteria=allies_criteria
                 )
                 for recommended_ally in recommended_allies['statistics']:
                     if recommended_ally['recommended'][0]['id'] in heroes_ids:
                         recommended.append(recommended_ally['recommended'][0]['id'])
-                        break
+                        if len(recommended) is 5:
+                            break
 
-                counters = list(
-                    itertools.chain.from_iterable(
-                        list(map(lambda counters_for_hero: counters_for_hero['counter_picks'], self._statistics_service.get_counter_pick_statistics(
-                            hero_ids=enemies
-                        )))
+                if len(recommended) < 5:
+                    counters = list(
+                        itertools.chain.from_iterable(
+                            list(map(lambda counters_for_hero: counters_for_hero['counter_picks'], self._statistics_service.get_counter_pick_statistics(
+                                hero_ids=enemies
+                            )))
+                        )
                     )
-                )
-                counters = sorted(counters, key=itemgetter('counter_coefficient'), reverse=True)
-                for recommended_counter in counters:
-                    if recommended_counter['id'] in heroes_ids:
-                        recommended.append(recommended_counter['id'])
-                        break
+                    counters = sorted(counters, key=itemgetter('counter_coefficient'), reverse=True)
+                    for recommended_counter in counters:
+                        if recommended_counter['id'] in heroes_ids:
+                            recommended.append(recommended_counter['id'])
+                            if len(recommended) is 5:
+                                break
 
-                ally = random.choice(recommended)
+                ally = generator.choice(recommended)
                 allies.append(ally)
                 heroes_ids.remove(ally)
 
         nn_prediction = self._nn_trainer.get_result_for_full_line_up(team, allies, enemies)
+        won = (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
+        print('team: ' + str(team) + ' | allies: ' + str(allies) + ' and enemies: ' + str(enemies) + (' - WON' if won else ' - LOST'))
         return {
             'result': nn_prediction,
             'team': team,
-            'won': (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
+            'won': won,
         }
 
-    def make_random_experiments(self, quantity = 10):
+    def make_random_experiments(self, quantity = 10, allies_criteria='-confidence'):
         victories = 0
         i = 0
 
         while i < quantity:
-            experiment = self.make_random_experiment()
+            experiment = self.make_random_experiment(allies_criteria)
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
+            print(str(i) 'th partial result:' + str((victories/quantity)*100) + '%')
         return {
             'experiment': (victories/quantity)*100
         }

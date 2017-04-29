@@ -11,12 +11,12 @@ class StatisticsService:
     def __init__(self, patch):
         self._patch = patch
 
-    def get_heroes_statistics(self, bundle_size):
+    def get_heroes_statistics(self, bundle_size, order_by='-confidence'):
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
         for heroes_statistics in patch_statistics.heroes_statistics.filter(
-                bundle_size=bundle_size).order_by('-confidence')[:150]:
+                bundle_size=bundle_size).order_by(order_by)[:150]:
             heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
@@ -36,7 +36,7 @@ class StatisticsService:
             'statistics' : statistics
         }
 
-    def get_heroes_statistics_recommendation(self, hero_ids):
+    def get_heroes_statistics_recommendation(self, hero_ids, criteria='-confidence'):
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
@@ -47,10 +47,11 @@ class StatisticsService:
                 Q.AND
             )
 
-        for heroes_statistics in patch_statistics.heroes_statistics.filter(
-                q_objects, bundle_size=len(hero_ids)+1,
-            ).order_by('-confidence')[:10]:
-
+        bundles = patch_statistics.heroes_statistics.filter(
+            q_objects, bundle_size=len(hero_ids)+1,
+        ).order_by(criteria)[:10]
+        
+        for heroes_statistics in bundles:
             heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
