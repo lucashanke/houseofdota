@@ -30,7 +30,7 @@ def task_update_statistics():
     name="make random experiments",
 )
 def task_random_experiments():
-    result = ExperimentsService().make_random_experiments(quantity=1000)
+    result = ExperimentsService().make_random_experiments(1000, allies_criteria='-confidence')
     file_object = open('random_experiment.txt', 'wb')
     pickle.dump(str(result), file_object)
     file_object.close()

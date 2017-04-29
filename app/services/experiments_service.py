@@ -26,9 +26,8 @@ class ExperimentsService:
         heroes_ids = list(HEROES_LIST.keys())
         team=generator.choice(['radiant','dire'])
 
-        first_pick = generator.choice(self._statistics_service.get_heroes_statistics(
-            bundle_size=1,
-            sort_by=allies_criteria
+        first_pick = generator.choice(self._statistics_service.get_heroes_statistics(1,
+            order_by=allies_criteria
         )['statistics'][:5])['hero_bundle'][0]['id']
         allies.append(first_pick)
         heroes_ids.remove(first_pick)
@@ -42,7 +41,7 @@ class ExperimentsService:
             if len(allies) < 5:
                 recommended = []
                 recommended_allies = self._statistics_service.get_heroes_statistics_recommendation(
-                    hero_ids=allies,
+                    allies,
                     criteria=allies_criteria
                 )
                 for recommended_ally in recommended_allies['statistics']:
@@ -79,12 +78,11 @@ class ExperimentsService:
             'won': won,
         }
 
-    def make_random_experiments(self, quantity = 10, allies_criteria='-confidence'):
+    def make_random_experiments(self, quantity, allies_criteria = '-confidence'):
         victories = 0
         i = 0
-
         while i < quantity:
-            experiment = self.make_random_experiment(allies_criteria)
+            experiment = self.make_random_experiment(allies_criteria=allies_criteria)
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
