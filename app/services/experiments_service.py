@@ -18,7 +18,7 @@ class ExperimentsService:
         self._nn_trainer = NNTrainer(PatchRepository.fetch_current_patch())
         heroes_ids = HEROES_LIST.keys()
 
-    def make_random_experiment(self, allies_criteria='-confidence'):
+    def make_random_experiment(self, allies_criteria='-confidence', counters_criteria='counter_coefficient'):
         seed = datetime.now()
         generator = random.Random(seed)
         allies = []
@@ -58,7 +58,7 @@ class ExperimentsService:
                             )))
                         )
                     )
-                    counters = sorted(counters, key=itemgetter('counter_coefficient'), reverse=True)
+                    counters = sorted(counters, key=itemgetter(counters_criteria), reverse=True)
                     for recommended_counter in counters:
                         if recommended_counter['id'] in heroes_ids:
                             recommended.append(recommended_counter['id'])
@@ -78,11 +78,11 @@ class ExperimentsService:
             'won': won,
         }
 
-    def make_random_experiments(self, quantity, allies_criteria = '-confidence'):
+    def make_random_experiments(self, quantity, allies_criteria = '-confidence', counters_criteria='counter_coefficient'):
         victories = 0
         i = 0
         while i < quantity:
-            experiment = self.make_random_experiment(allies_criteria=allies_criteria)
+            experiment = self.make_random_experiment(allies_criteria=allies_criteria, counters_criteria=counters_criteria)
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
