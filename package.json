@@ -8,7 +8,8 @@
     "coverage": "NODE_ENV=development istanbul cover _mocha -- -R spec --recursive --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
     "dev": "NODE_ENV=development node dev-server.js",
     "test": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
-    "test:watch": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')"
+    "test:watch": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
+    "heroku-postbuild": "NODE_ENV=production webpack",
   },
   "repository": {
     "type": "git",
