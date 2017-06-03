@@ -5,4 +5,4 @@ class NnTrainingResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NnTrainingResult
-    
+        fields = '__all__'
