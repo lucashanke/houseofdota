@@ -71,19 +71,17 @@ class StatisticsService:
         }
 
 
-    def get_hero_counter_pick_statistics(self, hero_id):
+    def get_hero_counter_pick_statistics(self,
+                                         hero_id,
+                                         criteria='-lift',
+                                         limit=len(HEROES_LIST.keys())
+                                         ):
         counter_picks = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by('counter')
-        hero_as_counters = patch_statistics.counter_statistics.filter(counter=hero_id).order_by('hero')
+        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by(criteria)[:limit]
 
-        for counter, as_counter in zip(hero_counters, hero_as_counters) :
-            counterhero_statistics = patch_statistics.heroes_statistics.filter(hero_bundle=counter.counter)[0]
-            rate_advantage = counter.support/(counter.support+as_counter.support)
-            rate_advantage_normalized = rate_advantage/counterhero_statistics.win_rate
-            counter_coefficient = (counter.lift-1)*rate_advantage_normalized;
-
+        for counter in hero_counters :
             hero_data = {
                 'id': counter.counter,
                 'hero_id': int(hero_id),
@@ -92,8 +90,7 @@ class StatisticsService:
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
-                'counter_coefficient': counter_coefficient,
-                'rate_advantage_normalized': rate_advantage_normalized
+                'counter_coefficient': counter.lift*counter.support,
             }
             counter_picks.append(hero_data)
 
@@ -103,4 +100,6 @@ class StatisticsService:
         }
 
     def get_counter_pick_statistics(self, hero_ids):
-        return list(map(lambda hero: self.get_hero_counter_pick_statistics(hero_id=hero), hero_ids))
+        return list(map(
+            lambda hero: self.get_hero_counter_pick_statistics(hero_id=hero, limit=10), hero_ids
+        ))
