@@ -9,21 +9,23 @@ import { Toolbar, ToolbarGroup, ToolbarTitle,
   ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton } from 'material-ui';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
 
+const initialState = {
+  selectedAllies: [],
+  selectedEnemies: [],
+  heroes: [],
+  team: 'radiant',
+  searchAlly: '',
+  searchEnemy: '',
+  recommendedAllies: [],
+  recommendedCounters: [],
+}
+
 export default class Recommendation extends React.Component {
 
   constructor(props) {
     super(props);
     this.statisticsService = new StatisticsService();
-    this.state = {
-      selectedAllies: [],
-      selectedEnemies: [],
-      heroes: [],
-      team: 'radiant',
-      searchAlly: '',
-      searchEnemy: '',
-      recommendedAllies: [],
-      recommendedCounters: [],
-    };
+    this.state = initialState;
   }
 
   componentWillMount() {
@@ -94,6 +96,11 @@ export default class Recommendation extends React.Component {
       selectedAllies: this.state.selectedAllies.concat(hero),
       searchAlly: '',
     });
+  }
+
+  reset() {
+    this.setState(initialState);
+    this.fetchHeroesList();
   }
 
   handleTapOfRecommended(heroId) {
@@ -231,20 +238,17 @@ export default class Recommendation extends React.Component {
           onAction={this.unselectHero.bind(this)}
         />
         <Toolbar>
-          <ToolbarGroup>
-            <ToolbarTitle text="Select your Team"/>
-            <DropDownMenu
-              value={this.state.team}
-              onChange={this.handleTeamChange.bind(this)}
-            >
-              <MenuItem value={'radiant'} label="Team: Radiant" primaryText="Radiant" />
-              <MenuItem value={'dire'} label="Team: Dire" primaryText="Dire" />
-            </DropDownMenu>
+          <ToolbarGroup style={{ margin: 'auto' }}>
+            <RaisedButton
+              onTouchTap={this.getRecommendation.bind(this)}
+              label="Recommend me some heroes!" primary
+            />
           </ToolbarGroup>
           <ToolbarGroup>
             <RaisedButton
-              onTouchTap={this.getRecommendation.bind(this)}
-              label="Get Recommendations" primary={true}/>
+              onTouchTap={this.reset.bind(this)}
+              label="Reset" secondary
+            />
           </ToolbarGroup>
         </Toolbar>
       </ContentHolder>
