@@ -30,11 +30,6 @@ export default class AppMenu extends React.Component {
           href="/recommendation"
           primaryText="Recommendation"
           leftIcon={<ThumbsUpDown />} />
-        <MenuItem
-          linkButton={true}
-          href="/nn_performance"
-          primaryText="NN Performance"
-          leftIcon={<DeviceHub />} />
       </Menu>
     );
   }
