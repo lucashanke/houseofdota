@@ -17,7 +17,6 @@ const styles = {
     padding: 5,
   },
   wrapper: {
-    display: 'inline-block',
     padding: '0.5%',
     textAlign: 'center',
     backgroundColor: 'rgb(232, 232, 232)',
