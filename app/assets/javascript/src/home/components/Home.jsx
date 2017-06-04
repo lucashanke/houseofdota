@@ -57,7 +57,7 @@ export default class Home extends React.Component {
               <CardMedia
                 overlay={ <CardTitle title="What is House o' Dota?" /> } >
                 <div className="crop slide1">
-                  <img src="/static/images/slide1.png" />
+                  <img src="/static/images/slide1-min.png" />
                 </div>
               </CardMedia>
               <CardText>
@@ -72,7 +72,7 @@ export default class Home extends React.Component {
             <Card>
               <CardMedia overlay={ <CardTitle title="How does it work?"/> }>
                 <div className="crop slide2">
-                  <img src="/static/images/slide2.png" />
+                  <img src="/static/images/slide2-min.png" />
                 </div>
               </CardMedia>
               <CardText>
@@ -86,7 +86,7 @@ export default class Home extends React.Component {
             <Card>
               <CardMedia overlay={<CardTitle title="Who’s behind House o' Dota?" />} >
                 <div className="crop slide3">
-                  <img src="/static/images/slide3.png" />
+                  <img src="/static/images/slide3-min.png" />
                 </div>
               </CardMedia>
               <CardHeader
@@ -133,7 +133,7 @@ export default class Home extends React.Component {
                   />
                 }>
                 <div className="crop slide4">
-                  <img src="/static/images/slide4.jpg" />
+                  <img src="/static/images/slide4-min.jpg" />
                 </div>
               </CardMedia>
               <CardText>
