@@ -25,7 +25,7 @@ const CounterStatisticsToolBar = (props) => {
           <FontIcon className="material-icons">sort</FontIcon>
           <DropDownMenu value={ props.orderBy } onChange={ props.onOrderChange } >
             <MenuItem value={'counterCoefficient'} label="Sort by: Counter Coefficient" primaryText="Counter Coefficient" />
-            <MenuItem value={'rateAdvantageNormalized'} label="Sort by: Rate Advantage" primaryText="Rate Advantage" />
+            <MenuItem value={'lift'} label="Sort by: Relation Dependency" primaryText="Relation Dependency" />
           </DropDownMenu>
         </ToolbarGroup>
       </Toolbar>

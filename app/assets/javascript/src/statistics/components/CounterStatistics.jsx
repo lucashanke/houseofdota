@@ -21,7 +21,7 @@ const CounterStatistics = (props) => {
               Counter Coefficient
             </TableHeaderColumn>
             <TableHeaderColumn style={{ textAlign: 'center' }}>
-              Rate Advantage
+              Relation Dependency
             </TableHeaderColumn>
           </TableRow>
         </TableHeader>
@@ -45,11 +45,14 @@ const CounterStatistics = (props) => {
                 />
               </TableRowColumn>
               <TableRowColumn>
-                { _.round(row.rateAdvantageNormalized , 2) }
+                { _.round(row.lift , 2) }
                 <LinearProgress
-                  color={ props.orderBy == 'rateAdvantageNormalized' ? 'rgb(183, 28, 28)' : ''  }
+                  color={ props.orderBy == 'lift' ? 'rgb(183, 28, 28)' : ''  }
                   mode="determinate"
-                  value={ _.round(row.rateAdvantageNormalized, 2) } />
+                  value={ _.round(row.lift, 2) }
+                  min={0}
+                  max={10}
+                />
               </TableRowColumn>
             </TableRow>
           ))}
