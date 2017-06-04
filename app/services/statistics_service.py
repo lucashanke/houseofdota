@@ -50,7 +50,7 @@ class StatisticsService:
         bundles = patch_statistics.heroes_statistics.filter(
             q_objects, bundle_size=len(hero_ids)+1,
         ).order_by(criteria)[:10]
-        
+
         for heroes_statistics in bundles:
             heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
@@ -90,7 +90,7 @@ class StatisticsService:
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
-                'counter_coefficient': counter.lift*counter.support,
+                'counter_coefficient': counter.lift*counter.support*100,
             }
             counter_picks.append(hero_data)
 
