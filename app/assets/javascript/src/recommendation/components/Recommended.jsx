@@ -20,6 +20,7 @@ const styles = {
     display: 'inline-block',
     padding: '0.5%',
     textAlign: 'center',
+    backgroundColor: 'rgb(232, 232, 232)',
   }
 };
 
