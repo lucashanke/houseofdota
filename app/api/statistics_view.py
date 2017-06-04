@@ -10,7 +10,7 @@ def heroes_statistics(request):
     bundle_size = request.query_params.get('bundle_size', 1)
     heroes_statistics = StatisticsService(
         patch=PatchRepository.fetch_current_patch()
-    ).get_heroes_statistics(
+    ).get_heroes_statistics_bundles(
         bundle_size=bundle_size
     )
     serializer = HeroesStatisticsSerializer(heroes_statistics)
