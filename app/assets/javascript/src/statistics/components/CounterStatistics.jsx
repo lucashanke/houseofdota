@@ -9,7 +9,6 @@ const CounterStatistics = (props) => {
   const counters = _.orderBy( props.counters ,[props.orderBy], ['desc']);
   const maxCoeffient = _.maxBy( counters , 'counterCoefficient');
   const minCoeffient = _.minBy( counters , 'counterCoefficient');
-  debugger;
   return(
     <ContentHolder>
       <Table>

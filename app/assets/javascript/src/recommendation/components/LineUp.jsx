@@ -2,10 +2,34 @@ import React from 'react';
 import { GridList, GridTile, IconButton } from 'material-ui';
 import Clear from 'material-ui/svg-icons/content/clear';
 
+
+
 const styles = {
   titleStyle: {
     color: '#fff',
+    fontSize: '14px',
   },
+  smallIcon: {
+    width: 20,
+    height: 20,
+  },
+  small: {
+    width: 30,
+    height: 30,
+    padding: 5,
+  },
+  wrapper: {
+    width: '49%',
+    display: 'inline-block',
+    padding: '0.5%',
+    textAlign: 'center',
+    background: '-moz-linear-gradient(270deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
+    background: '-webkit-gradient(linear, left top, left bottom, color-stop(0%, #E8E8E8), color-stop(80%, #37474F), color-stop(100%, #37474F))',
+    background: '-webkit-linear-gradient(270deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
+    background: '-o-linear-gradient(270deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
+    background: '-ms-linear-gradient(270deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
+    background: 'linear-gradient(180deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
+  }
 };
 
 export default class LineUp extends React.Component {
@@ -15,11 +39,10 @@ export default class LineUp extends React.Component {
     for(let i = 0; i < quantity; i++){
       tiles.push((
         <GridTile
-          title={'Undefined'}
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
         >
-          <img src={'/static/images/0.png'} />
+          <img src={'/static/images/logo_dota.png'} title='Hero to be defined'/>
         </GridTile>
       ));
     }
@@ -29,7 +52,8 @@ export default class LineUp extends React.Component {
   render() {
     return(
       <div>
-        <div style={{ width: '49%', display: 'inline-block', padding: '0.5%'}}>
+        <div style={styles.wrapper}>
+          ALLIES
           <GridList cols={5} cellHeight={120}>
             {this.props.allies.map((ally) => (
               <GridTile
@@ -38,7 +62,10 @@ export default class LineUp extends React.Component {
                 titleStyle={styles.titleStyle}
                 titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                 actionIcon={
-                  <IconButton onTouchTap={() => this.props.onAction(ally.heroId)}>
+                  <IconButton
+                    iconStyle={styles.smallIcon}
+                    style={styles.small}
+                    onTouchTap={() => this.props.onAction(ally.heroId)}>
                     <Clear color={styles.titleStyle.color}/>
                   </IconButton>
                 }
@@ -50,17 +77,25 @@ export default class LineUp extends React.Component {
           </GridList>
         </div>
 
-        <div style={{ width: '49%', display: 'inline-block', padding: '0.5%' }}>
+        <div style={styles.wrapper}>
+          ENEMIES
           <GridList style={styles.gridList} cols={5} cellHeight={120}>
             {this.getUndefinedHeroesTiles(5-this.props.enemies.length)}
             {this.props.enemies.map((enemy) => (
               <GridTile
                 key={enemy.heroId}
-                title={enemy.localizedName}
+                title={
+                  <span style={styles.titleStyle} title={enemy.localizedName}>
+                    {enemy.localizedName}
+                  </span>
+                }
                 titleStyle={styles.titleStyle}
                 titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                 actionIcon={
-                  <IconButton onTouchTap={() => this.props.onAction(enemy.heroId)}>
+                  <IconButton
+                    iconStyle={styles.smallIcon}
+                    style={styles.small}
+                    onTouchTap={() => this.props.onAction(enemy.heroId)}>
                     <Clear color={styles.titleStyle.color}/>
                   </IconButton>
                 }

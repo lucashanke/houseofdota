@@ -15,11 +15,11 @@ export default class Recommended extends React.Component {
     for(let i = 0; i < quantity; i++){
       tiles.push((
         <GridTile
-          title={'Undefined'}
+          title={''}
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
         >
-          <img src={'/static/images/0.png'} />
+          <img src={'/static/images/logo_dota.png'} />
         </GridTile>
       ));
     }

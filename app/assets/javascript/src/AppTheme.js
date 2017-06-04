@@ -10,7 +10,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 export default getMuiTheme({
   spacing: Spacing,
   zIndex: zIndex,
-  fontFamily: 'Roboto, sans-serif',
+  fontFamily: 'Open Sans, sans-serif',
   palette: {
     primary1Color: Colors.blueGrey800,
     primary2Color: Colors.blueGrey500,

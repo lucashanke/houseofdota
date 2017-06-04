@@ -33,7 +33,11 @@ const HeroesStatistics = (props) => {
               <TableRowColumn style={{ textAlign: 'center', width: "40%" }}>
               { row.heroBundle.map( (hero) => (
                 <div style={ { float: "left" } } key={ row.id + hero.id }>
-                  <img src={'/static/images/' + hero.id + '.png'} style={{height: '3em', marginRight: '0.5em'}}/>
+                  <img
+                    src={'/static/images/' + hero.id + '.png'}
+                    title={hero.name}
+                    style={{height: '3em', marginRight: '0.5em'}}
+                  />
                 </div>
               ))}
               </TableRowColumn>
