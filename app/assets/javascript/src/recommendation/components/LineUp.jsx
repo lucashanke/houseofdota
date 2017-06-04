@@ -57,6 +57,7 @@ export default class LineUp extends React.Component {
           <GridList cols={5} cellHeight={120}>
             {this.props.allies.map((ally) => (
               <GridTile
+                style={{borderRadius:'16px'}}
                 key={ally.heroId}
                 title={ally.localizedName}
                 titleStyle={styles.titleStyle}
@@ -83,6 +84,7 @@ export default class LineUp extends React.Component {
             {this.getUndefinedHeroesTiles(5-this.props.enemies.length)}
             {this.props.enemies.map((enemy) => (
               <GridTile
+                style={{borderRadius:'16px'}}
                 key={enemy.heroId}
                 title={
                   <span style={styles.titleStyle} title={enemy.localizedName}>

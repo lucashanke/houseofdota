@@ -22,7 +22,7 @@ export default class ContentHolder extends React.Component {
 
     return (
       <MuiThemeProvider muiTheme={ appTheme }>
-        <Paper style={ _.merge(style, this.props.style) } zDepth={2} >
+        <Paper style={ _.merge(style, this.props.style) } zDepth={4} >
           {this.props.children}
         </Paper>
       </MuiThemeProvider>

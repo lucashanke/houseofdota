@@ -5,7 +5,22 @@ import Add from 'material-ui/svg-icons/content/add';
 const styles = {
   titleStyle: {
     color: '#fff',
+    fontSize: '14px',
   },
+  smallIcon: {
+    width: 20,
+    height: 20,
+  },
+  small: {
+    width: 30,
+    height: 30,
+    padding: 5,
+  },
+  wrapper: {
+    display: 'inline-block',
+    padding: '0.5%',
+    textAlign: 'center',
+  }
 };
 
 export default class Recommended extends React.Component {
@@ -29,15 +44,23 @@ export default class Recommended extends React.Component {
   render() {
     return(
       <div>
-        <div style={{ width: '99%', display: 'inline-block', padding: '0.5%'}}>
+        <div style={styles.wrapper}>
           <GridList cols={5} cellHeight={120}>
             {this.props.recommended.map((hero) => (
               <GridTile
                 key={hero.id}
-                title={hero.name}
+                style={{ borderRadius: '16px' }}
+                title={
+                  <span style={styles.titleStyle} title={hero.name}>
+                    {hero.name}
+                  </span>
+                }
                 titleStyle={styles.titleStyle}
                 actionIcon={
-                  <IconButton onTouchTap={() => this.props.onPickAction(hero.id)}>
+                  <IconButton
+                    iconStyle={styles.smallIcon}
+                    style={styles.small}
+                    onTouchTap={() => this.props.onPickAction(hero.id)}>
                     <Add color={styles.titleStyle.color}/>
                   </IconButton>
                 }
