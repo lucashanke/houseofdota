@@ -13,14 +13,17 @@ const HeroesStatistics = (props) => {
         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
           <TableRow>
             <TableHeaderColumn style={{ textAlign: 'center', width: "40%" }}>Heroes</TableHeaderColumn>
-            <TableHeaderColumn style={{ textAlign: 'center' }}>
+            <TableHeaderColumn sstyle={{
+                textAlign: 'center',
+                fontWeight: props.orderBy === 'pickRate' ? 'bold' : 'normal',
+              }}>
               Pick Rate
             </TableHeaderColumn>
-            <TableHeaderColumn style={{ textAlign: 'center' }}>
+            <TableHeaderColumn style={{
+                textAlign: 'center',
+                fontWeight: props.orderBy === 'winRate' ? 'bold' : 'normal',
+              }}>
               Win Rate
-            </TableHeaderColumn>
-            <TableHeaderColumn style={{ textAlign: 'center' }}>
-              Confidence
             </TableHeaderColumn>
           </TableRow>
         </TableHeader>
@@ -30,7 +33,7 @@ const HeroesStatistics = (props) => {
               <TableRowColumn style={{ textAlign: 'center', width: "40%" }}>
               { row.heroBundle.map( (hero) => (
                 <div style={ { float: "left" } } key={ row.id + hero.id }>
-                  <img src={'/static/images/' + hero.id + '.png'} style={{height: '3em', marginRight: '1em'}}/>
+                  <img src={'/static/images/' + hero.id + '.png'} style={{height: '3em', marginRight: '0.5em'}}/>
                 </div>
               ))}
               </TableRowColumn>
@@ -48,12 +51,6 @@ const HeroesStatistics = (props) => {
                   color={ props.orderBy == 'winRate' ? 'rgb(183, 28, 28)' : ''  }
                   mode="determinate"
                   value={ _.round(row.winRate, 2) } />
-              </TableRowColumn>
-              <TableRowColumn>
-                { _.round(row.confidence, 2) }%
-                <LinearProgress
-                  color={ props.orderBy == 'confidence' ? 'rgb(183, 28, 28)' : ''  }
-                  mode="determinate" value={ _.round(row.confidence, 2) } />
               </TableRowColumn>
             </TableRow>
           ))}

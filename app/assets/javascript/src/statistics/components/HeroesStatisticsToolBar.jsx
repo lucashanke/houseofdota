@@ -17,7 +17,6 @@ const HeroesStatisticsToolBar = (props) => {
           <DropDownMenu value={ props.orderBy } onChange={ props.onOrderChange } >
             <MenuItem value={'pickRate'} label="Sort by: Pick Rate" primaryText="Pick Rate" />
             <MenuItem value={'winRate'} label="Sort by: Win Rate" primaryText="Win Rate" />
-            <MenuItem value={'confidence'} label="Sort by: Confidence" primaryText="Confidence" />
           </DropDownMenu>
         <ToolbarSeparator />
           <FontIcon className="material-icons">group_work</FontIcon>
@@ -26,6 +25,7 @@ const HeroesStatisticsToolBar = (props) => {
             <MenuItem value={ 2 } label="Bundle size: 2 heroes" primaryText="2 heroes" />
             <MenuItem value={ 3 } label="Bundle size: 3 heroes" primaryText="3 heroes" />
             <MenuItem value={ 4 } label="Bundle size: 4 heroes" primaryText="4 heroes" />
+            <MenuItem value={ 5 } label="Bundle size: 5 heroes" primaryText="5 heroes" />
           </DropDownMenu>
         </ToolbarGroup>
       </Toolbar>

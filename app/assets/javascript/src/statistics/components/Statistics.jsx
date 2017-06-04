@@ -29,8 +29,8 @@ export default class Statistics extends React.Component {
           <Tabs
             value={this.state.widget}
             onChange={this.handleChange.bind(this)} >
-            <Tab label="Heroes Statistics" value="statistics" />
-            <Tab label="Counters" value="counters" />
+            <Tab label="Hero Bundles" value="statistics" />
+            <Tab label="Hero Counters" value="counters" />
           </Tabs>
         </ContentHolder>
         { widget }
