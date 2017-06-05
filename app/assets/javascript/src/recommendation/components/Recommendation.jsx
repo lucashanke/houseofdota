@@ -238,18 +238,19 @@ export default class Recommendation extends React.Component {
           onAction={this.unselectHero.bind(this)}
         />
         <Toolbar style={{backgroundColor: '#37474F'}}>
-          <ToolbarGroup style={{ margin: 'auto' }}>
+          <ToolbarGroup style={{ marginLeft: '36.5%' }}>
             <RaisedButton
               onTouchTap={this.getRecommendation.bind(this)}
               label="Recommend me some heroes!"
-              backgroundColor="#263238"
-              labelColor="white"
+              secondary
             />
           </ToolbarGroup>
           <ToolbarGroup>
             <RaisedButton
               onTouchTap={this.reset.bind(this)}
-              label="Reset" secondary
+              label="Reset"
+              backgroundColor="#263238"
+              labelColor="white"
             />
           </ToolbarGroup>
         </Toolbar>

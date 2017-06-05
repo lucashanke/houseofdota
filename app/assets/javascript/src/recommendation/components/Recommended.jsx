@@ -49,7 +49,6 @@ export default class Recommended extends React.Component {
             {this.props.recommended.map((hero) => (
               <GridTile
                 key={hero.id}
-                style={{ borderRadius: '16px' }}
                 title={
                   <span style={styles.titleStyle} title={hero.name}>
                     {hero.name}
