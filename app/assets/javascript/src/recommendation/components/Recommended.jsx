@@ -26,7 +26,7 @@ const styles = {
     padding: '0.5%',
     textAlign: 'center',
     backgroundColor: 'rgb(232, 232, 232)',
-  }
+  },
 };
 
 export default class Recommended extends React.Component {
@@ -48,6 +48,13 @@ export default class Recommended extends React.Component {
   }
 
   render() {
+    if (this.props.recommended.length === 0) {
+      return (
+        <div style={{ height: '70px' }}>
+          <div className="spinning-wheel"/>
+        </div>
+      );
+    }
     return(
       <div>
         <div style={styles.wrapper}>

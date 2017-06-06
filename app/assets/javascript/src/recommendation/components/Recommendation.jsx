@@ -16,8 +16,8 @@ const initialState = {
   team: 'radiant',
   searchAlly: '',
   searchEnemy: '',
-  recommendedAllies: [],
-  recommendedCounters: [],
+  recommendedAllies: null,
+  recommendedCounters: null,
 }
 
 export default class Recommendation extends React.Component {
@@ -43,14 +43,16 @@ export default class Recommendation extends React.Component {
   }
 
   fetchBundleRecommendation() {
+    this.setState({ recommendedAllies: [] })
     $.when(
       this.statisticsService.fetchHeroesStatisticsRecommendation(this.state.selectedAllies)
     ).done(response => {
-      this.getAllies(response.statistics)
+      this.setState({ recommendedAllies: this.getAllies(response.statistics) })
     });
   }
 
   fetchCounterPicks() {
+    this.setState({ recommendedCounters: [] })
     $.when(
       this.statisticsService.fetchEnemiesCounterStatistics(this.state.selectedEnemies)
     ).done(response => {
@@ -108,7 +110,7 @@ export default class Recommendation extends React.Component {
           });
       }
     }
-    this.setState({ recommendedAllies: selectedRecommended });
+    return selectedRecommended;
   }
 
   selectAlly(chosen, index) {
@@ -191,7 +193,7 @@ export default class Recommendation extends React.Component {
 
   render() {
     let recommendedAllies = null;
-    if (this.state.recommendedAllies.length > 0) {
+    if (this.state.recommendedAllies) {
       recommendedAllies = (
         <ContentHolder style={{width: '42.5%', marginRight: '2.5%'}}>
           <Toolbar>
@@ -206,7 +208,7 @@ export default class Recommendation extends React.Component {
     }
 
     let recommendedCounters = null;
-    if (this.state.recommendedCounters.length > 0) {
+    if (this.state.recommendedCounters) {
       recommendedCounters = (
         <ContentHolder style={{width: '42.5%', marginLeft: '2.5%', float: 'right'}}>
           <Toolbar>
