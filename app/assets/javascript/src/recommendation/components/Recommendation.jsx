@@ -63,8 +63,10 @@ export default class Recommendation extends React.Component {
   }
 
   getRecommendation() {
-    if(this.state.selectedAllies.length > 0) this.fetchBundleRecommendation();
-    if(this.state.selectedEnemies.length > 0) this.fetchCounterPicks();
+    if(this.state.selectedAllies.length > 0 && this.state.selectedAllies.length < 5 )
+      this.fetchBundleRecommendation();
+    if(this.state.selectedEnemies.length > 0 && this.state.selectedAllies.length < 5)
+      this.fetchCounterPicks();
   }
 
   getUnavailableHeroes() {
