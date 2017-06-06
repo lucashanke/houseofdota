@@ -83,6 +83,7 @@ export default class Recommended extends React.Component {
                   <IconButton
                     iconStyle={styles.smallIcon}
                     style={styles.small}
+                    className="pick-recommended-button"
                     onTouchTap={() => this.props.onPickAction(hero.id)}>
                     <Add color={styles.titleStyle.color}/>
                   </IconButton>

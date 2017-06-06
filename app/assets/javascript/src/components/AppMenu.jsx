@@ -18,16 +18,19 @@ export default class AppMenu extends React.Component {
         <MenuItem
           linkButton={true}
           href="/"
+          className="home-button"
           primaryText="Home"
           leftIcon={<Home />}/>
         <MenuItem
           linkButton={true}
           href="/statistics"
+          className="statistics-button"
           primaryText="Statistics"
           leftIcon={<TrendingUp />}/>
         <MenuItem
           linkButton={true}
           href="/recommendation"
+          className="recommendation-button"
           primaryText="Recommendation"
           leftIcon={<ThumbsUpDown />} />
       </Menu>
