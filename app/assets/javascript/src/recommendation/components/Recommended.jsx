@@ -1,4 +1,6 @@
 import React from 'react';
+import _ from 'lodash';
+
 import { GridList, GridTile, IconButton } from 'material-ui';
 import Add from 'material-ui/svg-icons/content/add';
 
@@ -6,6 +8,10 @@ const styles = {
   titleStyle: {
     color: '#fff',
     fontSize: '14px',
+  },
+  subtitleStyle: {
+    color: '#fff',
+    fontSize: '10px',
   },
   smallIcon: {
     width: 20,
@@ -55,6 +61,17 @@ export default class Recommended extends React.Component {
                   </span>
                 }
                 titleStyle={styles.titleStyle}
+                subtitle={
+                  !_.isNil(hero.bundleSize) ?
+                  <span style={styles.subtitleStyle}>
+                    {'based on'}<br/>
+                    {`${hero.bundleSize-1} ally(ies)`}
+                  </span> : !_.isNil(hero.counterFor) ?
+                  <span style={styles.subtitleStyle}>
+                    {'based on'}<br/>
+                  {`${hero.counterFor} enemy(ies)`}
+                  </span> : null
+                }
                 actionIcon={
                   <IconButton
                     iconStyle={styles.smallIcon}

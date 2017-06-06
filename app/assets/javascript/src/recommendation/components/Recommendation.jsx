@@ -45,11 +45,8 @@ export default class Recommendation extends React.Component {
   fetchBundleRecommendation() {
     $.when(
       this.statisticsService.fetchHeroesStatisticsRecommendation(this.state.selectedAllies)
-    ).done(result => {
-      const recommended = result.statistics.map(s => s.recommended[0]);
-      this.setState({
-        recommendedAllies: recommended.filter(r => !this.state.selectedEnemies.map(e => e.heroId).includes(r.id)).slice(0,5),
-      });
+    ).done(response => {
+      this.getAllies(response.statistics)
     });
   }
 
@@ -79,14 +76,39 @@ export default class Recommendation extends React.Component {
     counters = _.orderBy( counters ,['counterCoefficient'], ['desc']);
     const unavailableCounters = this.getUnavailableHeroes();
     let selectedCounters = [];
-    for (let i = 0; i < counters.length && selectedCounters.length < 5; i++){
+    for (let i = 0; i < counters.length; i++){
       const counterId = counters[i].id;
-      if(!unavailableCounters.includes(counterId)
-        && !selectedCounters.map(s => s.heroId).includes(counterId)) {
-          selectedCounters.push(counters[i]);
+      if(!unavailableCounters.includes(counterId)) {
+        if(!selectedCounters.map(s => s.id).includes(counterId)) {
+          selectedCounters.push({
+            id: counters[i].id,
+            name: counters[i].name,
+            counterFor: 1,
+          });
+        } else {
+          selectedCounters.filter(c => c.id === counterId)[0].counterFor++;
         }
+      }
     }
-    return selectedCounters;
+    return selectedCounters.slice(0,5);
+  }
+
+  getAllies(bundles) {
+    const orderedBundles = _.orderBy(bundles, ['bundleSize','confidence'], ['desc', 'desc']);
+    const unavailableAllies = this.getUnavailableHeroes();
+    let selectedRecommended = [];
+    for (let i = 0; i < orderedBundles.length && selectedRecommended.length < 5; i++){
+      const recommendedId = orderedBundles[i].recommended[0].id;
+      if(!unavailableAllies.includes(recommendedId)
+        && !selectedRecommended.map(s => s.id).includes(recommendedId)) {
+          selectedRecommended.push({
+            id: orderedBundles[i].recommended[0].id,
+            name: orderedBundles[i].recommended[0].name,
+            bundleSize: orderedBundles[i].bundleSize,
+          });
+      }
+    }
+    this.setState({ recommendedAllies: selectedRecommended });
   }
 
   selectAlly(chosen, index) {
