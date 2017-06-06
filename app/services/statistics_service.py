@@ -1,4 +1,6 @@
 from __future__ import division
+
+import itertools
 from django.db.models import Q
 
 from app.repositories.match_repository import MatchRepository
@@ -36,10 +38,34 @@ class StatisticsService:
             'statistics' : statistics
         }
 
-    def get_heroes_statistics_recommendation(self, hero_ids, criteria='-confidence'):
+    def get_bundle_recommendations(self, hero_ids, criteria='-confidence'):
+        if len(hero_ids) >= 5:
+            return { match_quantity: 0, 'statistics' : [] }
+
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
+        heroes_statistics = patch_statistics.heroes_statistics
+
+        for size in reversed(range(len(hero_ids)+1)):
+            if len(statistics) >= 10:
+                break
+            for combination in itertools.combinations(hero_ids, size):
+                if len(statistics) >= 10:
+                    break
+                statistics = statistics + self._get_recommended_for_bundle(
+                    combination,
+                    heroes_statistics,
+                    criteria
+                )
+
+        return {
+            'match_quantity' : patch_statistics.match_quantity,
+            'statistics' : statistics
+        }
+
+    def _get_recommended_for_bundle(self, hero_ids, heroes_statistics, criteria='-confidence'):
+        statistics = []
         q_objects = Q()
         for hero in hero_ids:
             q_objects.add(
@@ -47,7 +73,7 @@ class StatisticsService:
                 Q.AND
             )
 
-        bundles = patch_statistics.heroes_statistics.filter(
+        bundles = heroes_statistics.filter(
             q_objects, bundle_size=len(hero_ids)+1,
         ).order_by(criteria)[:10]
 
@@ -62,13 +88,12 @@ class StatisticsService:
                 'recommended': [hero for hero in heroes if str(hero['id']) not in hero_ids],
                 'pick_rate' : pick_rate*100,
                 'win_rate': win_rate*100,
-                'confidence': confidence*100
+                'confidence': confidence*100,
+                'bundle_size': len(hero_ids)+1,
             }
             statistics.append(hero_data)
-        return {
-            'match_quantity' : patch_statistics.match_quantity,
-            'statistics' : statistics
-        }
+
+        return statistics
 
 
     def get_hero_counter_pick_statistics(self,

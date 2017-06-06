@@ -21,7 +21,7 @@ def heroes_statistics_for_bundle(request):
     hero_ids = request.query_params.get('hero_ids[]')
     heroes_statistics = StatisticsService(
         patch=PatchRepository.fetch_current_patch()
-    ).get_heroes_statistics_recommendation(
+    ).get_bundle_recommendations(
         hero_ids=[] if hero_ids is None else [str(hero) for hero in hero_ids.split(',')]  ,
     )
     serializer = HeroesStatisticsSerializer(heroes_statistics)
