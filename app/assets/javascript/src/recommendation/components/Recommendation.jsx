@@ -266,7 +266,9 @@ export default class Recommendation extends React.Component {
             <RaisedButton
               onTouchTap={this.getRecommendation.bind(this)}
               label="Recommend me some heroes!"
+              disabled={this.state.selectedAllies.length === 0 && this.state.selectedEnemies.length === 0}
               secondary
+              title="Select heroes and get recommendations!"
             />
           </ToolbarGroup>
           <ToolbarGroup>
