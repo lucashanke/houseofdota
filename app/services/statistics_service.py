@@ -40,7 +40,7 @@ class StatisticsService:
 
     def get_bundle_recommendations(self, hero_ids, criteria='-confidence'):
         if len(hero_ids) >= 5:
-            return { match_quantity: 0, 'statistics' : [] }
+            return { 'match_quantity': 0, 'statistics' : [] }
 
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
