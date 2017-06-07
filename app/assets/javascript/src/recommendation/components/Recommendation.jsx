@@ -6,7 +6,7 @@ import ContentHolder from '../../components/ContentHolder.jsx';
 import $ from 'jquery';
 
 import { Toolbar, ToolbarGroup, ToolbarTitle,
-  ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton } from 'material-ui';
+  ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton, Snackbar } from 'material-ui';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
 
 const initialState = {
@@ -193,6 +193,16 @@ export default class Recommendation extends React.Component {
     });
   }
 
+  recommendationWasFetched() {
+    return this.state.recommendedCounters && this.state.recommendedCounters.length > 0 &&
+      this.state.recommendedAllies && this.state.recommendedAllies.length > 0;
+  }
+
+  handleActionTouchTap() {
+    let win = window.open('https://goo.gl/forms/UACzHRdfrBxqp4MS2', '_blank');
+    win.focus();
+  }
+
   render() {
     let recommendedAllies = null;
     if (this.state.recommendedAllies) {
@@ -268,6 +278,7 @@ export default class Recommendation extends React.Component {
             <RaisedButton
               onTouchTap={this.getRecommendation.bind(this)}
               label="Recommend me some heroes!"
+              className="recommend-button"
               disabled={(this.state.selectedAllies.length === 0 && this.state.selectedEnemies.length === 0) || this.state.selectedAllies.length === 5}
               secondary
               title="Select heroes and get recommendations!"
@@ -277,6 +288,7 @@ export default class Recommendation extends React.Component {
             <RaisedButton
               onTouchTap={this.reset.bind(this)}
               label="Reset"
+              className="reset-button"
               backgroundColor="#263238"
               labelColor="white"
             />
@@ -285,6 +297,15 @@ export default class Recommendation extends React.Component {
       </ContentHolder>
       {recommendedAllies}
       {recommendedCounters}
+      <ContentHolder>
+        <Snackbar
+          open={this.recommendationWasFetched()}
+          message="Used the recommendation? How do you feel about giving us some help?"
+          autoHideDuration={7200000}
+          action="I'm in!"
+          onActionTouchTap={this.handleActionTouchTap}
+        />
+      </ContentHolder>
     </div>
     );
   }
