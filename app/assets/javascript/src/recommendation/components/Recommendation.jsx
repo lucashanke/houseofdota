@@ -274,16 +274,6 @@ export default class Recommendation extends React.Component {
           onAction={this.unselectHero.bind(this)}
         />
         <Toolbar style={{backgroundColor: '#37474F'}}>
-          <ToolbarGroup style={{ marginLeft: '36.5%' }}>
-            <RaisedButton
-              onTouchTap={this.getRecommendation.bind(this)}
-              label="Recommend me some heroes!"
-              className="recommend-button"
-              disabled={(this.state.selectedAllies.length === 0 && this.state.selectedEnemies.length === 0) || this.state.selectedAllies.length === 5}
-              secondary
-              title="Select heroes and get recommendations!"
-            />
-          </ToolbarGroup>
           <ToolbarGroup>
             <RaisedButton
               onTouchTap={this.reset.bind(this)}
@@ -291,6 +281,16 @@ export default class Recommendation extends React.Component {
               className="reset-button"
               backgroundColor="#263238"
               labelColor="white"
+            />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <RaisedButton
+              onTouchTap={this.getRecommendation.bind(this)}
+              label="Recommend me some heroes!"
+              className="recommend-button"
+              disabled={(this.state.selectedAllies.length === 0 && this.state.selectedEnemies.length === 0) || this.state.selectedAllies.length === 5}
+              secondary
+              title="Select heroes and get recommendations!"
             />
           </ToolbarGroup>
         </Toolbar>
