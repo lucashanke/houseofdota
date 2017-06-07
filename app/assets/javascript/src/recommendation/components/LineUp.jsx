@@ -42,7 +42,7 @@ export default class LineUp extends React.Component {
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
         >
-          <img src={'/static/images/logo_dota.png'} title='Hero to be defined'/>
+          <img src={'/static/images/0.png'} title='Hero to be defined'/>
         </GridTile>
       ));
     }
