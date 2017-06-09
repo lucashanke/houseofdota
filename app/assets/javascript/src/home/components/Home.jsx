@@ -1,6 +1,8 @@
 import React from 'react';
 import { Avatar, Card, CardHeader, CardMedia, CardTitle, CardText, CardActions,
-  FlatButton, IconButton, FontIcon, Tabs, Tab } from 'material-ui';
+  FlatButton, RaisedButton, IconButton, FontIcon, Tabs, Tab } from 'material-ui';
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from 'material-ui';
+
 import SwipeableViews from 'react-swipeable-views';
 import ContentHolder from '../../components/ContentHolder.jsx';
 
@@ -66,6 +68,19 @@ export default class Home extends React.Component {
                 Besides, we have a recommendation system in order to help you choosing the best hero
                 for your line-up.
               </CardText>
+              <CardActions>
+                Go to
+                <RaisedButton
+                  label="Recommendation"
+                  href="/recommendation"
+                  secondary
+                />
+                <RaisedButton
+                  label="Statistics"
+                  href="/statistics"
+                  secondary
+                />
+              </CardActions>
             </Card>
           </div>
           <div>
