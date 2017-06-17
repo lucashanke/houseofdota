@@ -62,15 +62,22 @@ export default class Recommendation extends React.Component {
     });
   }
 
-  getRecommendation() {
+  requestBundleRecommendations() {
     if(this.state.selectedAllies.length > 0 && this.state.selectedAllies.length < 5 )
       this.fetchBundleRecommendation();
+  }
+
+  requestCounterRecommendations() {
     if(this.state.selectedEnemies.length > 0 && this.state.selectedAllies.length < 5)
       this.fetchCounterPicks();
   }
 
   getUnavailableHeroes() {
     return this.state.selectedAllies.concat(this.state.selectedEnemies).map(h => h.heroId);
+  }
+
+  fullLineUp() {
+    return this.state.selectedAllies.length === 5;
   }
 
   getCounters(results) {
@@ -121,6 +128,8 @@ export default class Recommendation extends React.Component {
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedAllies: this.state.selectedAllies.concat(hero),
       searchAlly: '',
+    }, () => {
+      this.requestBundleRecommendations();
     });
   }
 
@@ -135,6 +144,8 @@ export default class Recommendation extends React.Component {
       heroes: this.state.heroes.filter((h) => h.heroId !== heroId),
       selectedAllies: this.state.selectedAllies.concat(hero),
       searchAlly: '',
+    }, () => {
+      this.requestBundleRecommendations();
     });
   }
 
@@ -144,6 +155,8 @@ export default class Recommendation extends React.Component {
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedEnemies: this.state.selectedEnemies.concat(hero),
       searchEnemy: '',
+    }, () => {
+      this.requestCounterRecommendations();
     });
   }
 
@@ -157,6 +170,9 @@ export default class Recommendation extends React.Component {
       selectedAllies: this.state.selectedAllies.filter((h) => h.heroId !== heroId),
       searchAlly: '',
       searchEnemy: '',
+    }, () => {
+      this.requestBundleRecommendations();
+      this.requestCounterRecommendations();
     });
   }
 
@@ -187,15 +203,9 @@ export default class Recommendation extends React.Component {
     return [];
   }
 
-  handleTeamChange(event, key, value){
-    this.setState({
-      team: value,
-    });
-  }
-
   recommendationWasFetched() {
-    return this.state.recommendedCounters && this.state.recommendedCounters.length > 0 &&
-      this.state.recommendedAllies && this.state.recommendedAllies.length > 0;
+    return this.state.recommendedCounters !== null && this.state.recommendedCounters.length > 0 &&
+      this.state.recommendedAllies !== null && this.state.recommendedAllies.length > 0;
   }
 
   handleActionTouchTap() {
@@ -205,7 +215,7 @@ export default class Recommendation extends React.Component {
 
   render() {
     let recommendedAllies = null;
-    if (this.state.recommendedAllies) {
+    if (this.state.recommendedAllies && !this.fullLineUp()) {
       recommendedAllies = (
         <ContentHolder style={{width: '42.5%', marginRight: '2.5%'}}>
           <Toolbar>
@@ -220,7 +230,7 @@ export default class Recommendation extends React.Component {
     }
 
     let recommendedCounters = null;
-    if (this.state.recommendedCounters) {
+    if (this.state.recommendedCounters && !this.fullLineUp()) {
       recommendedCounters = (
         <ContentHolder style={{width: '42.5%', marginLeft: '2.5%', float: 'right'}}>
           <Toolbar>
@@ -283,23 +293,13 @@ export default class Recommendation extends React.Component {
               labelColor="white"
             />
           </ToolbarGroup>
-          <ToolbarGroup>
-            <RaisedButton
-              onTouchTap={this.getRecommendation.bind(this)}
-              label="Recommend me some heroes!"
-              className="recommend-button"
-              disabled={(this.state.selectedAllies.length === 0 && this.state.selectedEnemies.length === 0) || this.state.selectedAllies.length === 5}
-              secondary
-              title="Select heroes and get recommendations!"
-            />
-          </ToolbarGroup>
         </Toolbar>
       </ContentHolder>
       {recommendedAllies}
       {recommendedCounters}
       <ContentHolder>
         <Snackbar
-          open={this.recommendationWasFetched()}
+          open={this.recommendationWasFetched() || this.fullLineUp()}
           message="Used the recommendation? How do you feel about giving us some help?"
           autoHideDuration={7200000}
           action="I'm in!"
