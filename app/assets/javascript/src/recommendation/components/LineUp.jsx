@@ -41,6 +41,7 @@ export default class LineUp extends React.Component {
         <GridTile
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+          key={i}
         >
           <img src={'/static/images/0.png'} title='Hero to be defined'/>
         </GridTile>
