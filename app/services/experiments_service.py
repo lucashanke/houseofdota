@@ -11,11 +11,13 @@ from app.learners.nntrainer import NNTrainer
 
 class ExperimentsService:
 
-    def __init__(self):
+    def __init__(self, patch=None):
+        patch = PatchRepository.fetch_by_version(patch) or PatchRepository.fetch_current_patch()
         self._statistics_service = StatisticsService(
-            patch=PatchRepository.fetch_current_patch()
+            patch=patch
         )
-        self._nn_trainer = NNTrainer(PatchRepository.fetch_current_patch())
+        self._nn_trainer = NNTrainer(patch)
+        print(patch.version)
         heroes_ids = HEROES_LIST.keys()
 
     def make_random_experiment(self, allies_criteria='-confidence', counters_criteria='counter_coefficient'):
