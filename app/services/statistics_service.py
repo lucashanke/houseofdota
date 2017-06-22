@@ -98,13 +98,13 @@ class StatisticsService:
 
     def get_hero_counter_pick_statistics(self,
                                          hero_id,
-                                         criteria='-lift',
+                                         criteria='lift',
                                          limit=len(HEROES_LIST.keys())
                                          ):
         counter_picks = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by(criteria)[:limit]
+        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by("-{}".format(criteria))[:limit]
 
         for counter in hero_counters :
             hero_data = {
