@@ -52,7 +52,7 @@ class ExperimentsService:
                         if len(recommended) is 5:
                             break
 
-                if len(recommended) < 5:
+                if len(recommended) < 10:
                     counters = list(
                         itertools.chain.from_iterable(
                             list(map(lambda counters_for_hero: counters_for_hero['counter_picks'], self._statistics_service.get_counter_pick_statistics(
@@ -64,7 +64,7 @@ class ExperimentsService:
                     for recommended_counter in counters:
                         if recommended_counter['id'] in heroes_ids:
                             recommended.append(recommended_counter['id'])
-                            if len(recommended) is 5:
+                            if len(recommended) is 10:
                                 break
 
                 ally = generator.choice(recommended)
