@@ -121,7 +121,7 @@ class StatisticsService:
 
         return {
             'match_quantity' : patch_statistics.match_quantity,
-            'counter_picks' : sorted(counter_picks, key=lambda c: c['counter_coefficient'], reverse=True)
+            'counter_picks' : sorted(counter_picks, key=lambda c: c[criteria], reverse=True)
         }
 
     def get_counter_pick_statistics(self, hero_ids):

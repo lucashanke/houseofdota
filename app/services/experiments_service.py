@@ -40,7 +40,7 @@ class ExperimentsService:
 
             if len(allies) < 5:
                 recommended = []
-                recommended_allies = self._statistics_service.get_heroes_statistics_recommendation(
+                recommended_allies = self._statistics_service.get_bundle_recommendations(
                     allies,
                     criteria=allies_criteria
                 )
