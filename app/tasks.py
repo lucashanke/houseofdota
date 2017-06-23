@@ -32,7 +32,7 @@ def task_update_statistics():
 def task_random_experiments(allies_criteria='-confidence', counters_criteria='counter_coefficient', patch=None):
     result = ExperimentsService(patch).make_random_experiments(
         1000,
-        allies_criteria=allies_criteria
+        allies_criteria=allies_criteria,
         counters_criteria=counters_criteria
     )
     file_object = open('random_experiment.txt', 'wb')
