@@ -17,7 +17,7 @@ class ExperimentsService:
             patch=patch
         )
         self._nn_trainer = NNTrainer(patch)
-        print(patch.version)
+        self._patch = patch
         heroes_ids = HEROES_LIST.keys()
 
     def make_random_experiment(self, allies_criteria='-confidence', counters_criteria='counter_coefficient'):
@@ -90,5 +90,8 @@ class ExperimentsService:
             i = i + 1
             print(str(i) + 'th partial result:' + str((victories/i)*100) + '%')
         return {
-            'experiment': (victories/quantity)*100
+            'result': (victories/quantity)*100,
+            'patch': self._patch.version,
+            'allies_criteria': allies_criteria,
+            'counters_criteria': counters_criteria
         }
