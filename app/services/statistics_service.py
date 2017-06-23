@@ -104,7 +104,13 @@ class StatisticsService:
         counter_picks = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by("-{}".format(criteria))[:limit]
+        order_by = criteria
+        if criteria is 'counter_coefficient':
+            order_by = 'lift'
+
+        hero_counters = patch_statistics.counter_statistics
+            .filter(hero=hero_id)
+            .order_by("-{}".format(order_by))[:limit]
 
         for counter in hero_counters :
             hero_data = {
