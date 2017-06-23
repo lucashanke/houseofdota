@@ -108,9 +108,7 @@ class StatisticsService:
         if criteria is 'counter_coefficient':
             order_by = 'lift'
 
-        hero_counters = patch_statistics.counter_statistics
-            .filter(hero=hero_id)
-            .order_by("-{}".format(order_by))[:limit]
+        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by("-{}".format(order_by))[:limit]
 
         for counter in hero_counters :
             hero_data = {
