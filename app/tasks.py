@@ -29,11 +29,11 @@ def task_update_statistics():
     run_every=(crontab(minute=0, hour=0)),
     name="make random experiments",
 )
-def task_random_experiments():
-    result = ExperimentsService().make_random_experiments(
-        100,
-        allies_criteria='-confidence',
-        counters_criteria='counter_coefficient'
+def task_random_experiments(allies_criteria='-confidence', counters_criteria='counter_coefficient', patch=None):
+    result = ExperimentsService(patch).make_random_experiments(
+        1000,
+        allies_criteria=allies_criteria
+        counters_criteria=counters_criteria
     )
     file_object = open('random_experiment.txt', 'wb')
     pickle.dump(str(result), file_object)
