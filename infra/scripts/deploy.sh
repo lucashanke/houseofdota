@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .env
+
 echo 'Copying source files to /opt/houseofdota...'
 
 rsync -avR . /opt/houseofdota
@@ -20,19 +22,18 @@ echo 'Migrating database...'
 ./manage.py makemigrations app
 ./manage.py migrate
 
-echo 'Installing JS dependencies...'
-
-npm install
-
-echo 'Building JS/CSS assets...'
-
-npm run build
+# echo 'Installing JS dependencies...'
+#
+# npm install
+#
+# echo 'Building JS/CSS assets...'
+#
+# npm run build
 
 echo 'Configuring supervisor...'
 
 cp infra/supervisor/houseofdota.conf /etc/supervisor/conf.d/
 
-echo 'Restarting services (gunicorn, beat, workers)...'
+echo 'Restarting services (beat, workers)...'
 
-supervisorctl restart gunicorn
-# supervisorctl restart beat worker
+supervisorctl restart beat worker
