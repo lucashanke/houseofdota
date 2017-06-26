@@ -245,7 +245,7 @@ class ExperimentsService:
         victories = 0
         i = 0
         while i < quantity:
-            experiment = self.make_recommender_vs_recommender_experiment()
+            experiment = self.make_random_vs_random_experiment()
             if experiment['won']:
                 victories = victories + 1
             i = i + 1
