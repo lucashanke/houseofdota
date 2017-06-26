@@ -107,11 +107,19 @@ class ExperimentsService:
         first_pick = generator.choice(self._statistics_service.get_heroes_statistics_bundles(1,
             order_by=allies_criteria
         )['statistics'][:5])['hero_bundle'][0]['id']
-        allies.append(first_pick)
+
+        allies_time_to_pick = generator.choice([True, False])
+
+        if allies_time_to_pick is True:
+            allies.append(first_pick)
+            allies_time_to_pick = False
+        else:
+            enemies.append(first_pick)
+            allies_time_to_pick = True
         heroes_ids.remove(first_pick)
 
         while len(enemies) < 5 or len(allies) < 5:
-            if len(enemies) < 5:
+            if len(enemies) < 5 and allies_time_to_pick is False:
                 recommended = []
                 recommended_allies = self._statistics_service.get_bundle_recommendations(
                     enemies,
@@ -141,8 +149,9 @@ class ExperimentsService:
                 enemy = generator.choice(recommended)
                 enemies.append(enemy)
                 heroes_ids.remove(enemy)
+                allies_time_to_pick = True
 
-            if len(allies) < 5:
+            if len(allies) < 5 and allies_time_to_pick is True:
                 recommended = []
                 recommended_allies = self._statistics_service.get_bundle_recommendations(
                     allies,
@@ -172,6 +181,7 @@ class ExperimentsService:
                 ally = generator.choice(recommended)
                 allies.append(ally)
                 heroes_ids.remove(ally)
+                allies_time_to_pick = False
 
         nn_prediction = self._nn_trainer.get_result_for_full_line_up(team, allies, enemies)
         won = (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
