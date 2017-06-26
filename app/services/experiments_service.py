@@ -207,3 +207,52 @@ class ExperimentsService:
             'allies_criteria': allies_criteria,
             'counters_criteria': counters_criteria
         }
+
+    def make_random_vs_random_experiment(self):
+        seed = datetime.now()
+        generator = random.Random(seed)
+        allies = []
+        enemies = []
+        heroes_ids = list(HEROES_LIST.keys())
+        team=generator.choice(['radiant','dire'])
+
+        first_pick = generator.choice(heroes_ids)
+        allies.append(first_pick)
+        heroes_ids.remove(first_pick)
+
+        while len(enemies) < 5 or len(allies) < 5:
+            if len(enemies) < 5:
+                enemy = generator.choice(heroes_ids)
+                enemies.append(enemy)
+                heroes_ids.remove(enemy)
+
+            if len(allies) < 5:
+                ally = generator.choice(heroes_ids)
+                allies.append(ally)
+                heroes_ids.remove(ally)
+
+        nn_prediction = self._nn_trainer.get_result_for_full_line_up(team, allies, enemies)
+        won = (team is 'radiant' and nn_prediction >= 0.5) or (team is 'dire' and nn_prediction <= 0.5)
+        print('team: ' + str(team) + ' | allies: ' + str(allies) + ' and enemies: ' + str(enemies) + (' - WON' if won else ' - LOST'))
+        return {
+            'result': nn_prediction,
+            'team': team,
+            'won': won,
+        }
+
+
+    def make_random_vs_random_experiments(self, quantity):
+        victories = 0
+        i = 0
+        while i < quantity:
+            experiment = self.make_recommender_vs_recommender_experiment()
+            if experiment['won']:
+                victories = victories + 1
+            i = i + 1
+            print(str(i) + 'th partial result:' + str((victories/i)*100) + '%')
+        return {
+            'result': (victories/quantity)*100,
+            'patch': self._patch.version,
+            'allies_criteria': allies_criteria,
+            'counters_criteria': counters_criteria
+        }

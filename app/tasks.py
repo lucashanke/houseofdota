@@ -56,6 +56,19 @@ def task_recommender_vs_recommender_experiments(allies_criteria='-confidence', c
     print(result)
 
 @periodic_task(
+    run_every=(crontab(minute=0, hour=0)),
+    name="make random experiments",
+)
+def task_random_vs_random_experiments(patch=None):
+    result = ExperimentsService(patch).make_random_vs_random_experiments(
+        1000
+    )
+    file_object = open('random_vs_random.txt', 'wb')
+    pickle.dump(str(result), file_object)
+    file_object.close()
+    print(result)
+
+@periodic_task(
     run_every=(crontab(minute=0,hour='4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23')),
     name="train the neural network for the current patch",
 )
