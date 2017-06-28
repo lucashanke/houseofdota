@@ -44,6 +44,21 @@ def task_random_experiments(allies_criteria='-confidence', counters_criteria='co
     run_every=(crontab(minute=0, hour=0)),
     name="make random experiments",
 )
+def task_most_win_experiments(allies_criteria='-confidence', counters_criteria='counter_coefficient', patch=None):
+    result = ExperimentsService(patch).make_most_win_experiments(
+        1000,
+        allies_criteria=allies_criteria,
+        counters_criteria=counters_criteria
+    )
+    file_object = open('most_win_experiment.txt', 'wb')
+    pickle.dump(str(result), file_object)
+    file_object.close()
+    print(result)
+
+@periodic_task(
+    run_every=(crontab(minute=0, hour=0)),
+    name="make random experiments",
+)
 def task_recommender_vs_recommender_experiments(allies_criteria='-confidence', counters_criteria='counter_coefficient', patch=None):
     result = ExperimentsService(patch).make_recommender_vs_recommender_experiments(
         1000,
