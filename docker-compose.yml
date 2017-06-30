@@ -65,7 +65,7 @@ services:
 
   app_test:
     image: houseofdota:base
-    command: ["./manage.py", "test"]
+    command: ["python3", "manage.py", "test"]
     environment:
       - DJANGO_SETTINGS_MODULE=houseofdota.settings
       - DATABASE_NAME=houseofdota
