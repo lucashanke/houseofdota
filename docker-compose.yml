@@ -46,11 +46,11 @@ services:
       - base
 
   app_test:
-    image: houseofdota:app
+    image: houseofdota:base
     command: ["./manage.py", "test"]
     volumes:
       - /opt/houseofdota/files:/usr/src/houseofdota/files
     links:
       - redis
     depends_on:
-      - app
+      - base
