@@ -6,6 +6,8 @@ services:
     image: houseofdota:base
     build:
       context: .
+    env_file:
+      - .env
 
   app:
     image: houseofdota:app
@@ -14,6 +16,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.app
+    env_file:
+      - .env
     volumes:
       - /opt/houseofdota/files:/usr/src/houseofdota/files
     depends_on:
@@ -30,6 +34,8 @@ services:
   beat:
     image: houseofdota:base
     command: ["celery", "-A", "houseofdota", "beat"]
+    env_file:
+      - .env
     links:
       - redis
     depends_on:
@@ -39,7 +45,9 @@ services:
     image: houseofdota:base
     command: ["celery", "-A", "houseofdota", "worker", "-l", "debug", "--autoscale=5,3"]
     volumes:
-      - /opt/houseofdota/files:/usr/src/houseofdota/files
+      - ./files/nn/:/usr/src/houseofdota/files/nn/
+    env_file:
+      - .env
     links:
       - redis
     depends_on:
