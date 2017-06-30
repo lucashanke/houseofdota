@@ -1,0 +1,56 @@
+version: '2.1'
+
+services:
+
+  base:
+    image: houseofdota:base
+    build:
+      context: .
+
+  app:
+    image: houseofdota:app
+    ports:
+      - 80:80
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    volumes:
+      - /opt/houseofdota/files:/usr/src/houseofdota/files
+    depends_on:
+      - base
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    build:
+      context: .
+      dockerfile: Dockerfile.redis
+
+  beat:
+    image: houseofdota:base
+    command: ["celery", "-A", "houseofdota", "beat"]
+    links:
+      - redis
+    depends_on:
+      - base
+
+  worker:
+    image: houseofdota:base
+    command: ["celery", "-A", "houseofdota", "worker", "-l", "debug", "--autoscale=5,3"]
+    volumes:
+      - /opt/houseofdota/files:/usr/src/houseofdota/files
+    links:
+      - redis
+    depends_on:
+      - base
+
+  app_test:
+    image: houseofdota:app
+    command: ["./manage.py", "test"]
+    volumes:
+      - /opt/houseofdota/files:/usr/src/houseofdota/files
+    links:
+      - redis
+    depends_on:
+      - app
