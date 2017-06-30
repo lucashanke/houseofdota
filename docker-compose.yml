@@ -38,6 +38,7 @@ services:
       - redis
     depends_on:
       - base
+    restart: always
 
   worker:
     image: houseofdota:base
@@ -50,6 +51,7 @@ services:
       - redis
     depends_on:
       - base
+    restart: always
 
   database:
     image: database
