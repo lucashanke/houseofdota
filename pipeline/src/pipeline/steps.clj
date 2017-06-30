@@ -18,7 +18,7 @@
     (lambdacd-git/clone ctx repo-uri ref cwd)))
 
 (defn build [args ctx]
-  (shell/bash ctx (:cwd args) "docker-compose build base app_test beat worker"))
+  (shell/bash ctx (:cwd args) "docker-compose build base beat worker"))
 
 (defn run-python-unit-tests [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests up --abort-on-container-exit python_unit_tests"))
