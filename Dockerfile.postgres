@@ -1,0 +1,5 @@
+FROM postgres:9.4.4
+
+ENV POSTGRES_PASSWORD=hod123
+ENV POSTGRES_USER=hoduser_test
+ENV POSTGRES_DB=houseofdota_test
