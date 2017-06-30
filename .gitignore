@@ -1,7 +1,7 @@
 .coverage
 cover/
 app/migrations
-files/nn/
+files/nn/*
 *.pyc
 venv
 *__pyccache__
@@ -13,3 +13,4 @@ public/bundles
 *.DS_Store
 coverage
 celerybeat.pid
+.env
