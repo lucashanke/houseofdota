@@ -53,12 +53,29 @@ services:
     depends_on:
       - base
 
+  database:
+    image: database
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    ports:
+      - 5432:5432
+
   app_test:
     image: houseofdota:base
     command: ["./manage.py", "test"]
+    environment:
+      - DJANGO_SETTINGS_MODULE=houseofdota.settings
+      - DATABASE_NAME=houseofdota
+      - DATABASE_USER=hoduser_test
+      - DATABASE_PASSWORD=hod123
+      - DATABASE_HOST=database
     volumes:
       - /opt/houseofdota/files:/usr/src/houseofdota/files
     links:
       - redis
+      - database
     depends_on:
       - base
+      - redis
+      - database
