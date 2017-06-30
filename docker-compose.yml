@@ -33,7 +33,7 @@ services:
     image: houseofdota:base
     command: ["celery", "-A", "houseofdota", "beat"]
     env_file:
-      - .env
+      - /opt/houseofdota/.env
     links:
       - redis
     depends_on:
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./opt/houseofdota/files/nn:/usr/src/houseofdota/files/nn/
     env_file:
-      - .env
+      - /opt/houseofdota/.env
     links:
       - redis
     depends_on:
