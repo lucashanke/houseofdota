@@ -60,6 +60,8 @@ services:
       dockerfile: Dockerfile.postgres
     ports:
       - 5432:5432
+    healthcheck:
+      test: "exit 0"
 
   app_test:
     image: houseofdota:base
@@ -73,9 +75,7 @@ services:
     volumes:
       - /opt/houseofdota/files:/usr/src/houseofdota/files
     links:
-      - redis
       - database
     depends_on:
-      - base
-      - redis
-      - database
+      database:
+        condition: service_healthy
