@@ -21,7 +21,7 @@
   (shell/bash ctx (:cwd args) "docker-compose build base app_test beat worker"))
 
 (defn run-python-unit-tests [args ctx]
-  (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests up --abort-on-container-exit app_test"))
+  (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests up --abort-on-container-exit python_unit_tests"))
 
 (defn stops-linked-containers [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests down"))
