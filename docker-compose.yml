@@ -59,7 +59,7 @@ services:
       context: .
       dockerfile: Dockerfile.postgres
     ports:
-      - 5431:5432
+      - 5431:5431
     healthcheck:
       test: "exit 0"
 
@@ -72,7 +72,7 @@ services:
       - DATABASE_USER=hoduser_test
       - DATABASE_PASSWORD=hod123
       - DATABASE_HOST=database
-      - DATABASE_PORT=5431
+      - DATABASE_PORT=5432
     volumes:
       - /opt/houseofdota/files:/usr/src/houseofdota/files
     links:
