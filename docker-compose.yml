@@ -18,8 +18,6 @@ services:
       dockerfile: Dockerfile.app
     env_file:
       - .env
-    volumes:
-      - /opt/houseofdota/files:/usr/src/houseofdota/files
     depends_on:
       - base
 
@@ -45,7 +43,7 @@ services:
     image: houseofdota:base
     command: ["celery", "-A", "houseofdota", "worker", "-l", "debug", "--autoscale=5,3"]
     volumes:
-      - ./files/nn/:/usr/src/houseofdota/files/nn/
+      - ./opt/houseofdota/files/nn:/usr/src/houseofdota/files/nn/
     env_file:
       - .env
     links:
