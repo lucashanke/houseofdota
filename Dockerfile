@@ -15,5 +15,4 @@ COPY infra/ ./infra
 COPY public/ ./public
 COPY .babelrc manage.py webpack.config.js ./
 
-MKDIR /var/log/
-MKDIR /var/log/celery
+RUN mkdir /var/log/celery
