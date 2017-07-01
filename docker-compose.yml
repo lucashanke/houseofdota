@@ -33,7 +33,7 @@ services:
     image: houseofdota:base
     command: ["celery", "-A", "houseofdota", "beat", "--logfile", "/var/log/celery/beat.log"]
     volumes:
-      - /var/log/celery/
+      - /var/log/celery/:/var/log/celery/
     env_file:
       - /opt/houseofdota/.env
     links:
@@ -47,7 +47,7 @@ services:
     command: ["celery", "-A", "houseofdota", "worker", "-l", "debug", "--autoscale=5,3", "--logfile", "/var/log/celery/worker.log"]
     volumes:
       - /opt/houseofdota/files/nn:/usr/src/houseofdota/files/nn/
-      - /var/log/celery/
+      - /var/log/celery/:/var/log/celery/
     env_file:
       - /opt/houseofdota/.env
     links:
