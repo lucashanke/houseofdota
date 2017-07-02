@@ -77,10 +77,14 @@ services:
       - DATABASE_PASSWORD=hod123
       - DATABASE_HOST=database
       - DATABASE_PORT=5432
-    volumes:
-      - /opt/houseofdota/files:/usr/src/houseofdota/files
     links:
       - database
     depends_on:
       database:
         condition: service_healthy
+
+  js_unit_tests:
+    image: houseofdota:app
+    command: ["npm", "run", "test"]
+    depends_on:
+      - app
