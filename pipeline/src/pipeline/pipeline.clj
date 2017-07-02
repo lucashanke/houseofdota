@@ -12,10 +12,8 @@
     (with-workspace
       clone
       build
-      (in-parallel
-        run-python-unit-tests
-        run-js-unit-tests
-      )
+      run-python-unit-tests
+      run-js-unit-tests
       stops-linked-containers
       deploy-beat-worker
 )))
