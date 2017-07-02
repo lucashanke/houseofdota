@@ -1,7 +1,5 @@
 # House o' Dota
 
-![alt text](https://houseofdota.herokuapp.com/static/images/slide2-min.png)
-
 House of Dota is a application where you can get several kinds of insights regarding the game current meta. What are the heroes most picked? What are the most powerful hero combos? Besides, we have a recommendation system in order to help you choosing the best hero for your line-up.
 
 ## Running with Docker
