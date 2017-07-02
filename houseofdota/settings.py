@@ -25,7 +25,7 @@ SECRET_KEY = 'i$lltyox7(c)wm25q7qp(zj18iohq_uhn(2zn$=j)wer9+tq#9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['houseofdota.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['apphost', 'localhost', '127.0.0.1']
 
 # Application definition
 
