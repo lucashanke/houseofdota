@@ -5,7 +5,8 @@ services:
   base:
     image: houseofdota:base
     build:
-      context: ./containers
+      context: .
+      dockerfile: ./containers/Dockerfile
     env_file:
       - .env
 
@@ -14,8 +15,8 @@ services:
     ports:
       - 80:80
     build:
-      context: ./containers/
-      dockerfile: Dockerfile.app
+      context: .
+      dockerfile: ./containers/Dockerfile.app
     env_file:
       - /opt/houseofdota/.env
     depends_on:
@@ -26,8 +27,8 @@ services:
     ports:
       - 6379:6379
     build:
-      context: ./containers/
-      dockerfile: Dockerfile.redis
+      context: .
+      dockerfile: ./containers/Dockerfile.redis
 
   beat:
     image: houseofdota:base
@@ -59,8 +60,8 @@ services:
   database:
     image: database
     build:
-      context: ./containers/
-      dockerfile: Dockerfile.postgres
+      context: .
+      dockerfile: ./containers/Dockerfile.postgres
     ports:
       - 5431:5431
     healthcheck:
