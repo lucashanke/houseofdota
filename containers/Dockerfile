@@ -11,7 +11,6 @@ RUN pip install -r requirements.txt
 COPY app/ ./app
 COPY files/ ./files
 COPY houseofdota/ ./houseofdota
-COPY infra/ ./infra
 COPY public/ ./public
 COPY .babelrc manage.py webpack.config.js ./
 
