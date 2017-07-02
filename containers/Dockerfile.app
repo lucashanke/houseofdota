@@ -1,6 +1,6 @@
 FROM houseofdota:base
 
-COPY package.json ./
+COPY ../package.json ./
 RUN npm install
 RUN npm run build
 
