@@ -6,12 +6,16 @@
 
 (def pipeline-def
   `(
-     (either
-       manualtrigger/wait-for-manual-trigger
-       wait-for-repo)
-     (with-workspace
-       clone
-       build
-       run-python-unit-tests
-       stops-linked-containers
-       deploy-beat-worker)))
+    (either
+      manualtrigger/wait-for-manual-trigger
+      wait-for-repo)
+    (with-workspace
+      clone
+      build
+      (in-parallel
+        run-python-unit-tests
+        run-js-unit-tests
+      )
+      stops-linked-containers
+      deploy-beat-worker
+)))
