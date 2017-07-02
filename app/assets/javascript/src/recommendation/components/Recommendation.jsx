@@ -290,7 +290,7 @@ export default class Recommendation extends React.Component {
               label="Reset"
               className="reset-button"
               backgroundColor="#263238"
-              labelColor="white"
+              labelColor="#fff"
             />
           </ToolbarGroup>
         </Toolbar>
