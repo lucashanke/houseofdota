@@ -25,3 +25,4 @@ git+https://github.com/pybrain/pybrain.git@0.3.3
 lxml
 bs4
 apyori
+whitenoise
