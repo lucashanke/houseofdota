@@ -49,14 +49,14 @@ class StatisticsBusiness:
         return heroes_rates
 
     def _update_hero_statistics(self, hero_ids, patch_statistics, rates):
-        hero_statistics = patch_statistics.bundle_rules.filter(hero_bundle=hero_ids)
-        hero_statistics = BundleAssociationRules(hero_bundle=hero_ids,
-            patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
-        hero_statistics.pick_rate = rates['pick_rate'][hero_ids]
-        hero_statistics.win_rate = rates['confidence'][hero_ids]/rates['pick_rate'][hero_ids]
-        hero_statistics.confidence = rates['confidence'][hero_ids]
-        hero_statistics.bundle_size = len(hero_ids.split(','))
-        hero_statistics.save()
+        bundle_rules = patch_statistics.bundle_rules.filter(hero_bundle=hero_ids)
+        bundle_rules = BundleAssociationRules(hero_bundle=hero_ids,
+            patch_statistics=patch_statistics) if len(bundle_rules) == 0 else bundle_rules[0]
+        bundle_rules.pick_rate = rates['pick_rate'][hero_ids]
+        bundle_rules.win_rate = rates['confidence'][hero_ids]/rates['pick_rate'][hero_ids]
+        bundle_rules.confidence = rates['confidence'][hero_ids]
+        bundle_rules.bundle_size = len(hero_ids.split(','))
+        bundle_rules.save()
 
     def _update_counters_statistics(self, patch_statistics, matches):
         counter_rates = self._extract_counter_picks_from_association_rules(matches)
@@ -82,14 +82,14 @@ class StatisticsBusiness:
 
     def _update_counter_statistics(self, hero_ids, patch_statistics, rates):
         counter, hero = [abs(int(hero_id)) for hero_id in hero_ids.split(',')]
-        counter_statistics = patch_statistics.counter_rules.filter(hero=hero).filter(counter=counter)
-        counter_statistics = CounterAssociationRules(hero=hero,counter=counter,
-            patch_statistics=patch_statistics) if len(counter_statistics) == 0 else counter_statistics[0]
-        counter_statistics.support = rates['support'][hero_ids]
-        counter_statistics.confidence_counter = rates['confidence_counter'][hero_ids]
-        counter_statistics.confidence_hero = rates['confidence_hero'][hero_ids]
-        counter_statistics.lift = rates['lift'][hero_ids]
-        counter_statistics.save()
+        counter_rules = patch_statistics.counter_rules.filter(hero=hero).filter(counter=counter)
+        counter_rules = CounterAssociationRules(hero=hero,counter=counter,
+            patch_statistics=patch_statistics) if len(counter_rules) == 0 else counter_rules[0]
+        counter_rules.support = rates['support'][hero_ids]
+        counter_rules.confidence_counter = rates['confidence_counter'][hero_ids]
+        counter_rules.confidence_hero = rates['confidence_hero'][hero_ids]
+        counter_rules.lift = rates['lift'][hero_ids]
+        counter_rules.save()
 
     def _construct_matches_list(self, matches, counter_pick=False):
         if counter_pick:
@@ -114,8 +114,8 @@ class StatisticsBusiness:
         return len(hero_ids) == 2 and hero_ids[0] < 0 and hero_ids[1] > 0
 
     @staticmethod
-    def get_heroes_bundle(heroes_statistics):
+    def get_heroes_bundle(bundle_rule):
         return [ {
             'id': abs(int(hero_id)),
             'name': HEROES_LIST[abs(int(hero_id))]['localized_name']
-        } for hero_id in heroes_statistics.hero_bundle.split(',') ]
+        } for hero_id in bundle_rule.hero_bundle.split(',') ]
