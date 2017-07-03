@@ -15,7 +15,7 @@ from app.services.experiments_service import ExperimentsService
     name="collect Very High AP and RAP matches task",
 )
 def task_collect_very_high_ap_rap_matches():
-    very_high_collector = MatchesCollector(3, ap=True, rap=True)
+    very_high_collector = MatchesCollector(1, ap=True, rap=True)
     matches_recorded = very_high_collector.collect_from_last_100()
 
 @periodic_task(
