@@ -17,7 +17,7 @@ class StatisticsService:
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        for heroes_statistics in patch_statistics.heroes_statistics.filter(
+        for heroes_statistics in patch_statistics.bundle_rules.filter(
                 bundle_size=bundle_size).order_by(order_by)[:150]:
             heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
@@ -45,7 +45,7 @@ class StatisticsService:
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        heroes_statistics = patch_statistics.heroes_statistics
+        heroes_statistics = patch_statistics.bundle_rules
 
         for size in reversed(range(len(hero_ids)+1)):
             if len(statistics) >= 10:
@@ -108,7 +108,7 @@ class StatisticsService:
         if criteria is 'counter_coefficient':
             order_by = 'lift'
 
-        hero_counters = patch_statistics.counter_statistics.filter(hero=hero_id).order_by("-{}".format(order_by))[:limit]
+        hero_counters = patch_statistics.counter_rules.filter(hero=hero_id).order_by("-{}".format(order_by))[:limit]
 
         for counter in hero_counters :
             hero_data = {

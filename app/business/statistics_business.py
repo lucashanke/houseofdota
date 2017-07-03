@@ -49,7 +49,7 @@ class StatisticsBusiness:
         return heroes_rates
 
     def _update_hero_statistics(self, hero_ids, patch_statistics, rates):
-        hero_statistics = patch_statistics.heroes_statistics.filter(hero_bundle=hero_ids)
+        hero_statistics = patch_statistics.bundle_rules.filter(hero_bundle=hero_ids)
         hero_statistics = BundleAssociationRules(hero_bundle=hero_ids,
             patch_statistics=patch_statistics) if len(hero_statistics) == 0 else hero_statistics[0]
         hero_statistics.pick_rate = rates['pick_rate'][hero_ids]
@@ -82,7 +82,7 @@ class StatisticsBusiness:
 
     def _update_counter_statistics(self, hero_ids, patch_statistics, rates):
         counter, hero = [abs(int(hero_id)) for hero_id in hero_ids.split(',')]
-        counter_statistics = patch_statistics.counter_statistics.filter(hero=hero).filter(counter=counter)
+        counter_statistics = patch_statistics.counter_rules.filter(hero=hero).filter(counter=counter)
         counter_statistics = CounterAssociationRules(hero=hero,counter=counter,
             patch_statistics=patch_statistics) if len(counter_statistics) == 0 else counter_statistics[0]
         counter_statistics.support = rates['support'][hero_ids]

@@ -68,7 +68,7 @@ class PatchStatistics(models.Model):
     match_quantity = models.BigIntegerField()
 
 class BundleAssociationRules(models.Model):
-    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='heroes_statistics')
+    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='bundle_rules')
     hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
     bundle_size = models.IntegerField(default=1)
     pick_rate = models.FloatField(default=0.0)
@@ -76,7 +76,7 @@ class BundleAssociationRules(models.Model):
     confidence = models.FloatField(default=0.0)
 
 class CounterAssociationRules(models.Model):
-    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='counter_statistics')
+    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='counter_rules')
     hero = models.IntegerField()
     counter = models.IntegerField()
     support = models.FloatField(default=0.0)
