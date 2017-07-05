@@ -29,6 +29,7 @@ class StatisticsBusiness:
     def update_patch_statistics(self, matches):
         self._patch_statistics.match_quantity = len(matches)
         self._patch_statistics.save()
+        self.update_pick_associations(matches)
         self.update_bundles_associations(matches)
         self.update_counters_associations(matches)
         return self._patch_statistics
@@ -101,6 +102,38 @@ class StatisticsBusiness:
         previous_counter_rule.delete()
         counter_rule.patch_statistics = self._patch_statistics
         counter_rule.save()
+
+    def update_pick_associations(self, matches):
+        pick_associations = self._extract_pick_association_rules(matches)
+        for pick_association in pick_associations:
+            self._save_pick_rule(pick_association)
+
+    def _extract_pick_association_rules(self, matches):
+        apriori_associations = extract_apriori_association_rules(
+            self._construct_teams_list(matches),
+            StatisticsBusiness.MAX_BUNDLE_SIZE
+        )
+        pick_associations = []
+        for association in apriori_associations:
+            pick_associations.append(self._build_pick_association_rule(association))
+        return pick_associations
+
+    def _build_pick_association_rule(self, association):
+        hero_ids = get_apriori_association_heroes(association)
+        pick_rule = PickAssociationRules(
+            hero_bundle=hero_ids,
+            bundle_size=len(hero_ids.split(',')),
+            support = association.support*2,
+        )
+        return pick_rule
+
+    def _save_pick_rule(self, pick_rule):
+        previous_pick_rule = self._patch_statistics.pick_rules.filter(
+            hero_bundle=pick_rule.hero_bundle
+        )
+        previous_pick_rule.delete()
+        pick_rule.patch_statistics = self._patch_statistics
+        pick_rule.save()
 
     def _construct_matches_list(self, matches, counter_pick=False):
         if counter_pick:
