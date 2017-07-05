@@ -82,5 +82,7 @@ services:
   db_migrate:
     image: houseofdota:app
     command: ["python3", "manage.py", "migrate", "--no-input"]
+    env_file:
+      - /opt/houseofdota/.env
     depends_on:
       - app
