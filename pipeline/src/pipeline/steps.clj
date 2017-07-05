@@ -25,6 +25,9 @@
 (defn run-js-unit-tests [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests up --abort-on-container-exit js_unit_tests"))
 
+(defn migrate-db [args ctx]
+  (shell/bash ctx (:cwd args) "docker-compose -p houseofdota up --abort-on-container-exit db_migrate"))
+
 (defn stops-linked-containers [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests down"))
 

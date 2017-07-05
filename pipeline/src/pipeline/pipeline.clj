@@ -15,5 +15,6 @@
       run-python-unit-tests
       run-js-unit-tests
       stops-linked-containers
+      migrate-db
       deploy-beat-worker
 )))

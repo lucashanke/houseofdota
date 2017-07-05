@@ -88,3 +88,11 @@ services:
     command: ["npm", "run", "test"]
     depends_on:
       - app
+
+  db_migrate:
+    image: houseofdota:base
+    command: ["python3", "manage.py", "migrate"]
+    env_file:
+      - /opt/houseofdota/.env
+    depends_on:
+      - base
