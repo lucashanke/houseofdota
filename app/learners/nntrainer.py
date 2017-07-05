@@ -19,7 +19,6 @@ from app.repositories.match_repository import MatchRepository
 class NNTrainer:
 
     MAX_MATCHES = 150000
-
     NEURAL_NETWORKS_FOLDER = 'files/nn/'
 
     def __init__(self, patch):
