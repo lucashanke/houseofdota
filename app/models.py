@@ -67,6 +67,12 @@ class PatchStatistics(models.Model):
     patch = models.OneToOneField(Patch, on_delete=models.PROTECT, primary_key=True, related_name="statistics")
     match_quantity = models.BigIntegerField()
 
+class PickAssociationRules(models.Model):
+    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='pick_rules')
+    hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
+    bundle_size = models.IntegerField(default=1)
+    support = models.FloatField(default=0.0)
+
 class BundleAssociationRules(models.Model):
     patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='bundle_rules')
     hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
