@@ -5,7 +5,7 @@ from django.db.models import Q
 
 from app.repositories.match_repository import MatchRepository
 from app.repositories.patch_statistics_repository import PatchStatisticsRepository
-from app.business.statistics_business import StatisticsBusiness
+from app.business.statistics_business import StatisticsBusiness, get_heroes_from_association
 from app.util.dota_util import HEROES_LIST
 
 class StatisticsService:
@@ -19,7 +19,7 @@ class StatisticsService:
 
         for heroes_statistics in patch_statistics.bundle_rules.filter(
                 bundle_size=bundle_size).order_by(order_by)[:150]:
-            heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
+            heroes = get_heroes_from_association(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
             confidence = heroes_statistics.confidence
@@ -78,7 +78,7 @@ class StatisticsService:
         ).order_by(criteria)[:10]
 
         for heroes_statistics in bundles:
-            heroes = StatisticsBusiness.get_heroes_bundle(heroes_statistics)
+            heroes = get_heroes_from_association(heroes_statistics)
             pick_rate = heroes_statistics.pick_rate
             win_rate = heroes_statistics.win_rate
             confidence = heroes_statistics.confidence
