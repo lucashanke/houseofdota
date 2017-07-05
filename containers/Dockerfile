@@ -8,6 +8,10 @@ RUN apt-get update & apt-get install -y nodejs
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 
+COPY package.json ./
+RUN npm install
+RUN npm run build
+
 COPY app/ ./app
 COPY files/ ./files
 COPY houseofdota/ ./houseofdota
@@ -15,3 +19,5 @@ COPY public/ ./public
 COPY .babelrc manage.py webpack.config.js ./
 
 RUN mkdir /var/log/celery
+
+CMD gunicorn houseofdota.wsgi -b 0.0.0.0:80 --log-file -

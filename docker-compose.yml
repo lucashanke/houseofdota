@@ -2,25 +2,15 @@ version: '2.1'
 
 services:
 
-  base:
-    image: houseofdota:base
+  app:
+    image: houseofdota:app
     build:
       context: .
       dockerfile: ./containers/Dockerfile
     env_file:
-      - .env
-
-  app:
-    image: houseofdota:app
+      - /opt/houseofdota/.env
     ports:
       - 80:80
-    build:
-      context: .
-      dockerfile: ./containers/Dockerfile.app
-    env_file:
-      - /opt/houseofdota/.env
-    depends_on:
-      - base
 
   redis:
     image: redis
@@ -31,7 +21,7 @@ services:
       dockerfile: ./containers/Dockerfile.redis
 
   beat:
-    image: houseofdota:base
+    image: houseofdota:app
     command: ["celery", "-A", "houseofdota", "beat", "--logfile", "/var/log/celery/beat.log"]
     volumes:
       - /var/log/celery/:/var/log/celery/
@@ -40,11 +30,11 @@ services:
     links:
       - redis
     depends_on:
-      - base
+      - app
     restart: always
 
   worker:
-    image: houseofdota:base
+    image: houseofdota:app
     command: ["celery", "-A", "houseofdota", "worker", "-l", "debug", "--autoscale=5,3", "--logfile", "/var/log/celery/worker.log"]
     volumes:
       - /opt/houseofdota/files/nn:/usr/src/houseofdota/files/nn/
@@ -54,7 +44,7 @@ services:
     links:
       - redis
     depends_on:
-      - base
+      - app
     restart: always
 
   database:
@@ -68,7 +58,7 @@ services:
       test: "exit 0"
 
   python_unit_tests:
-    image: houseofdota:base
+    image: houseofdota:app
     command: ["python3", "manage.py", "test"]
     environment:
       - DJANGO_SETTINGS_MODULE=houseofdota.settings
@@ -90,9 +80,7 @@ services:
       - app
 
   db_migrate:
-    image: houseofdota:base
+    image: houseofdota:app
     command: ["python3", "manage.py", "migrate", "--no-input"]
-    env_file:
-      - /opt/houseofdota/.env
     depends_on:
-      - base
+      - app
