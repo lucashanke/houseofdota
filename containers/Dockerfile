@@ -10,13 +10,14 @@ RUN pip install -r requirements.txt
 
 COPY package.json ./
 RUN npm install
-RUN npm run build
 
 COPY app/ ./app
 COPY files/ ./files
 COPY houseofdota/ ./houseofdota
 COPY public/ ./public
 COPY .babelrc manage.py webpack.config.js ./
+
+RUN npm run build
 
 RUN mkdir /var/log/celery
 
