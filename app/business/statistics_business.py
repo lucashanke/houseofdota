@@ -15,7 +15,7 @@ def get_heroes_from_association(bundle_association_rule):
 
 class StatisticsBusiness:
 
-    MAX_MATCHES = 1
+    MAX_MATCHES = 200000
     MAX_BUNDLE_SIZE = 5
 
     def __init__(self, patch):
