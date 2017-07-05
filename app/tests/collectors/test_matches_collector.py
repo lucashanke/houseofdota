@@ -5,7 +5,8 @@ from django.test import TestCase
 from mock import patch
 from app.collectors.matches_collector import MatchesCollector
 from app.models import Match, Patch
-from app.business.match_business import MatchBusiness
+
+from app.business.statistics_business import create_from_json
 
 class MatchesCollectorTest(TestCase):
     fixtures = ['matches.json']
@@ -15,6 +16,7 @@ class MatchesCollectorTest(TestCase):
         self.all_valid_matches = [
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'lobby_type': 0,
@@ -33,6 +35,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 2,
+                'match_seq_num': 2,
                 'start_time': 1457382708,
                 'game_mode': 22,
                 'lobby_type': 0,
@@ -51,6 +54,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 3,
+                'match_seq_num': 3,
                 'start_time': 1457382710,
                 'game_mode': 1,
                 'lobby_type': 0,
@@ -72,6 +76,7 @@ class MatchesCollectorTest(TestCase):
         self.one_repeated_match = [
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'lobby_type': 0,
@@ -90,6 +95,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 2,
+                'match_seq_num': 2,
                 'start_time': 1457382708,
                 'game_mode': 22,
                 'lobby_type': 0,
@@ -108,6 +114,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'lobby_type': 0,
@@ -129,6 +136,7 @@ class MatchesCollectorTest(TestCase):
         self.one_invalid_match = [
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'lobby_type': 0,
@@ -147,6 +155,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 2,
+                'match_seq_num': 2,
                 'start_time': 1457382708,
                 'game_mode': 22,
                 'lobby_type': 0,
@@ -165,6 +174,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 3,
+                'match_seq_num': 3,
                 'start_time': 1457382710,
                 'game_mode': 1,
                 'lobby_type': 0,
@@ -233,14 +243,16 @@ class MatchesCollectorTest(TestCase):
 
     @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
     @patch.object(MatchesCollector, 'get_gmd_from_api')
-    @patch.object(MatchBusiness, 'create_from_json', autospec=False)
+    @patch('app.collectors.matches_collector.create_from_json')
     def test_get_and_record_detailed_matches_all_new_return_all(self, mock_create, mock_api, mock_check):
         mock_check.return_value = False
         mock_api.side_effect = self.all_valid_matches
         mock_create.return_value = Match()
+
         return_matches = [
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'skill': 3,
@@ -261,6 +273,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 2,
+                'match_seq_num': 2,
                 'start_time': 1457382708,
                 'game_mode': 22,
                 'skill': 3,
@@ -281,6 +294,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 3,
+                'match_seq_num': 3,
                 'start_time': 1457382710,
                 'game_mode': 1,
                 'skill': 3,
@@ -305,7 +319,7 @@ class MatchesCollectorTest(TestCase):
 
     @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
     @patch.object(MatchesCollector, 'get_gmd_from_api')
-    @patch.object(MatchBusiness, 'create_from_json', autospec=False)
+    @patch('app.collectors.matches_collector.create_from_json')
     def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
@@ -313,6 +327,7 @@ class MatchesCollectorTest(TestCase):
         return_matches = [
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'skill': 3,
@@ -333,6 +348,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 2,
+                'match_seq_num': 2,
                 'start_time': 1457382708,
                 'game_mode': 22,
                 'skill': 3,
@@ -357,7 +373,7 @@ class MatchesCollectorTest(TestCase):
 
     @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
     @patch.object(MatchesCollector, 'get_gmd_from_api')
-    @patch.object(MatchBusiness, 'create_from_json', autospec=False)
+    @patch('app.collectors.matches_collector.create_from_json')
     def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
@@ -365,6 +381,7 @@ class MatchesCollectorTest(TestCase):
         return_matches = [
             {
                 'match_id': 1,
+                'match_seq_num': 1,
                 'start_time': 1457382658,
                 'game_mode': 1,
                 'skill': 3,
@@ -385,6 +402,7 @@ class MatchesCollectorTest(TestCase):
             },
             {
                 'match_id': 2,
+                'match_seq_num': 2,
                 'start_time': 1457382708,
                 'game_mode': 22,
                 'skill': 3,

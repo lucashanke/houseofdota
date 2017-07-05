@@ -2,7 +2,7 @@ import itertools
 
 from app.models import *
 from app.learners.apriori import *
-from app.business.match_business import MatchBusiness
+from app.business.match_business import *
 from app.repositories.match_repository import MatchRepository
 from app.repositories.patch_statistics_repository import PatchStatisticsRepository
 from app.util.dota_util import HEROES_LIST
@@ -104,14 +104,14 @@ class StatisticsBusiness:
 
     def _construct_matches_list(self, matches, counter_pick=False):
         if counter_pick:
-            return [ MatchBusiness.get_heroes_list_with_winning_team_info(match) for match in matches ]
+            return [ get_heroes_list_with_winning_team_info(match) for match in matches ]
         else:
-            return [ MatchBusiness.get_heroes_list(match) for match in matches]
+            return [ get_heroes_list(match) for match in matches]
 
     def _construct_teams_list(self, matches):
         return [
-            team for match in matches for team in MatchBusiness.get_teams_heroes_list(match)
+            team for match in matches for team in get_teams_heroes_list(match)
         ]
 
     def _construct_matches_list_for_winning_teams(self, matches):
-        return [ MatchBusiness.get_winning_team_heroes_list(match) for match in matches ]
+        return [ get_winning_team_heroes_list(match) for match in matches ]

@@ -2,7 +2,7 @@ import requests
 
 from dota2py import api
 from app.models import Match, Slot
-from app.business.match_business import MatchBusiness
+from app.business.match_business import create_from_json
 from django.core.exceptions import ObjectDoesNotExist
 
 from app.util.match_util import is_valid_match, get_match_patch
@@ -72,11 +72,6 @@ class MatchesCollector:
         else:
             return matches
 
-    def fill_additional_info_and_record(self, match_json):
-        match_json = self.fill_additional_info(match_json)
-        match = MatchBusiness.create_from_json(match_json)
-        return match
-
     def fill_additional_info(self, match_json):
         match_json['patch'] = get_match_patch(match_json['start_time'])
         match_json['skill'] = self._skill
@@ -85,7 +80,8 @@ class MatchesCollector:
     def check_and_record_match_details(self, gmd, matches_recorded):
         if is_valid_match(gmd, public=self._public, league=self._league, team=self._team,\
                           solo=self._solo, ranked=self._ranked, ap=self._ap, cm=self._cm, ar=self._ar, rap=self._rap):
-            recorded = self.fill_additional_info_and_record(gmd)
+            match_json = self.fill_additional_info(gmd)
+            recorded = create_from_json(match_json)
             if recorded is not None:
                 matches_recorded.append(recorded)
         return matches_recorded
