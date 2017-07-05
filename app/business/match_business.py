@@ -2,7 +2,7 @@ import datetime
 import pytz
 
 from app.models import Match
-from app.business.slot_business import SlotBusiness
+from app.business.slot_business import create_slot_from_json
 from app.util.dota_util import GAME_MODES, LOBBY_TYPES
 
 def create_from_json(match_json):
@@ -31,7 +31,7 @@ def create_from_json(match_json):
     )
     match.save()
     for slot_json in match_json['players']:
-        slot = SlotBusiness.create_from_json(slot_json, match)
+        slot = create_slot_from_json(slot_json, match)
     return match
 
 def get_heroes_list(match):
