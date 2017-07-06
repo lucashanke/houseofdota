@@ -11,10 +11,10 @@ RUN pip install -r requirements.txt
 COPY package.json ./
 RUN npm install
 
-COPY app/ ./app
 COPY files/ ./files
-COPY houseofdota/ ./houseofdota
 COPY public/ ./public
+COPY houseofdota/ ./houseofdota
+COPY app/ ./app
 COPY .babelrc manage.py webpack.config.js ./
 
 RUN npm run build
