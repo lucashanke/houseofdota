@@ -28,7 +28,7 @@ class ExperimentsService:
         heroes_ids = list(HEROES_LIST.keys())
         team=generator.choice(['radiant','dire'])
 
-        first_pick = generator.choice(self._statistics_service.get_heroes_statistics_bundles(1,
+        first_pick = generator.choice(self._statistics_service.get_heroes_bundles_statistics(1,
             order_by=allies_criteria
         )['statistics'][:5])['hero_bundle'][0]['id']
         allies.append(first_pick)
