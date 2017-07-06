@@ -29,6 +29,7 @@ class Match(models.Model):
     radiant_score = models.IntegerField(null=True)
     dire_score = models.IntegerField(null=True)
     analysed = models.BooleanField(default=False)
+    skill = models.IntegerField(default=3)
     pass
 
 
