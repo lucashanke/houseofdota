@@ -3,6 +3,8 @@ import itertools
 from app.models import *
 from app.learners.apriori import *
 from app.business.match_business import *
+from app.business.winning_bundle_statistics_business import *
+
 from app.repositories.match_repository import MatchRepository
 from app.repositories.patch_statistics_repository import PatchStatisticsRepository
 from app.util.dota_util import HEROES_LIST
@@ -15,7 +17,7 @@ def get_heroes_from_association(bundle_association_rule):
 
 class StatisticsBusiness:
 
-    MAX_MATCHES = 200000
+    MAX_MATCHES = 150000
     MAX_BUNDLE_SIZE = 5
 
     def __init__(self, patch):
@@ -32,6 +34,7 @@ class StatisticsBusiness:
         self.update_pick_associations(matches)
         self.update_bundles_associations(matches)
         self.update_counters_associations(matches)
+        self.update_winning_statistics()
         return self._patch_statistics
 
     def update_bundles_associations(self, matches):
@@ -40,18 +43,13 @@ class StatisticsBusiness:
             self._update_bundle_association(hero_ids, heroes_rates)
 
     def _extract_statistics_from_association_rules(self, matches):
-        heroes_rates = { 'pick_rate' : {}, 'win_rate' : {}, 'confidence' : {} }
+        heroes_rates = { 'pick_rate' : {}, 'confidence' : {} }
 
         winning_data = extract_apriori_association_rules(self._construct_matches_list_for_winning_teams(matches), StatisticsBusiness.MAX_BUNDLE_SIZE)
         for winning_association in winning_data:
             hero_ids = get_apriori_association_heroes(winning_association)
             heroes_rates['confidence'][hero_ids] = winning_association.support
-
-        picking_data = extract_apriori_association_rules(self._construct_teams_list(matches), StatisticsBusiness.MAX_BUNDLE_SIZE)
-        for picking_association in picking_data:
-            hero_ids = get_apriori_association_heroes(picking_association)
-            if hero_ids in heroes_rates['confidence'].keys():
-                heroes_rates['pick_rate'][hero_ids] = picking_association.support*2
+            heroes_rates['pick_rate'][hero_ids] = 1
 
         return heroes_rates
 
@@ -134,6 +132,20 @@ class StatisticsBusiness:
         previous_pick_rule.delete()
         pick_rule.patch_statistics = self._patch_statistics
         pick_rule.save()
+
+    def update_winning_statistics(self):
+        print(len(self._patch_statistics.bundle_rules.all()))
+        cont = 0
+        for bundle_association in self._patch_statistics.bundle_rules.all():
+            winning_bundle_statistics = calculate_from_association_rule(bundle_association)
+            if winning_bundle_statistics is not None:
+                previous_statistics = self._patch_statistics.winning_bundles_statistics.filter(
+                    hero_bundle=winning_bundle_statistics.hero_bundle
+                )
+                previous_statistics.delete()
+                winning_bundle_statistics.save()
+                cont = cont + 1
+        print(cont)
 
     def _construct_matches_list(self, matches, counter_pick=False):
         if counter_pick:
