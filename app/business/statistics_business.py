@@ -109,7 +109,8 @@ class StatisticsBusiness:
     def _extract_pick_association_rules(self, matches):
         apriori_associations = extract_apriori_association_rules(
             self._construct_teams_list(matches),
-            StatisticsBusiness.MAX_BUNDLE_SIZE
+            StatisticsBusiness.MAX_BUNDLE_SIZE,
+            min_support=0.00005
         )
         pick_associations = []
         for association in apriori_associations:

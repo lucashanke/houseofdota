@@ -1,7 +1,7 @@
 from apyori import apriori
 
-def extract_apriori_association_rules(matches, max_length):
-    return list(apriori(matches, min_support=0.0001, max_length=max_length))
+def extract_apriori_association_rules(matches, max_length, min_support=0.0001):
+    return list(apriori(matches, min_support=min_support, max_length=max_length))
 
 def get_apriori_association_heroes(association, string=True):
     return str(sorted(association.items)).strip("[]") if string else sorted(association.items)
