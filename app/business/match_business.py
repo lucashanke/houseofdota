@@ -28,6 +28,7 @@ def create_from_json(match_json):
         engine = match_json['engine'], \
         radiant_score = match_json['radiant_score'], \
         dire_score = match_json['dire_score'], \
+        skill = match_json['skill'] \
     )
     match.save()
     for slot_json in match_json['players']:
