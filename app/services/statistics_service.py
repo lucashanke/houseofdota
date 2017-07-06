@@ -13,26 +13,19 @@ class StatisticsService:
     def __init__(self, patch):
         self._patch = patch
 
-    def get_heroes_statistics_bundles(self, bundle_size, order_by='-confidence'):
+    def get_heroes_bundles_statistics(self, bundle_size, order_by='-win_rate'):
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        for heroes_statistics in patch_statistics.bundle_rules.filter(
+        for winning_bundle_statistics in patch_statistics.winning_bundles_statistics.filter(
                 bundle_size=bundle_size).order_by(order_by)[:150]:
-            heroes = get_heroes_from_association(heroes_statistics)
-            pick_rate = heroes_statistics.pick_rate
-            win_rate = heroes_statistics.win_rate
-            confidence = heroes_statistics.confidence
-
-            hero_data = {
-                'id': heroes_statistics.id,
-                'hero_bundle': heroes,
-                'pick_rate' : pick_rate*100,
-                'win_rate': win_rate*100,
-                'confidence': confidence*100
-            }
-            statistics.append(hero_data)
-
+            statistics.append({
+                'id': winning_bundle_statistics.id,
+                'hero_bundle': get_heroes_from_association(winning_bundle_statistics),
+                'pick_rate' : winning_bundle_statistics.pick_rate*100,
+                'win_rate': winning_bundle_statistics.win_rate*100,
+                'confidence': winning_bundle_statistics.frequency*100
+            })
         return {
             'match_quantity' : patch_statistics.match_quantity,
             'statistics' : statistics
@@ -42,30 +35,32 @@ class StatisticsService:
         if len(hero_ids) >= 5:
             return { 'match_quantity': 0, 'statistics' : [] }
 
-        statistics = []
+        recommendations = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
 
-        heroes_statistics = patch_statistics.bundle_rules
+        bundle_association_rules = patch_statistics.bundle_rules
+        pick_association_rules = patch_statistics.pick_rules
 
         for size in reversed(range(len(hero_ids)+1)):
-            if len(statistics) >= 10:
+            if len(recommendations) >= 10:
                 break
             for combination in itertools.combinations(hero_ids, size):
-                if len(statistics) >= 10:
+                if len(recommendations) >= 10:
                     break
-                statistics = statistics + self._get_recommended_for_bundle(
+                recommendations = recommendations + self._get_recommended_for_bundle(
                     combination,
-                    heroes_statistics,
+                    bundle_association_rules,
+                    pick_association_rules,
                     criteria
                 )
 
         return {
             'match_quantity' : patch_statistics.match_quantity,
-            'statistics' : statistics
+            'statistics' : recommendations
         }
 
-    def _get_recommended_for_bundle(self, hero_ids, heroes_statistics, criteria='-confidence'):
-        statistics = []
+    def _get_recommended_for_bundle(self, hero_ids, bundle_rules, pick_rules, criteria='-confidence'):
+        recommendations = []
         q_objects = Q()
         for hero in hero_ids:
             q_objects.add(
@@ -73,27 +68,29 @@ class StatisticsService:
                 Q.AND
             )
 
-        bundles = heroes_statistics.filter(
+        bundle_associations_for_heroes = bundle_rules.filter(
             q_objects, bundle_size=len(hero_ids)+1,
         ).order_by(criteria)[:10]
 
-        for heroes_statistics in bundles:
-            heroes = get_heroes_from_association(heroes_statistics)
-            pick_rate = heroes_statistics.pick_rate
-            win_rate = heroes_statistics.win_rate
-            confidence = heroes_statistics.confidence
-            hero_data = {
-                'id': heroes_statistics.id,
-                'hero_bundle': heroes,
-                'recommended': [hero for hero in heroes if str(hero['id']) not in hero_ids],
-                'pick_rate' : pick_rate*100,
-                'win_rate': win_rate*100,
-                'confidence': confidence*100,
-                'bundle_size': len(hero_ids)+1,
-            }
-            statistics.append(hero_data)
-
-        return statistics
+        for bundle_association in bundle_associations_for_heroes:
+            pick_association = pick_rules.filter(
+                hero_bundle=bundle_association.hero_bundle
+            )
+            if len(pick_association) is not 0:
+                heroes = get_heroes_from_association(bundle_association)
+                pick_rate = pick_association[0].support
+                win_rate = bundle_association.confidence/pick_association[0].support
+                confidence = bundle_association.confidence
+                recommendations.append({
+                    'id': bundle_association.id,
+                    'hero_bundle': heroes,
+                    'recommended': [hero for hero in heroes if str(hero['id']) not in hero_ids],
+                    'pick_rate' : pick_rate*100,
+                    'win_rate': win_rate*100,
+                    'confidence': confidence*100,
+                    'bundle_size': len(hero_ids)+1,
+                })
+        return recommendations
 
 
     def get_hero_counter_pick_statistics(self,
