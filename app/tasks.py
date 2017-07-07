@@ -11,7 +11,7 @@ from app.repositories.patch_repository import PatchRepository
 from app.services.experiments_service import ExperimentsService
 
 @periodic_task(
-    run_every=(crontab(minute='*/10')),
+    run_every=(crontab(minute='*/5')),
     name="collect AP and RAP matches task",
 )
 def task_collect_ap_rap_matches():
@@ -21,11 +21,8 @@ def task_collect_ap_rap_matches():
     high_collector = MatchesCollector(2, ap=True, rap=True)
     high_collector.collect_from_last_100()
 
-    normal_collector = MatchesCollector(1, ap=True, rap=True)
-    normal_collector.collect_from_last_100()
-
 @periodic_task(
-    run_every=(crontab(minute=0, hour=0)),
+    run_every=(crontab(minute=0, hour='0,12')),
     name="update statistics related to the current patch",
 )
 def task_update_statistics():
@@ -90,7 +87,7 @@ def task_random_vs_random_experiments(patch=None):
     print(result)
 
 @periodic_task(
-    run_every=(crontab(minute=0,hour='4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23')),
+    run_every=(crontab(minute=0,hour='4,5,6,7,8,9,10,11,16,17,18,19,20,21,22,23')),
     name="train the neural network for the current patch",
 )
 def task_train_nn_for_current_patch():
