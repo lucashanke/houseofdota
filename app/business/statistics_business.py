@@ -23,6 +23,7 @@ class StatisticsBusiness:
     def __init__(self, patch):
         self._patch = patch
         self._patch_statistics =  PatchStatisticsRepository.fetch_patch_statistics(self._patch)
+        self._previous_iteration = self._patch_statistics.iteration
 
     def update_statistics(self):
         matches = MatchRepository.fetch_from_patch(self._patch, max_matches=StatisticsBusiness.MAX_MATCHES)
@@ -30,10 +31,12 @@ class StatisticsBusiness:
 
     def update_patch_statistics(self, matches):
         self._patch_statistics.match_quantity = len(matches)
+        self._patch_statistics.iteration = self._previous_iteration + 1
         self._patch_statistics.save()
         self.update_pick_associations(matches)
         self.update_bundles_associations(matches)
         self.update_counters_associations(matches)
+        self.remove_old_association_rules()
         self.update_winning_statistics()
         return self._patch_statistics
 
@@ -54,13 +57,13 @@ class StatisticsBusiness:
         return heroes_rates
 
     def _update_bundle_association(self, hero_ids, rates):
-        bundle_association = self._patch_statistics.bundle_rules.filter(hero_bundle=hero_ids)
         bundle_association = BundleAssociationRules(hero_bundle=hero_ids,
-            patch_statistics=self._patch_statistics) if len(bundle_association) == 0 else bundle_association[0]
+            patch_statistics=self._patch_statistics)
         bundle_association.pick_rate = rates['pick_rate'][hero_ids]
         bundle_association.win_rate = rates['confidence'][hero_ids]/rates['pick_rate'][hero_ids]
         bundle_association.confidence = rates['confidence'][hero_ids]
         bundle_association.bundle_size = len(hero_ids.split(','))
+        bundle_association.iteration = self._previous_iteration + 1
         bundle_association.save()
 
     def update_counters_associations(self, matches):
@@ -87,17 +90,12 @@ class StatisticsBusiness:
             support = association.support,
             confidence_counter = association.ordered_statistics[0].confidence,
             confidence_hero = association.ordered_statistics[1].confidence,
-            lift = association.ordered_statistics[0].lift
+            lift = association.ordered_statistics[0].lift,
+            iteration = self._previous_iteration + 1
         )
         return counter_rule
 
     def _save_counter_rule(self, counter_rule):
-        previous_counter_rule = self._patch_statistics.counter_rules.filter(
-            hero=counter_rule.hero
-        ).filter(
-            counter=counter_rule.counter
-        )
-        previous_counter_rule.delete()
         counter_rule.patch_statistics = self._patch_statistics
         counter_rule.save()
 
@@ -123,30 +121,27 @@ class StatisticsBusiness:
             hero_bundle=hero_ids,
             bundle_size=len(hero_ids.split(',')),
             support = association.support*2,
+            iteration = self._previous_iteration + 1
         )
         return pick_rule
 
     def _save_pick_rule(self, pick_rule):
-        previous_pick_rule = self._patch_statistics.pick_rules.filter(
-            hero_bundle=pick_rule.hero_bundle
-        )
-        previous_pick_rule.delete()
         pick_rule.patch_statistics = self._patch_statistics
         pick_rule.save()
 
+    def remove_old_association_rules(self):
+        self._patch_statistics.bundle_rules.filter(iteration=self._previous_iteration).delete()
+        self._patch_statistics.pick_rules.filter(iteration=self._previous_iteration).delete()
+        self._patch_statistics.counter_rules.filter(iteration=self._previous_iteration).delete()
+
     def update_winning_statistics(self):
-        print(len(self._patch_statistics.bundle_rules.all()))
-        cont = 0
         for bundle_association in self._patch_statistics.bundle_rules.all():
             winning_bundle_statistics = calculate_from_association_rule(bundle_association)
-            if winning_bundle_statistics is not None:
-                previous_statistics = self._patch_statistics.winning_bundles_statistics.filter(
-                    hero_bundle=winning_bundle_statistics.hero_bundle
-                )
-                previous_statistics.delete()
-                winning_bundle_statistics.save()
-                cont = cont + 1
-        print(cont)
+            winning_bundle_statistics.iteration = self._previous_iteration + 1
+            winning_bundle_statistics.save()
+        self._patch_statistics.winning_bundles_statistics.filter(
+            iteration=self._previous_iteration
+        ).delete()
 
     def _construct_matches_list(self, matches, counter_pick=False):
         if counter_pick:
