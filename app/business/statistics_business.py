@@ -23,7 +23,10 @@ class StatisticsBusiness:
     def __init__(self, patch):
         self._patch = patch
         self._patch_statistics =  PatchStatisticsRepository.fetch_patch_statistics(self._patch)
-        self._previous_iteration = self._patch_statistics.iteration
+        if self._patch_statistics is not None:
+            self._previous_iteration = self._patch_statistics.iteration
+        else:
+            self._previous_iteration = 0
 
     def update_statistics(self):
         matches = MatchRepository.fetch_from_patch(self._patch, max_matches=StatisticsBusiness.MAX_MATCHES)
