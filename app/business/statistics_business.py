@@ -15,6 +15,20 @@ def get_heroes_from_association(bundle_association_rule):
         'name': HEROES_LIST[abs(int(hero_id))]['localized_name']
     } for hero_id in bundle_association_rule.hero_bundle.split(',') ]
 
+def construct_matches_list(matches, counter_pick=False):
+    if counter_pick:
+        return [ get_heroes_list_with_winning_team_info(match) for match in matches ]
+    else:
+        return [ get_heroes_list(match) for match in matches]
+
+def construct_matches_list_for_winning_teams(matches):
+    return [ get_winning_team_heroes_list(match) for match in matches ]
+
+def construct_teams_list(matches):
+    return [
+        team for match in matches for team in get_teams_heroes_list(match)
+    ]
+
 class StatisticsBusiness:
 
     MAX_MATCHES = 150000
@@ -145,17 +159,3 @@ class StatisticsBusiness:
         self._patch_statistics.winning_bundles_statistics.filter(
             iteration=self._previous_iteration
         ).delete()
-
-    def _construct_matches_list(self, matches, counter_pick=False):
-        if counter_pick:
-            return [ get_heroes_list_with_winning_team_info(match) for match in matches ]
-        else:
-            return [ get_heroes_list(match) for match in matches]
-
-    def _construct_teams_list(self, matches):
-        return [
-            team for match in matches for team in get_teams_heroes_list(match)
-        ]
-
-    def _construct_matches_list_for_winning_teams(self, matches):
-        return [ get_winning_team_heroes_list(match) for match in matches ]
