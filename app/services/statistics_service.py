@@ -108,6 +108,7 @@ class StatisticsService:
         hero_counters = patch_statistics.counter_rules.filter(hero=hero_id).order_by("-{}".format(order_by))[:limit]
 
         for counter in hero_counters :
+            opposite_counter_rule = patch_statistics.counter_rules.filter(counter=hero_id, hero=counter.counter)[0]
             hero_data = {
                 'id': counter.counter,
                 'hero_id': int(hero_id),
@@ -116,7 +117,7 @@ class StatisticsService:
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
-                'counter_coefficient': counter.lift*counter.support*100,
+                'counter_coefficient': counter.lift*counter.support/(opposite_counter_rule.lift*opposite_counter_rule.support)
             }
             counter_picks.append(hero_data)
 
