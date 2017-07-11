@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.core.validators import validate_comma_separated_integer_list
+from app.util.dota_util import HEROES_LIST
 
 class Patch(models.Model):
     version = models.CharField(primary_key=True, max_length=255)
@@ -103,3 +104,9 @@ class WinningBundleStatistics(models.Model):
     win_rate = models.FloatField(default=0.0)
     frequency = models.FloatField(default=0.0)
     iteration = models.IntegerField(default=0)
+
+    def heroes(self):
+        return [ {
+            'id': abs(int(hero_id)),
+            'name': HEROES_LIST[abs(int(hero_id))]['localized_name']
+        } for hero_id in self.hero_bundle.split(',') ]
