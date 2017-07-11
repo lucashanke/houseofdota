@@ -31,7 +31,7 @@ const HeroesStatistics = (props) => {
           { statistics.map( (row) => (
             <TableRow key={row.id}  >
               <TableRowColumn style={{ textAlign: 'center', width: "40%" }}>
-              { row.heroBundle.map( (hero) => (
+              { row.heroes.map( (hero) => (
                 <div style={ { float: "left" } } key={ row.id + hero.id }>
                   <img
                     src={'/static/images/' + hero.id + '.png'}
@@ -42,19 +42,19 @@ const HeroesStatistics = (props) => {
               ))}
               </TableRowColumn>
               <TableRowColumn>
-                { _.round(row.pickRate, 2) }%
+                { _.round(row.pickRate*100, 2) }%
                 <LinearProgress
                   color={ props.orderBy == 'pickRate' ? 'rgb(183, 28, 28)' : ''  }
                   mode="determinate"
-                  value={ _.round(row.pickRate, 2) }
+                  value={ _.round(row.pickRate*100, 2) }
                 />
               </TableRowColumn>
               <TableRowColumn>
-                { _.round(row.winRate, 2) }%
+                { _.round(row.winRate*100, 2) }%
                 <LinearProgress
                   color={ props.orderBy == 'winRate' ? 'rgb(183, 28, 28)' : ''  }
                   mode="determinate"
-                  value={ _.round(row.winRate, 2) } />
+                  value={ _.round(row.winRate*100, 2) } />
               </TableRowColumn>
             </TableRow>
           ))}
