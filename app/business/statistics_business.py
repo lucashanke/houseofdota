@@ -1,5 +1,3 @@
-import itertools
-
 from app.models import *
 from app.learners.apriori import *
 from app.business.match_business import *
