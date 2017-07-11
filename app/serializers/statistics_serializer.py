@@ -12,15 +12,3 @@ class BundleAssociationRulesSerializer(serializers.Serializer):
     match_quantity = serializers.IntegerField()
     patch = serializers.CharField()
     statistics = serializers.ListField(child=WinningBundleStatisticsSerializer())
-
-class CounterAssociationRulesSerializer(serializers.Serializer):
-    match_quantity = serializers.IntegerField()
-    counter_picks = serializers.JSONField()
-
-class ListCounterPickSerializer(serializers.Serializer):
-    results = serializers.ListField(child=CounterAssociationRulesSerializer())
-
-class BundleRecommendationSerializer(serializers.Serializer):
-    match_quantity = serializers.IntegerField()
-    patch = serializers.CharField()
-    statistics = serializers.JSONField()
