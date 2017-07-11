@@ -8,17 +8,17 @@ export default class StatisticsService {
 
   fetchHeroesStatisticsRecommendation(heroes){
     return $.getJSON(
-      '/statistics/heroes/recommend/?hero_ids[]=' +
+      '/recommendation/bundles/?hero_ids[]=' +
         heroes.map(h => h.heroId.toString()).join(',')
     );
   }
 
   fetchCounterStatistics(heroId){
-    return $.getJSON('/statistics/counter?hero_ids[]='+heroId);
+    return $.getJSON('/recommendation/counters?hero_ids[]='+heroId);
   }
 
   fetchEnemiesCounterStatistics(heroes){
-    return $.getJSON('/statistics/counter?hero_ids[]=' +
+    return $.getJSON('/recommendation/counters?hero_ids[]=' +
       heroes.map(h => h.heroId.toString()).join(','));
   }
 
