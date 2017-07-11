@@ -24,7 +24,7 @@ def heroes_statistics_for_bundle(request):
     ).get_bundle_recommendations(
         hero_ids=[] if hero_ids is None else [str(hero) for hero in hero_ids.split(',')]  ,
     )
-    serializer = BundleAssociationRulesSerializer(heroes_statistics)
+    serializer = BundleRecommendationSerializer(heroes_statistics)
     return Response(serializer.data)
 
 @api_view()
