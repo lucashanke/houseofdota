@@ -28,7 +28,7 @@ class ExperimentsService:
         heroes_ids = list(HEROES_LIST.keys())
         team=generator.choice(['radiant','dire'])
 
-        first_pick = generator.choice(self._statistics_service.get_heroes_bundles_statistics(1,
+        first_pick = generator.choice(self._statistics_service.get_winning_bundles_statistics(1,
             order_by=allies_criteria
         )['statistics'][:5])['hero_bundle'][0]['id']
         allies.append(first_pick)
@@ -104,7 +104,7 @@ class ExperimentsService:
         heroes_ids = list(HEROES_LIST.keys())
         team=generator.choice(['radiant','dire'])
 
-        first_pick = generator.choice(self._statistics_service.get_heroes_bundles_statistics(1,
+        first_pick = generator.choice(self._statistics_service.get_winning_bundles_statistics(1,
             order_by=allies_criteria
         )['statistics'][:5])['hero_bundle'][0]['id']
         allies.append(first_pick)
@@ -112,7 +112,7 @@ class ExperimentsService:
 
         while len(enemies) < 5 or len(allies) < 5:
             if len(enemies) < 5:
-                most_successful_heroes = self._statistics_service.get_heroes_bundles_statistics(1,
+                most_successful_heroes = self._statistics_service.get_winning_bundles_statistics(1,
                     order_by='-win_rate'
                 )['statistics']
                 available = []
@@ -190,7 +190,7 @@ class ExperimentsService:
         heroes_ids = list(HEROES_LIST.keys())
         team=generator.choice(['radiant','dire'])
 
-        first_pick = generator.choice(self._statistics_service.get_heroes_bundles_statistics(1,
+        first_pick = generator.choice(self._statistics_service.get_winning_bundles_statistics(1,
             order_by=allies_criteria
         )['statistics'][:5])['hero_bundle'][0]['id']
 

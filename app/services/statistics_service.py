@@ -13,22 +13,14 @@ class StatisticsService:
     def __init__(self, patch):
         self._patch = patch
 
-    def get_heroes_bundles_statistics(self, bundle_size, order_by='-win_rate'):
+    def get_winning_bundles_statistics(self, bundle_size, order_by='-win_rate'):
         statistics = []
         patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
-
-        for winning_bundle_statistics in patch_statistics.winning_bundles_statistics.filter(
-                bundle_size=bundle_size).order_by(order_by)[:150]:
-            statistics.append({
-                'id': winning_bundle_statistics.id,
-                'hero_bundle': get_heroes_from_association(winning_bundle_statistics),
-                'pick_rate' : winning_bundle_statistics.pick_rate*100,
-                'win_rate': winning_bundle_statistics.win_rate*100,
-                'confidence': winning_bundle_statistics.frequency*100
-            })
         return {
             'match_quantity' : patch_statistics.match_quantity,
-            'statistics' : statistics
+            'patch': self._patch.version,
+            'statistics' : patch_statistics.winning_bundles_statistics.filter(
+                    bundle_size=bundle_size).order_by(order_by)[:150]
         }
 
     def get_bundle_recommendations(self, hero_ids, criteria='-confidence'):
