@@ -15,27 +15,3 @@ def heroes_statistics(request):
     )
     serializer = BundleAssociationRulesSerializer(heroes_statistics)
     return Response(serializer.data)
-
-@api_view()
-def heroes_statistics_for_bundle(request):
-    hero_ids = request.query_params.get('hero_ids[]')
-    heroes_statistics = StatisticsService(
-        patch=PatchRepository.fetch_current_patch()
-    ).get_bundle_recommendations(
-        hero_ids=[] if hero_ids is None else [str(hero) for hero in hero_ids.split(',')]  ,
-    )
-    serializer = BundleRecommendationSerializer(heroes_statistics)
-    return Response(serializer.data)
-
-@api_view()
-def counter_pick_statistics(request):
-    hero_ids = request.query_params.get('hero_ids[]')
-    counter_pick_statistics = {
-        'results': StatisticsService(
-            patch=PatchRepository.fetch_current_patch()
-        ).get_counter_pick_statistics(
-            hero_ids=[] if hero_ids is None else [str(hero) for hero in hero_ids.split(',')]  ,
-        ),
-    }
-    serializer = ListCounterPickSerializer(counter_pick_statistics)
-    return Response(serializer.data)
