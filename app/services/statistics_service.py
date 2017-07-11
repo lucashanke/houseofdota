@@ -48,6 +48,7 @@ class StatisticsService:
 
         return {
             'match_quantity' : patch_statistics.match_quantity,
+            'patch': self._patch.version,
             'statistics' : recommendations
         }
 
