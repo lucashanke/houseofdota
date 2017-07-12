@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from app.models import PatchStatistics
 
+
 class PatchStatisticsRepository:
 
     @classmethod

@@ -1,6 +1,7 @@
 from app.models import Patch
 from django.core.exceptions import ObjectDoesNotExist
 
+
 class PatchRepository:
 
     @classmethod

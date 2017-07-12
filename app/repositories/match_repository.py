@@ -1,6 +1,7 @@
 from app.models import Match
 from django.db import connection
 
+
 class MatchRepository:
 
     @staticmethod
@@ -39,5 +40,5 @@ class MatchRepository:
             matches[row[1]] = {}
             matches[row[1]]['played'] = row[0]
         for row in rows_won:
-            matches[row[1]]['won'] =  row[0]
+            matches[row[1]]['won'] = row[0]
         return matches

@@ -1,5 +1,6 @@
 from app.models import NnTrainingResult
 
+
 class NnTrainingResultRepository:
 
     @staticmethod
