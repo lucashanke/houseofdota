@@ -1,14 +1,11 @@
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
-from celery.utils.log import get_task_logger
-import pickle
 
 from app.business.statistics_business import StatisticsBusiness
 from app.collectors.matches_collector import MatchesCollector
 from app.collectors.patches_crawler import PatchesCrawler
 from app.learners.nntrainer import NNTrainer
 from app.repositories.patch_repository import PatchRepository
-from app.services.experiments_service import ExperimentsService
 
 
 @periodic_task(
@@ -46,4 +43,4 @@ def task_train_nn_for_current_patch():
     name="sync Dota 2 patches",
 )
 def task_sync_dota2_patches():
-    new_patches = PatchesCrawler.sync_patches()
+    PatchesCrawler.sync_patches()
