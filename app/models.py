@@ -4,9 +4,11 @@ from django.db import models
 from django.core.validators import validate_comma_separated_integer_list
 from app.util.dota_util import HEROES_LIST
 
+
 class Patch(models.Model):
     version = models.CharField(primary_key=True, max_length=255)
     start_date = models.DateTimeField()
+
 
 class Match(models.Model):
     match_id = models.BigIntegerField(primary_key=True)
@@ -21,10 +23,10 @@ class Match(models.Model):
     barracks_status_dire = models.IntegerField(null=True)
     cluster = models.IntegerField(null=True)
     first_blood_time = models.IntegerField(null=True)
-    lobby_type = models.CharField(max_length=255,null=True)
+    lobby_type = models.CharField(max_length=255, null=True)
     human_players = models.IntegerField(null=True)
     leagueid = models.IntegerField(null=True)
-    game_mode = models.CharField(max_length=255,null=True)
+    game_mode = models.CharField(max_length=255, null=True)
     flags = models.IntegerField(null=True)
     engine = models.IntegerField(null=True)
     radiant_score = models.IntegerField(null=True)
@@ -39,7 +41,10 @@ class Slot(models.Model):
     team = models.CharField(max_length=10)
     account_id = models.BigIntegerField(null=True)
     hero_id = models.IntegerField()
-    items = models.CharField(max_length=255, validators=[validate_comma_separated_integer_list],null=True)
+    items = models.CharField(
+        max_length=255,
+        validators=[validate_comma_separated_integer_list],
+        null=True)
     kills = models.IntegerField(null=True)
     deaths = models.IntegerField(null=True)
     assists = models.IntegerField(null=True)
@@ -55,6 +60,7 @@ class Slot(models.Model):
     tower_damage = models.IntegerField(null=True)
     hero_healing = models.IntegerField(null=True)
 
+
 class NnTrainingResult(models.Model):
     patch = models.ForeignKey(Patch, on_delete=models.PROTECT, related_name='nn_results')
     start_time = models.DateTimeField()
@@ -65,29 +71,50 @@ class NnTrainingResult(models.Model):
     testing_accuracy = models.FloatField()
     radiant_win_test_percentage = models.FloatField()
 
+
 class PatchStatistics(models.Model):
-    patch = models.OneToOneField(Patch, on_delete=models.PROTECT, primary_key=True, related_name="statistics")
+    patch = models.OneToOneField(
+        Patch,
+        on_delete=models.PROTECT,
+        primary_key=True,
+        related_name="statistics")
     match_quantity = models.BigIntegerField()
     iteration = models.IntegerField(default=0)
 
+
 class PickAssociationRules(models.Model):
-    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='pick_rules')
-    hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
+    patch_statistics = models.ForeignKey(
+        PatchStatistics,
+        on_delete=models.PROTECT,
+        related_name='pick_rules')
+    hero_bundle = models.CharField(
+        validators=[validate_comma_separated_integer_list],
+        max_length=255)
     bundle_size = models.IntegerField(default=1)
     support = models.FloatField(default=0.0)
     iteration = models.IntegerField(default=0)
 
+
 class BundleAssociationRules(models.Model):
-    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='bundle_rules')
-    hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
+    patch_statistics = models.ForeignKey(
+        PatchStatistics,
+        on_delete=models.PROTECT,
+        related_name='bundle_rules')
+    hero_bundle = models.CharField(
+        validators=[validate_comma_separated_integer_list],
+        max_length=255)
     bundle_size = models.IntegerField(default=1)
     pick_rate = models.FloatField(default=0.0)
     win_rate = models.FloatField(default=0.0)
     confidence = models.FloatField(default=0.0)
     iteration = models.IntegerField(default=0)
 
+
 class CounterAssociationRules(models.Model):
-    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='counter_rules')
+    patch_statistics = models.ForeignKey(
+        PatchStatistics,
+        on_delete=models.PROTECT,
+        related_name='counter_rules')
     hero = models.IntegerField()
     counter = models.IntegerField()
     support = models.FloatField(default=0.0)
@@ -96,9 +123,15 @@ class CounterAssociationRules(models.Model):
     lift = models.FloatField(default=0.0)
     iteration = models.IntegerField(default=0)
 
+
 class WinningBundleStatistics(models.Model):
-    patch_statistics = models.ForeignKey(PatchStatistics, on_delete=models.PROTECT, related_name='winning_bundles_statistics')
-    hero_bundle = models.CharField(validators=[validate_comma_separated_integer_list], max_length=255)
+    patch_statistics = models.ForeignKey(
+        PatchStatistics,
+        on_delete=models.PROTECT,
+        related_name='winning_bundles_statistics')
+    hero_bundle = models.CharField(
+        validators=[validate_comma_separated_integer_list],
+        max_length=255)
     bundle_size = models.IntegerField(default=1)
     pick_rate = models.FloatField(default=0.0)
     win_rate = models.FloatField(default=0.0)
@@ -106,7 +139,7 @@ class WinningBundleStatistics(models.Model):
     iteration = models.IntegerField(default=0)
 
     def heroes(self):
-        return [ {
+        return [{
             'id': abs(int(hero_id)),
             'name': HEROES_LIST[abs(int(hero_id))]['localized_name']
-        } for hero_id in self.hero_bundle.split(',') ]
+        } for hero_id in self.hero_bundle.split(',')]
