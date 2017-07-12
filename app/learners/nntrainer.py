@@ -16,6 +16,7 @@ from app.util.nn_util import get_nn_input, get_nn_output, get_nn_input_for_line_
 
 from app.repositories.match_repository import MatchRepository
 
+
 class NNTrainer:
 
     MAX_MATCHES = 150000
@@ -61,8 +62,8 @@ class NNTrainer:
             trn_output = net.activateOnDataset(train_data)
             trn_prediction_output = [int(round(n[0])) for n in trn_output]
             trn_result = percentError(trn_prediction_output, train_data['target'])
-            print("epoch: %4d" % trainer.totalepochs, \
-                "  train error: %5.2f%%" % trn_result)
+            print("epoch: %4d" % trainer.totalepochs,
+                  "  train error: %5.2f%%" % trn_result)
 
         self.save_nn(net)
         tst_output = net.activateOnDataset(test_data)
@@ -70,17 +71,16 @@ class NNTrainer:
         tst_result = percentError(tst_prediction_output, test_data['target'])
 
         end_time = datetime.now()
-        radiant_win_test = percentError([False]*len(test_data['target']), test_data['target'])
+        radiant_win_test = percentError([False] * len(test_data['target']), test_data['target'])
 
-        return NnTrainingResult(patch=self._patch, \
-                                start_time=start_time, \
-                                end_time=end_time, \
-                                training_matches=len(train_data), \
-                                testing_matches=len(test_data), \
-                                training_accuracy=100.00-trn_result, \
-                                testing_accuracy=100.00-tst_result, \
+        return NnTrainingResult(patch=self._patch,
+                                start_time=start_time,
+                                end_time=end_time,
+                                training_matches=len(train_data),
+                                testing_matches=len(test_data),
+                                training_accuracy=100.00 - trn_result,
+                                testing_accuracy=100.00 - tst_result,
                                 radiant_win_test_percentage=radiant_win_test)
-
 
     def test(self, matches):
         net = load_nn('current.nn')
