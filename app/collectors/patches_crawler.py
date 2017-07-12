@@ -5,6 +5,7 @@ from operator import itemgetter
 from django.core.exceptions import ObjectDoesNotExist
 from bs4 import BeautifulSoup
 
+
 class PatchesCrawler:
     @staticmethod
     def _crawl():
@@ -26,7 +27,7 @@ class PatchesCrawler:
     @staticmethod
     def is_patch_recorded(version):
         try:
-            return Patch.objects.get(pk=version) != None;
+            return Patch.objects.get(pk=version) is not None
         except ObjectDoesNotExist as e:
             return False
 
@@ -37,7 +38,9 @@ class PatchesCrawler:
         new_patches = []
         for patch in patches_scraped:
             if not PatchesCrawler.is_patch_recorded(patch['version']):
-                patch = Patch(version=patch['version'], start_date=patch['date'])
+                patch = Patch(
+                    version=patch['version'],
+                    start_date=patch['date'])
                 patch.save()
                 new_patches.append(patch)
         return new_patches

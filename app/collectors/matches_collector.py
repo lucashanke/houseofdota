@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from app.util.match_util import is_valid_match, get_match_patch
 
+
 class MatchesCollector:
     """Class responsible to collect Dota2 matches according to the desired filters"""
 
@@ -37,13 +38,13 @@ class MatchesCollector:
         if matches is None:
             return None
         else:
-            print ('%s matches found: ' % len(matches))
+            print('%s matches found: ' % len(matches))
             return self.get_and_record_detailed_matches(matches)
 
     def get_gmh_from_api(self):
         try:
             gmh = api.get_match_history(skill=self._skill,
-                min_players=10)['result']
+                                        min_players=10)['result']
         except requests.exceptions.HTTPError as e:
             return None
 
@@ -78,8 +79,17 @@ class MatchesCollector:
         return match_json
 
     def check_and_record_match_details(self, gmd, matches_recorded):
-        if is_valid_match(gmd, public=self._public, league=self._league, team=self._team,\
-                          solo=self._solo, ranked=self._ranked, ap=self._ap, cm=self._cm, ar=self._ar, rap=self._rap):
+        if is_valid_match(
+                gmd,
+                public=self._public,
+                league=self._league,
+                team=self._team,
+                solo=self._solo,
+                ranked=self._ranked,
+                ap=self._ap,
+                cm=self._cm,
+                ar=self._ar,
+                rap=self._rap):
             match_json = self.fill_additional_info(gmd)
             recorded = create_from_json(match_json)
             if recorded is not None:
@@ -94,11 +104,12 @@ class MatchesCollector:
                 gmd = None
                 while gmd is None:
                     gmd = self.get_gmd_from_api(match_id)
-                matches_recorded = self.check_and_record_match_details(gmd, matches_recorded)
+                matches_recorded = self.check_and_record_match_details(
+                    gmd, matches_recorded)
         return matches_recorded
 
     def check_if_match_is_recorded(self, match_id):
         try:
-            return Match.objects.get(pk=match_id) != None
+            return Match.objects.get(pk=match_id) is not None
         except ObjectDoesNotExist as e:
             return False
