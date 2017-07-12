@@ -1,9 +1,6 @@
-from app.models import Match
 from app.serializers.match_serializer import MatchSerializer
 from app.repositories.match_repository import MatchRepository
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 class MatchViewset(ModelViewSet):
