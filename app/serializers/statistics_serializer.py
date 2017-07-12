@@ -8,7 +8,7 @@ class WinningBundleStatisticsSerializer(serializers.ModelSerializer):
         model = WinningBundleStatistics
         fields = '__all__'
 
-class BundleAssociationRulesSerializer(serializers.Serializer):
+class WinningBundlesStatisticsSerializer(serializers.Serializer):
     match_quantity = serializers.IntegerField()
     patch = serializers.CharField()
     statistics = serializers.ListField(child=WinningBundleStatisticsSerializer())

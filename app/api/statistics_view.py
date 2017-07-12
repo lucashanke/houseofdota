@@ -8,10 +8,12 @@ from app.repositories.patch_repository import PatchRepository
 @api_view()
 def heroes_statistics(request):
     bundle_size = request.query_params.get('bundle_size', 1)
-    heroes_statistics = StatisticsService(
+
+    bundles_statistics = StatisticsService(
         patch=PatchRepository.fetch_current_patch()
     ).get_winning_bundles_statistics(
         bundle_size=bundle_size
     )
-    serializer = BundleAssociationRulesSerializer(heroes_statistics)
+
+    serializer = WinningBundlesStatisticsSerializer(bundles_statistics)
     return Response(serializer.data)
