@@ -1,5 +1,6 @@
 from app.repositories.nn_training_result_repository import NnTrainingResultRepository
 
+
 class NnTrainingResultService:
 
     def __init__(self, patch):
