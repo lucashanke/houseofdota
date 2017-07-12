@@ -5,6 +5,7 @@ from app.util.match_util import check_lobby_type, check_abandon, \
 
 from app.util.dota_util import NUMBER_OF_HEROES
 
+
 class MatchUtilTest(TestCase):
 
     def setUp(self):
@@ -17,7 +18,8 @@ class MatchUtilTest(TestCase):
         self.match_with_ranked_lobby = {'lobby_type': 7}
         self.match_with_invalid_lobby = {'lobby_type': 1}
 
-        self.match_without_abandon_and_selected_hero = {'players': [{'leaver_status': 0, 'hero_id': 1}]}
+        self.match_without_abandon_and_selected_hero = {
+            'players': [{'leaver_status': 0, 'hero_id': 1}]}
         self.match_with_disconnect = {'players': [{'leaver_status': 1}]}
         self.match_with_not_selected_hero = {'players': [{'hero_id': 0}]}
 

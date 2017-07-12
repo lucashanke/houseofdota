@@ -8,6 +8,7 @@ from app.models import Match, Patch
 
 from app.business.statistics_business import create_from_json
 
+
 class MatchesCollectorTest(TestCase):
     fixtures = ['matches.json']
 
@@ -244,7 +245,8 @@ class MatchesCollectorTest(TestCase):
     @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
     @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch('app.collectors.matches_collector.create_from_json')
-    def test_get_and_record_detailed_matches_all_new_return_all(self, mock_create, mock_api, mock_check):
+    def test_get_and_record_detailed_matches_all_new_return_all(
+            self, mock_create, mock_api, mock_check):
         mock_check.return_value = False
         mock_api.side_effect = self.all_valid_matches
         mock_create.return_value = Match()
@@ -315,12 +317,13 @@ class MatchesCollectorTest(TestCase):
             }
         ]
         matches = self.collector.get_and_record_detailed_matches(self.all_valid_matches)
-        self.assertEqual(len(matches),len(return_matches))
+        self.assertEqual(len(matches), len(return_matches))
 
     @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
     @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch('app.collectors.matches_collector.create_from_json')
-    def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(self, mock_create, mock_api, mock_check):
+    def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(
+            self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
         mock_create.return_value = Match()
@@ -374,7 +377,8 @@ class MatchesCollectorTest(TestCase):
     @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
     @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch('app.collectors.matches_collector.create_from_json')
-    def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(self, mock_create, mock_api, mock_check):
+    def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(
+            self, mock_create, mock_api, mock_check):
         mock_check.side_effect = [False, False, True]
         mock_api.side_effect = self.all_valid_matches
         mock_create.return_value = Match()

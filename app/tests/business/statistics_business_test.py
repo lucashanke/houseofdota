@@ -4,6 +4,7 @@ from django.test import TestCase
 from mock import patch
 from app.business.statistics_business import StatisticsBusiness
 
+
 class CounterAssociationExtractionTest(TestCase):
     @patch('app.business.statistics_business.construct_matches_list', autospec=False)
     def test_extract_counter_for_one_match(self, mock_construct):
@@ -40,7 +41,7 @@ class CounterAssociationExtractionTest(TestCase):
         associations = StatisticsBusiness(patch=None).extract_counter_association_rules(3)
         self.assertEqual(associations[0].counter, 41)
         self.assertEqual(associations[0].hero, 1)
-        self.assertEqual(associations[0].support, 1/3)
+        self.assertEqual(associations[0].support, 1 / 3)
         self.assertEqual(associations[0].confidence_counter, 1.0)
         self.assertEqual(associations[0].confidence_hero, 1.0)
         self.assertEqual(associations[0].lift, 3.0)
