@@ -24,7 +24,6 @@ from app.api.statistics_view import *
 from app.api.nn_training_result_view import NnTrainingResultViewset
 from app.api.heroes_view import *
 from app.api.recommendation_view import *
-from app.api.experiments_view import random_experiment
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
