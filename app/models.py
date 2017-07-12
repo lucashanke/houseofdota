@@ -33,7 +33,6 @@ class Match(models.Model):
     dire_score = models.IntegerField(null=True)
     analysed = models.BooleanField(default=False)
     skill = models.IntegerField(default=3)
-    pass
 
 
 class Slot(models.Model):
@@ -142,4 +141,4 @@ class WinningBundleStatistics(models.Model):
         return [{
             'id': abs(int(hero_id)),
             'name': HEROES_LIST[abs(int(hero_id))]['localized_name']
-        } for hero_id in self.hero_bundle.split(',')]
+        } for hero_id in str(self.hero_bundle).split(',')]
