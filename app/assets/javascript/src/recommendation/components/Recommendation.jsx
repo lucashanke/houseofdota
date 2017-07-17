@@ -4,6 +4,7 @@ import Recommended from './Recommended.jsx';
 
 import ContentHolder from '../../components/ContentHolder.jsx';
 import $ from 'jquery';
+import _ from 'lodash';
 
 import { Toolbar, ToolbarGroup, ToolbarTitle,
   ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton, Snackbar } from 'material-ui';
@@ -189,17 +190,19 @@ export default class Recommendation extends React.Component {
   };
 
   constructHeroesOptions() {
-    if (this.state.heroes !== undefined) return this.state.heroes.map(hero => {
-      return {
-        valueKey: hero.heroId,
-        text: hero.localizedName,
-        value: (
-          <MenuItem
-            primaryText={ hero.localizedName } >
-          </MenuItem>
-        ),
-      };
-    });
+    if (this.state.heroes !== undefined) {
+      return _.sortBy(this.state.heroes, ['localizedName']).map(hero => {
+        return {
+          valueKey: hero.heroId,
+          text: hero.localizedName,
+          value: (
+            <MenuItem
+              primaryText={ hero.localizedName } >
+            </MenuItem>
+          ),
+        };
+      });
+    }
     return [];
   }
 
