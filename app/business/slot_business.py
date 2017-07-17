@@ -25,3 +25,4 @@ def create_slot_from_json(slot_json, match):
         hero_healing=slot_json['hero_healing']
     )
     slot.save()
+    return slot

@@ -1,10 +1,13 @@
-from app.models import *
-from app.learners.apriori import *
-from app.business.match_business import *
-from app.business.winning_bundle_statistics_business import *
+from app.models import BundleAssociationRules, CounterAssociationRules, \
+    PickAssociationRules
+from app.learners.apriori import extract_apriori_association_rules, \
+    get_apriori_association_heroes, is_apriori_counter_association
+from app.business.match_business import get_heroes_list, get_heroes_with_winning_team_info, \
+    get_teams_heroes_list, get_winning_team_heroes_list
+from app.business.winning_bundle_statistics_business import calculate_from_association_rule
 
 from app.repositories.match_repository import MatchRepository
-from app.repositories.patch_statistics_repository import PatchStatisticsRepository
+from app.repositories.patch_statistics_repository import fetch_patch_statistics
 from app.util.dota_util import HEROES_LIST
 
 
@@ -17,10 +20,9 @@ def get_heroes_from_association(bundle_association_rule):
 
 def construct_matches_list(matches, counter_pick=False):
     if counter_pick:
-        return [get_heroes_list_with_winning_team_info(
+        return [get_heroes_with_winning_team_info(
             match) for match in matches]
-    else:
-        return [get_heroes_list(match) for match in matches]
+    return [get_heroes_list(match) for match in matches]
 
 
 def construct_matches_list_for_winning_teams(matches):
@@ -40,7 +42,7 @@ class StatisticsBusiness:
 
     def __init__(self, patch):
         self._patch = patch
-        self._patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(
+        self._patch_statistics = fetch_patch_statistics(
             self._patch)
         if self._patch_statistics is not None:
             self._previous_iteration = self._patch_statistics.iteration
@@ -69,6 +71,7 @@ class StatisticsBusiness:
         for bundle_association in bundle_associations:
             self._save_bundle_rule(bundle_association)
 
+    #pylint: disable=invalid-name
     def extract_bundle_association_rules(self, matches):
         bundle_associations = []
         winning_associations = extract_apriori_association_rules(
@@ -100,6 +103,7 @@ class StatisticsBusiness:
         for counter_association in counter_associations:
             self._save_counter_rule(counter_association)
 
+    #pylint: disable=invalid-name
     def extract_counter_association_rules(self, matches):
         apriori_associations = extract_apriori_association_rules(
             construct_matches_list(matches, counter_pick=True), 2

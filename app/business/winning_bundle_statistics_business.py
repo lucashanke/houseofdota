@@ -1,4 +1,4 @@
-from app.models import *
+from app.models import WinningBundleStatistics
 
 
 def calculate_from_association_rule(bundle_association_rule):
@@ -17,5 +17,4 @@ def calculate_from_association_rule(bundle_association_rule):
             win_rate=bundle_association_rule.confidence /
             pick_association[0].support,
             frequency=bundle_association_rule.confidence)
-    else:
-        return None
+    return None
