@@ -1,11 +1,9 @@
 from app.util.dota_util import HEROES_LIST
 
-class HeroesService:
-
-    def get_heroes(self):
-        return {
-            'heroes': [ {
-                'hero_id': hero_id,
-                'localized_name': HEROES_LIST[hero_id]['localized_name']
-            } for hero_id in HEROES_LIST.keys() ]
-        }
+def get_heroes():
+    return {
+        'heroes': [{
+            'hero_id': hero_id,
+            'localized_name': hero['localized_name']
+        } for hero_id, hero in HEROES_LIST.items()]
+    }

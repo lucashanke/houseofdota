@@ -3,9 +3,12 @@ from __future__ import division
 import itertools
 from django.db.models import Q
 
-from app.repositories.patch_statistics_repository import PatchStatisticsRepository
+from app.repositories.patch_statistics_repository import fetch_patch_statistics
 from app.business.statistics_business import get_heroes_from_association
 from app.util.dota_util import HEROES_LIST
+
+def counter_coefficient(counter_rule, opposite_rule):
+    return counter_rule.lift*counter_rule.support/(opposite_rule.lift*opposite_rule.support)
 
 class RecommendationService:
 
@@ -14,10 +17,10 @@ class RecommendationService:
 
     def get_bundle_recommendations(self, hero_ids, criteria='-confidence'):
         if len(hero_ids) >= 5:
-            return { 'match_quantity': 0, 'statistics' : [] }
+            return {'match_quantity': 0, 'statistics' : []}
 
         recommendations = []
-        patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
+        patch_statistics = fetch_patch_statistics(self._patch)
 
         bundle_association_rules = patch_statistics.bundle_rules
         pick_association_rules = patch_statistics.pick_rules
@@ -41,7 +44,9 @@ class RecommendationService:
             'statistics' : recommendations
         }
 
-    def _get_recommended_for_bundle(self, hero_ids, bundle_rules, pick_rules, criteria='-confidence'):
+    #pylint: disable=no-self-use
+    def _get_recommended_for_bundle(self, hero_ids, bundle_rules, pick_rules, \
+                                    criteria='-confidence'):
         recommendations = []
         q_objects = Q()
         for hero in hero_ids:
@@ -75,22 +80,23 @@ class RecommendationService:
         return recommendations
 
 
-    def get_hero_counters_recommendations(self,
-                                         hero_id,
-                                         criteria='lift',
-                                         limit=len(HEROES_LIST.keys())
-                                         ):
+    def _get_hero_counters_recommendations(self,
+                                           hero_id,
+                                           criteria='lift',
+                                           limit=len(HEROES_LIST.keys())):
         counter_picks = []
-        patch_statistics = PatchStatisticsRepository.fetch_patch_statistics(self._patch)
+        patch_statistics = fetch_patch_statistics(self._patch)
 
         order_by = criteria
-        if criteria is 'counter_coefficient':
+        if criteria == 'counter_coefficient':
             order_by = 'lift'
 
-        hero_counters = patch_statistics.counter_rules.filter(hero=hero_id).order_by("-{}".format(order_by))[:limit]
+        hero_counters = patch_statistics.counter_rules.filter(
+            hero=hero_id).order_by("-{}".format(order_by))[:limit]
 
-        for counter in hero_counters :
-            opposite_counter_rule = patch_statistics.counter_rules.filter(counter=hero_id, hero=counter.counter)[0]
+        for counter in hero_counters:
+            opposite_counter_rule = patch_statistics.counter_rules.filter(
+                counter=hero_id, hero=counter.counter)[0]
             hero_data = {
                 'id': counter.counter,
                 'hero_id': int(hero_id),
@@ -99,7 +105,7 @@ class RecommendationService:
                 'confidence_hero': counter.confidence_hero*100,
                 'confidence_counter': counter.confidence_counter*100,
                 'lift': counter.lift,
-                'counter_coefficient': counter.lift*counter.support/(opposite_counter_rule.lift*opposite_counter_rule.support)
+                'counter_coefficient': counter_coefficient(counter, opposite_counter_rule)
             }
             counter_picks.append(hero_data)
 
@@ -110,5 +116,5 @@ class RecommendationService:
 
     def get_counter_recommendations(self, hero_ids):
         return list(map(
-            lambda hero: self.get_hero_counters_recommendations(hero_id=hero, limit=10), hero_ids
+            lambda hero: self._get_hero_counters_recommendations(hero_id=hero, limit=10), hero_ids
         ))
