@@ -1,8 +1,6 @@
 import os
 import pickle
-import time
 from datetime import datetime
-from functools import reduce
 
 from pybrain import SigmoidLayer
 from pybrain.datasets import SupervisedDataSet
@@ -10,9 +8,10 @@ from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.utilities import percentError
 
-from app.models import NnTrainingResult, Patch
+from app.models import NnTrainingResult
 from app.util.dota_util import NUMBER_OF_HEROES
-from app.util.nn_util import get_nn_input, get_nn_output, get_nn_input_for_line_up, get_nn_input_for_full_line_up
+from app.util.nn_util import get_nn_input, get_nn_output, get_nn_input_for_line_up, \
+    get_nn_input_for_full_line_up
 
 from app.repositories.match_repository import MatchRepository
 
@@ -28,18 +27,19 @@ class NNTrainer:
 
     @staticmethod
     def _build_dataset(matches):
-        ds = SupervisedDataSet(NUMBER_OF_HEROES, 1)
+        dataset = SupervisedDataSet(NUMBER_OF_HEROES, 1)
         for match in matches:
-            ds.addSample(get_nn_input(match), get_nn_output(match))
-        return ds
+            dataset.addSample(get_nn_input(match), get_nn_output(match))
+        return dataset
 
+    #pylint: disable=too-many-locals
     def train(self):
         start_time = datetime.now()
 
         matches = MatchRepository.fetch_from_patch(self._patch, max_matches=NNTrainer.MAX_MATCHES)
 
-        ds = NNTrainer._build_dataset(matches)
-        test_data, train_data = ds.splitWithProportion(0.3)
+        dataset = NNTrainer._build_dataset(matches)
+        test_data, train_data = dataset.splitWithProportion(0.3)
 
         net = self.load_nn()
 
@@ -81,34 +81,6 @@ class NNTrainer:
                                 training_accuracy=100.00 - trn_result,
                                 testing_accuracy=100.00 - tst_result,
                                 radiant_win_test_percentage=radiant_win_test)
-
-    def test(self, matches):
-        net = load_nn('current.nn')
-
-        if net is None:
-            return 100
-        else:
-            ds = NNTrainer._build_dataset(matches)
-            output = net.activateOnDataset(ds)
-            prediction_output = [int(round(n[0])) for n in output]
-            result = percentError(prediction_output, ds['target'])
-            return result
-
-    def print_nn_info(self, net):
-        for mod in net.modules:
-            print("Module:" + mod.name)
-            if mod.paramdim > 0:
-                print("\t--parameters:" + mod.params)
-            for conn in net.connections[mod]:
-                print("\t-connection to " + conn.outmod.name)
-                if conn.paramdim > 0:
-                    print("\t\t- parameters " + str(conn.params))
-            if hasattr(net, "recurrentConns"):
-                print("Recurrent connections")
-                for conn in net.recurrentConns:
-                    print("-", conn.inmod.name, " to", conn.outmod.name)
-                    if conn.paramdim > 0:
-                        print("- parameters", conn.params)
 
     def get_result_for_line_up(self, team, allies, enemies, hero):
         net = self.load_nn()
