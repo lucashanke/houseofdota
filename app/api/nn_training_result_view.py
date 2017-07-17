@@ -1,5 +1,3 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from app.serializers.nn_training_result_serializer import NnTrainingResultSerializer

@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from app.services.statistics_service import StatisticsService
-from app.serializers.statistics_serializer import *
+from app.serializers.statistics_serializer import WinningBundlesStatisticsSerializer
 from app.repositories.patch_repository import PatchRepository
 
 @api_view()
