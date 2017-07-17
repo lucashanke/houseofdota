@@ -1,10 +1,10 @@
-from lxml import html
-from app.models import Patch
-import requests
 from operator import itemgetter
+import requests
+
 from django.core.exceptions import ObjectDoesNotExist
 from bs4 import BeautifulSoup
 
+from app.models import Patch
 
 class PatchesCrawler:
     @staticmethod
@@ -20,7 +20,7 @@ class PatchesCrawler:
             if len(columns) > 3:
                 version = columns[0].get_text().rstrip().strip()
                 date = columns[2].get_text().rstrip().strip()
-                if date is not '-':
+                if date != '-':
                     patches.append({"version": version, "date": date})
         return patches
 
@@ -28,7 +28,7 @@ class PatchesCrawler:
     def is_patch_recorded(version):
         try:
             return Patch.objects.get(pk=version) is not None
-        except ObjectDoesNotExist as e:
+        except ObjectDoesNotExist:
             return False
 
     @staticmethod
