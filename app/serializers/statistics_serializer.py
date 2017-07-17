@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from app.models import WinningBundleStatistics
-from app.business.statistics_business import get_heroes_from_association
 
-
+#pylint: disable=abstract-method
 class WinningBundleStatisticsSerializer(serializers.ModelSerializer):
     heroes = serializers.JSONField()
 
@@ -10,7 +9,7 @@ class WinningBundleStatisticsSerializer(serializers.ModelSerializer):
         model = WinningBundleStatistics
         fields = '__all__'
 
-
+#pylint: disable=abstract-method
 class WinningBundlesStatisticsSerializer(serializers.Serializer):
     match_quantity = serializers.IntegerField()
     patch = serializers.CharField()
