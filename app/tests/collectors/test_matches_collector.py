@@ -6,7 +6,7 @@ from mock import patch
 from app.collectors.matches_collector import MatchesCollector
 from app.models import Match, Patch
 
-from app.business.statistics_business import create_from_json
+from app.business.match_business import create_from_json
 
 
 class MatchesCollectorTest(TestCase):
@@ -242,7 +242,7 @@ class MatchesCollectorTest(TestCase):
         self.assertEqual(self.collector.fill_additional_info({'start_time': 1472314312}),
                          {'start_time': 1472314312, 'patch': Patch.objects.get(pk='6.88b'), 'skill': 3})
 
-    @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
+    @patch('app.collectors.matches_collector.check_if_match_is_recorded')
     @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch('app.collectors.matches_collector.create_from_json')
     def test_get_and_record_detailed_matches_all_new_return_all(
@@ -319,7 +319,7 @@ class MatchesCollectorTest(TestCase):
         matches = self.collector.get_and_record_detailed_matches(self.all_valid_matches)
         self.assertEqual(len(matches), len(return_matches))
 
-    @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
+    @patch('app.collectors.matches_collector.check_if_match_is_recorded')
     @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch('app.collectors.matches_collector.create_from_json')
     def test_get_and_record_detailed_matches_one_repeated_return_list_with_two(
@@ -374,7 +374,7 @@ class MatchesCollectorTest(TestCase):
         matches = self.collector.get_and_record_detailed_matches(self.one_repeated_match)
         self.assertEqual(len(matches), len(return_matches))
 
-    @patch.object(MatchesCollector, 'check_if_match_is_recorded', autospec=True)
+    @patch('app.collectors.matches_collector.check_if_match_is_recorded')
     @patch.object(MatchesCollector, 'get_gmd_from_api')
     @patch('app.collectors.matches_collector.create_from_json')
     def test_get_and_record_detailed_matches_one_invalid_return_list_with_two(
