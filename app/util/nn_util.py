@@ -6,13 +6,13 @@ def get_nn_input(match):
 
 
 def convert_slots(slots):
-    input = [0] * NUMBER_OF_HEROES
+    nn_input = [0] * NUMBER_OF_HEROES
     for slot in slots:
         if slot.team == 'radiant':
-            input[slot.hero_id - 1] = 1
+            nn_input[slot.hero_id - 1] = 1
         else:
-            input[slot.hero_id - 1] = -1
-    return input
+            nn_input[slot.hero_id - 1] = -1
+    return nn_input
 
 
 def get_nn_output(match):
@@ -20,23 +20,23 @@ def get_nn_output(match):
 
 
 def get_nn_input_for_line_up(team, allies, enemies, hero):
-    input = [0] * NUMBER_OF_HEROES
+    nn_input = [0] * NUMBER_OF_HEROES
     allies_value = 1 if team == 'radiant' else -1
     enemies_value = -allies_value
     for ally in allies:
-        input[ally - 1] = allies_value
+        nn_input[ally - 1] = allies_value
     for enemy in enemies:
-        input[enemy - 1] = enemies_value
-    input[hero - 1] = allies_value
-    return input
+        nn_input[enemy - 1] = enemies_value
+    nn_input[hero - 1] = allies_value
+    return nn_input
 
 
 def get_nn_input_for_full_line_up(team, allies, enemies):
-    input = [0] * NUMBER_OF_HEROES
+    nn_input = [0] * NUMBER_OF_HEROES
     allies_value = 1 if team == 'radiant' else -1
     enemies_value = -allies_value
     for ally in allies:
-        input[ally - 1] = allies_value
+        nn_input[ally - 1] = allies_value
     for enemy in enemies:
-        input[enemy - 1] = enemies_value
-    return input
+        nn_input[enemy - 1] = enemies_value
+    return nn_input
