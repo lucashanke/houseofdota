@@ -162,7 +162,7 @@ HEROES_LIST = {
     },
     42: {
         "name": "skeleton_king",
-        "localized_name": "Skeleton King"
+        "localized_name": "Wraith King"
     },
     43: {
         "name": "death_prophet",
@@ -359,7 +359,7 @@ HEROES_LIST = {
     },
     91: {
         "name": "wisp",
-        "localized_name": "Wisp"
+        "localized_name": "Io"
     },
     92: {
         "name": "visage",
