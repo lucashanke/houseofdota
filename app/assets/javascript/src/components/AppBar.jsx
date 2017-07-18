@@ -5,6 +5,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import appTheme from '../AppTheme.js';
 import AppMenu from './AppMenu.jsx';
 
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+
 export default class AppBar extends React.Component {
 
   constructor(props) {
@@ -31,6 +36,31 @@ export default class AppBar extends React.Component {
     });
   }
 
+  loginInfo() {
+    if (USER_AUTHENTICATED === "true"){
+      return (
+        <div className="user-info">
+          <span>{USER_NAME}</span>
+          <IconMenu
+              iconButtonElement={
+                <IconButton iconStyle={{color:'white', fontSize:"20px"}}><MoreVertIcon /></IconButton>
+              }
+              targetOrigin={{horizontal: 'right', vertical: 'top'}}
+              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+            >
+            <MenuItem primaryText="Logout" href="/logout" />
+          </IconMenu>
+        </div>
+      );
+    }
+    return (
+      <a className="login-link" href={LOGIN_URL}>
+        <img
+          src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png"/>
+      </a>
+    )
+  }
+
   render() {
     return (
       <MuiThemeProvider muiTheme={ appTheme } >
@@ -39,6 +69,7 @@ export default class AppBar extends React.Component {
             title="HOUSE o' DOTA"
             className='app-bar'
             onLeftIconButtonTouchTap={this.handleTouchTap} >
+            {this.loginInfo()}
             <img className='logo' src='/static/images/logo_dota.png'/>
           </Bar>
           <Popover

@@ -21,7 +21,12 @@
         ga('send', 'pageview');
 
       </script>
-      <div id="app-bar" ></div>
+      <script language="javascript">
+        var USER_AUTHENTICATED = "{{user.is_authenticated|yesno:"true,false"}}";
+        var USER_NAME = "{{user.first_name}}";
+        var LOGIN_URL = "{% url "social:begin" "steam" %}";
+      </script>
+      <div id="app-bar"></div>
 
       <div id="content" >
           {% block content %}{% endblock %}

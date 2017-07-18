@@ -3,6 +3,7 @@ body {
   background-color: #eee;
 
   .app-bar {
+
     h1 {
       font-weight: bold !important;
     }
@@ -11,6 +12,16 @@ body {
       height: 3em;
       margin: .5em;
     }
+
+    .user-info {
+      color: white;
+    }
+
+    .login-link {
+      height: 2em;
+      margin: 1em;
+    }
+
   }
 }
 
