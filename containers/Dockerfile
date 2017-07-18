@@ -15,6 +15,8 @@ COPY files/ ./files
 COPY public/ ./public
 COPY houseofdota/ ./houseofdota
 COPY app/ ./app
+COPY authentication/ ./authentication
+
 COPY .babelrc manage.py webpack.config.js ./
 
 RUN npm run build
