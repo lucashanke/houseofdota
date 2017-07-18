@@ -26,3 +26,4 @@ lxml
 bs4
 apyori
 whitenoise
+social-auth-app-django
