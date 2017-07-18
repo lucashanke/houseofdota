@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
+from django.contrib.auth.decorators import login_required
 
 from app.api.match_viewset import MatchViewset
 from app.api.statistics_view import *
 from app.api.nn_training_result_view import NnTrainingResultViewset
 from app.api.heroes_view import *
 from app.api.recommendation_view import *
+from authentication.views import *
 
 router = routers.SimpleRouter()
 router.register(r'matches', MatchViewset)
@@ -39,6 +41,9 @@ urlpatterns = [
     url(r'^recommendation/counters/$', counter_recommendations_for_hero),
     url(r'^statistics/$', TemplateView.as_view(template_name='statistics.html')),
     url(r'^statistics/heroes/$', heroes_statistics),
+    url(r'^oauth/', include('social_django.urls')),
+    url(r'^logout', login_required(LogoutView.as_view(), login_url='/'), name='logout')
 ]
+
 urlpatterns += router.urls
 urlpatterns += staticfiles_urlpatterns()
