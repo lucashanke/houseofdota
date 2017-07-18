@@ -37,7 +37,7 @@ def construct_teams_list(matches):
 
 class StatisticsBusiness:
 
-    MAX_MATCHES = 150000
+    MAX_MATCHES = 300000
     MAX_BUNDLE_SIZE = 5
 
     def __init__(self, patch):
