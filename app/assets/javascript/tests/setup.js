@@ -14,6 +14,9 @@ global.navigator = {
   userAgent: 'node.js'
 };
 
+global.window.USER_AUTHENTICATED = "false";
+global.window.LOGIN_URL = "/login";
+
 // from mocha-jsdom https://github.com/rstacruz/mocha-jsdom/blob/master/index.js#L80
 function propagateToGlobal (window) {
   for (let key in window) {
