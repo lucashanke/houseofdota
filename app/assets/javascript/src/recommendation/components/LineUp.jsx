@@ -2,8 +2,6 @@ import React from 'react';
 import { GridList, GridTile, IconButton } from 'material-ui';
 import Clear from 'material-ui/svg-icons/content/clear';
 
-
-
 const styles = {
   titleStyle: {
     color: '#fff',
@@ -19,9 +17,11 @@ const styles = {
     padding: 5,
   },
   wrapper: {
-    width: '49%',
+    width: '46%',
     display: 'inline-block',
-    padding: '0.5%',
+    paddingLeft: '2%',
+    paddingRight: '2%',
+    paddingTop: '2%',
     textAlign: 'center',
     background: '-moz-linear-gradient(270deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
     background: '-webkit-gradient(linear, left top, left bottom, color-stop(0%, #E8E8E8), color-stop(80%, #37474F), color-stop(100%, #37474F))',
