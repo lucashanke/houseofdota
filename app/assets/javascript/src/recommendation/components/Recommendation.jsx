@@ -17,8 +17,6 @@ const initialState = {
   selectedAllies: [],
   selectedEnemies: [],
   heroes: [],
-  searchAlly: '',
-  searchEnemy: '',
   recommendedAllies: null,
   recommendedCounters: null,
 }
@@ -90,7 +88,6 @@ export default class Recommendation extends React.Component {
     this.setState({
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedAllies: this.state.selectedAllies.concat(hero),
-      searchAlly: '',
     }, () => {
       this.requestBundleRecommendations();
     });
@@ -106,7 +103,6 @@ export default class Recommendation extends React.Component {
     this.setState({
       heroes: this.state.heroes.filter((h) => h.heroId !== heroId),
       selectedAllies: this.state.selectedAllies.concat(hero),
-      searchAlly: '',
     }, () => {
       this.requestBundleRecommendations();
     });
@@ -117,7 +113,6 @@ export default class Recommendation extends React.Component {
     this.setState({
       heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
       selectedEnemies: this.state.selectedEnemies.concat(hero),
-      searchEnemy: '',
     }, () => {
       this.requestCounterRecommendations();
     });
@@ -131,8 +126,6 @@ export default class Recommendation extends React.Component {
       heroes: this.state.heroes.concat(hero),
       selectedEnemies: this.state.selectedEnemies.filter((h) => h.heroId !== heroId),
       selectedAllies: this.state.selectedAllies.filter((h) => h.heroId !== heroId),
-      searchAlly: '',
-      searchEnemy: '',
     }, () => {
       this.requestBundleRecommendations();
       this.requestCounterRecommendations();
