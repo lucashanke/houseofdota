@@ -32,11 +32,13 @@ const styles = {
   }
 };
 
+const MAX_TEAM_SIZE = 5;
+
 export default class LineUp extends React.Component {
 
-  getUndefinedHeroesTiles(quantity) {
+  getUndefinedHeroesTiles(heroesDefined) {
     const tiles = [];
-    for(let i = 0; i < quantity; i++){
+    for(let i = 0; i < MAX_TEAM_SIZE-heroesDefined; i++){
       tiles.push((
         <GridTile
           titleStyle={styles.titleStyle}
@@ -75,14 +77,13 @@ export default class LineUp extends React.Component {
                 <img src={'/static/images/' + ally.heroId + '.png'} />
               </GridTile>
             ))}
-            {this.getUndefinedHeroesTiles(5-this.props.allies.length)}
+            {this.getUndefinedHeroesTiles(this.props.allies.length)}
           </GridList>
         </div>
-
         <div style={styles.wrapper}>
           ENEMIES
           <GridList style={styles.gridList} cols={5} cellHeight={120}>
-            {this.getUndefinedHeroesTiles(5-this.props.enemies.length)}
+            {this.getUndefinedHeroesTiles(this.props.enemies.length)}
             {this.props.enemies.map((enemy) => (
               <GridTile
                 style={{borderRadius:'16px'}}
