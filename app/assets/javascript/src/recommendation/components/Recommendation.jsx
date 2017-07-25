@@ -1,13 +1,13 @@
 import React from 'react';
-import LineUp from './LineUp.jsx';
-import Recommended from './Recommended.jsx';
-
-import ContentHolder from '../../components/ContentHolder.jsx';
 import $ from 'jquery';
 import _ from 'lodash';
-
 import { Toolbar, ToolbarGroup, ToolbarTitle,
   ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton, Snackbar } from 'material-ui';
+
+import ContentHolder from '../../components/ContentHolder.jsx';
+import LineUp from './LineUp.jsx';
+import Recommended from './Recommended.jsx';
+import LineUpSelection from './LineUpSelection.jsx';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
 
 const MAX_TEAM_SIZE = 5;
@@ -178,35 +178,6 @@ export default class Recommendation extends React.Component {
     });
   }
 
-  handleUpdateInputAlly(searchText) {
-    this.setState({
-      searchAlly: searchText,
-    });
-  };
-
-  handleUpdateInputEnemy(searchText) {
-    this.setState({
-      searchEnemy: searchText,
-    });
-  };
-
-  constructHeroesOptions() {
-    if (this.state.heroes !== undefined) {
-      return _.sortBy(this.state.heroes, ['localizedName']).map(hero => {
-        return {
-          valueKey: hero.heroId,
-          text: hero.localizedName,
-          value: (
-            <MenuItem
-              primaryText={hero.localizedName}
-            />
-          ),
-        };
-      });
-    }
-    return [];
-  }
-
   recommendationWasFetched() {
     return this.state.recommendedCounters !== null && this.state.recommendedCounters.length > 0 &&
       this.state.recommendedAllies !== null && this.state.recommendedAllies.length > 0;
@@ -251,41 +222,13 @@ export default class Recommendation extends React.Component {
     return (
       <div>
       <ContentHolder>
-        <Toolbar>
-          <ToolbarGroup>
-            <FontIcon className="material-icons"
-              style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
-            <AutoComplete
-              ref={(c)=>{ this.allySelection = c; }}
-              filter={AutoComplete.fuzzyFilter}
-              openOnFocus={true}
-              dataSource={this.constructHeroesOptions()}
-              hintText="Select an Ally"
-              searchText={this.state.searchAlly}
-              disabled={this.state.selectedAllies.length === MAX_TEAM_SIZE}
-              onUpdateInput={this.handleUpdateInputAlly.bind(this)}
-              onNewRequest={this.selectAlly.bind(this)}
-              menuProps={{desktop: true, maxHeight: 200}}/>
-            <ToolbarSeparator />
-          </ToolbarGroup>
-          <ToolbarTitle text="Line-Up Selection"/>
-          <ToolbarGroup>
-            <ToolbarSeparator />
-            <FontIcon className="material-icons"
-              style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
-            <AutoComplete
-              ref={(c)=>{ this.enemySelection = c; }}
-              filter={AutoComplete.fuzzyFilter}
-              openOnFocus={true}
-              dataSource={this.constructHeroesOptions()}
-              hintText="Select an Enemy"
-              searchText={this.state.searchEnemy}
-              disabled={this.state.selectedEnemies.length === MAX_TEAM_SIZE}
-              onUpdateInput={this.handleUpdateInputEnemy.bind(this)}
-              onNewRequest={this.selectEnemy.bind(this)}
-              menuProps={{desktop: true, maxHeight: 200}}/>
-          </ToolbarGroup>
-        </Toolbar>
+        <LineUpSelection
+          disableAllySelection={this.state.selectedAllies.length === MAX_TEAM_SIZE}
+          disableEnemySelection={this.state.selectedEnemies.length === MAX_TEAM_SIZE}
+          availableHeroes={this.state.heroes}
+          onAllySelection={this.selectAlly.bind(this)}
+          onEnemySelection={this.selectEnemy.bind(this)}
+        />
         <LineUp
           allies={this.state.selectedAllies}
           enemies={this.state.selectedEnemies}
