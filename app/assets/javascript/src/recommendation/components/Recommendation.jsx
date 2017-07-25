@@ -6,8 +6,8 @@ import { Toolbar, ToolbarGroup, ToolbarTitle,
 
 import ContentHolder from '../../components/ContentHolder.jsx';
 import LineUp from './LineUp.jsx';
-import RecommendedHeroes from './RecommendedHeroes.jsx';
 import LineUpSelection from './LineUpSelection.jsx';
+import Recommended from './Recommended.jsx';
 import { getAllies, getCounters } from '../recommendation.js';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
 
@@ -143,36 +143,6 @@ export default class Recommendation extends React.Component {
   }
 
   render() {
-    let recommendedAllies = null;
-    if (this.state.recommendedAllies && !this.fullLineUp()) {
-      recommendedAllies = (
-        <ContentHolder style={{width: '42.5%', marginRight: '2.5%'}}>
-          <Toolbar>
-            <ToolbarTitle text="Recommended based on Allies"/>
-          </Toolbar>
-          <RecommendedHeroes
-            recommended={this.state.recommendedAllies}
-            onPickAction={this.handleTapOfRecommended.bind(this)}
-          />
-        </ContentHolder>
-      );
-    }
-
-    let recommendedCounters = null;
-    if (this.state.recommendedCounters && !this.fullLineUp()) {
-      recommendedCounters = (
-        <ContentHolder style={{width: '42.5%', marginLeft: '2.5%', float: 'right'}}>
-          <Toolbar>
-            <ToolbarTitle text="Recommended based on Enemies"/>
-          </Toolbar>
-          <RecommendedHeroes
-            recommended={this.state.recommendedCounters}
-            onPickAction={this.handleTapOfRecommended.bind(this)}
-          />
-        </ContentHolder>
-      );
-    }
-
     return (
       <div>
       <ContentHolder>
@@ -200,8 +170,12 @@ export default class Recommendation extends React.Component {
           </ToolbarGroup>
         </Toolbar>
       </ContentHolder>
-      {recommendedAllies}
-      {recommendedCounters}
+      <Recommended
+        recommendedAllies={this.state.recommendedAllies}
+        recommendedCounters={this.state.recommendedCounters}
+        onTapOfRecommended={this.handleTapOfRecommended.bind(this)}
+        fullLineUp={this.fullLineUp()}
+      />
       <ContentHolder>
         <Snackbar
           open={this.recommendationWasFetched() || this.fullLineUp()}
