@@ -10,11 +10,12 @@ import { Toolbar, ToolbarGroup, ToolbarTitle,
   ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton, Snackbar } from 'material-ui';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
 
+const MAX_TEAM_SIZE = 5;
+
 const initialState = {
   selectedAllies: [],
   selectedEnemies: [],
   heroes: [],
-  team: 'radiant',
   searchAlly: '',
   searchEnemy: '',
   recommendedAllies: null,
@@ -78,7 +79,7 @@ export default class Recommendation extends React.Component {
   }
 
   fullLineUp() {
-    return this.state.selectedAllies.length === 5;
+    return this.state.selectedAllies.length === MAX_TEAM_SIZE;
   }
 
   getCounters(results) {
@@ -197,8 +198,8 @@ export default class Recommendation extends React.Component {
           text: hero.localizedName,
           value: (
             <MenuItem
-              primaryText={ hero.localizedName } >
-            </MenuItem>
+              primaryText={hero.localizedName}
+            />
           ),
         };
       });
@@ -255,14 +256,16 @@ export default class Recommendation extends React.Component {
             <FontIcon className="material-icons"
               style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
             <AutoComplete
+              ref={(c)=>{ this.allySelection = c; }}
               filter={AutoComplete.fuzzyFilter}
               openOnFocus={true}
               dataSource={this.constructHeroesOptions()}
               hintText="Select an Ally"
               searchText={this.state.searchAlly}
-              disabled={this.state.selectedAllies.length === 5}
+              disabled={this.state.selectedAllies.length === MAX_TEAM_SIZE}
               onUpdateInput={this.handleUpdateInputAlly.bind(this)}
-              onNewRequest={this.selectAlly.bind(this)} />
+              onNewRequest={this.selectAlly.bind(this)}
+              menuProps={{desktop: true, maxHeight: 200}}/>
             <ToolbarSeparator />
           </ToolbarGroup>
           <ToolbarTitle text="Line-Up Selection"/>
@@ -271,14 +274,16 @@ export default class Recommendation extends React.Component {
             <FontIcon className="material-icons"
               style={{ marginRight: '0.5em' }}>person_pin</FontIcon>
             <AutoComplete
+              ref={(c)=>{ this.enemySelection = c; }}
               filter={AutoComplete.fuzzyFilter}
               openOnFocus={true}
-              dataSource={ this.constructHeroesOptions() }
+              dataSource={this.constructHeroesOptions()}
               hintText="Select an Enemy"
               searchText={this.state.searchEnemy}
-              disabled={this.state.selectedEnemies.length === 5}
+              disabled={this.state.selectedEnemies.length === MAX_TEAM_SIZE}
               onUpdateInput={this.handleUpdateInputEnemy.bind(this)}
-              onNewRequest={this.selectEnemy.bind(this)} />
+              onNewRequest={this.selectEnemy.bind(this)}
+              menuProps={{desktop: true, maxHeight: 200}}/>
           </ToolbarGroup>
         </Toolbar>
         <LineUp
