@@ -8,6 +8,7 @@ import ContentHolder from '../../components/ContentHolder.jsx';
 import LineUp from './LineUp.jsx';
 import Recommended from './Recommended.jsx';
 import LineUpSelection from './LineUpSelection.jsx';
+import { getAllies, getCounters } from '../recommendation.js';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
 
 const MAX_TEAM_SIZE = 5;
@@ -49,7 +50,9 @@ export default class Recommendation extends React.Component {
     $.when(
       this.statisticsService.fetchHeroesStatisticsRecommendation(this.state.selectedAllies)
     ).done(response => {
-      this.setState({ recommendedAllies: this.getAllies(response.statistics) })
+      this.setState({
+        recommendedAllies: getAllies(response.statistics, this.getUnavailableHeroes())
+      });
     });
   }
 
@@ -59,8 +62,8 @@ export default class Recommendation extends React.Component {
       this.statisticsService.fetchEnemiesCounterStatistics(this.state.selectedEnemies)
     ).done(response => {
       this.setState({
-        recommendedCounters: this.getCounters(response.results),
-      })
+        recommendedCounters: getCounters(response.results, this.getUnavailableHeroes()),
+      });
     });
   }
 
@@ -80,48 +83,6 @@ export default class Recommendation extends React.Component {
 
   fullLineUp() {
     return this.state.selectedAllies.length === MAX_TEAM_SIZE;
-  }
-
-  getCounters(results) {
-    let counters = results.reduce((allCounters, heroCounter) => {
-      return allCounters.concat(heroCounter.counterPicks);
-    }, [])
-    counters = _.orderBy( counters ,['counterCoefficient'], ['desc']);
-    const unavailableCounters = this.getUnavailableHeroes();
-    let selectedCounters = [];
-    for (let i = 0; i < counters.length; i++){
-      const counterId = counters[i].id;
-      if(!unavailableCounters.includes(counterId)) {
-        if(!selectedCounters.map(s => s.id).includes(counterId)) {
-          selectedCounters.push({
-            id: counters[i].id,
-            name: counters[i].name,
-            counterFor: 1,
-          });
-        } else {
-          selectedCounters.filter(c => c.id === counterId)[0].counterFor++;
-        }
-      }
-    }
-    return selectedCounters.slice(0,5);
-  }
-
-  getAllies(bundles) {
-    const orderedBundles = _.orderBy(bundles, ['bundleSize','confidence'], ['desc', 'desc']);
-    const unavailableAllies = this.getUnavailableHeroes();
-    let selectedRecommended = [];
-    for (let i = 0; i < orderedBundles.length && selectedRecommended.length < 5; i++){
-      const recommendedId = orderedBundles[i].recommended[0].id;
-      if(!unavailableAllies.includes(recommendedId)
-        && !selectedRecommended.map(s => s.id).includes(recommendedId)) {
-          selectedRecommended.push({
-            id: orderedBundles[i].recommended[0].id,
-            name: orderedBundles[i].recommended[0].name,
-            bundleSize: orderedBundles[i].bundleSize,
-          });
-      }
-    }
-    return selectedRecommended;
   }
 
   selectAlly(chosen, index) {
