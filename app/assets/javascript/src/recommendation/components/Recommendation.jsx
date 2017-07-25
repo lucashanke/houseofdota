@@ -6,7 +6,7 @@ import { Toolbar, ToolbarGroup, ToolbarTitle,
 
 import ContentHolder from '../../components/ContentHolder.jsx';
 import LineUp from './LineUp.jsx';
-import Recommended from './Recommended.jsx';
+import RecommendedHeroes from './RecommendedHeroes.jsx';
 import LineUpSelection from './LineUpSelection.jsx';
 import { getAllies, getCounters } from '../recommendation.js';
 import StatisticsService from '../../statistics/services/StatisticsService.js';
@@ -19,7 +19,7 @@ const initialState = {
   heroes: [],
   recommendedAllies: null,
   recommendedCounters: null,
-}
+};
 
 export default class Recommendation extends React.Component {
 
@@ -150,7 +150,7 @@ export default class Recommendation extends React.Component {
           <Toolbar>
             <ToolbarTitle text="Recommended based on Allies"/>
           </Toolbar>
-          <Recommended
+          <RecommendedHeroes
             recommended={this.state.recommendedAllies}
             onPickAction={this.handleTapOfRecommended.bind(this)}
           />
@@ -165,7 +165,7 @@ export default class Recommendation extends React.Component {
           <Toolbar>
             <ToolbarTitle text="Recommended based on Enemies"/>
           </Toolbar>
-          <Recommended
+          <RecommendedHeroes
             recommended={this.state.recommendedCounters}
             onPickAction={this.handleTapOfRecommended.bind(this)}
           />

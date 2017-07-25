@@ -29,7 +29,7 @@ const styles = {
   },
 };
 
-export default class Recommended extends React.Component {
+export default class RecommendedHeroes extends React.Component {
 
   getUndefinedHeroesTiles(quantity) {
     const tiles = [];
@@ -100,7 +100,7 @@ export default class Recommended extends React.Component {
   }
 }
 
-Recommended.propTypes = {
+RecommendedHeroes.propTypes = {
   recommended: React.PropTypes.array.isRequired,
   onPickAction: React.PropTypes.func.isRequired,
 }
