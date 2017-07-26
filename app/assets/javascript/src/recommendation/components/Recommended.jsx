@@ -21,7 +21,7 @@ const Recommended = (props) => {
   }
 
   let recommendedCounters = null;
-  if (props.recommendedCounters && !this.fullLineUp()) {
+  if (props.recommendedCounters && !props.fullLineUp) {
     recommendedCounters = (
       <ContentHolder style={{width: '42.5%', marginLeft: '2.5%', float: 'right'}}>
         <Toolbar>
