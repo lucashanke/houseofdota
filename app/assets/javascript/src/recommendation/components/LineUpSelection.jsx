@@ -38,6 +38,16 @@ export default class LineUpSelection extends React.Component {
     return [];
   }
 
+  onAllySelection(chosen, index) {
+    this.props.onAllySelection(chosen.valueKey);
+    this.setState(initialState);
+  }
+
+  onEnemySelection(chosen, index) {
+    this.props.onEnemySelection(chosen.valueKey);
+    this.setState(initialState);
+  }
+
   handleUpdateInputAlly(searchText) {
     this.setState({
       searchAlly: searchText,
@@ -65,7 +75,7 @@ export default class LineUpSelection extends React.Component {
             searchText={this.state.searchAlly}
             disabled={this.props.disableAllySelection}
             onUpdateInput={this.handleUpdateInputAlly.bind(this)}
-            onNewRequest={this.props.onAllySelection}
+            onNewRequest={this.onAllySelection.bind(this)}
             menuProps={{desktop: true, maxHeight: 200}}/>
           <ToolbarSeparator />
         </ToolbarGroup>
@@ -83,7 +93,7 @@ export default class LineUpSelection extends React.Component {
             searchText={this.state.searchEnemy}
             disabled={this.props.disableEnemySelection}
             onUpdateInput={this.handleUpdateInputEnemy.bind(this)}
-            onNewRequest={this.props.onEnemySelection}
+            onNewRequest={this.onEnemySelection.bind(this)}
             menuProps={{desktop: true, maxHeight: 200}}/>
         </ToolbarGroup>
       </Toolbar>

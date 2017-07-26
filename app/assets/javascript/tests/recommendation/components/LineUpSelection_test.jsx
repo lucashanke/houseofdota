@@ -48,4 +48,16 @@ describe('<LineUpSelection />', () => {
     expect(wrapper.find('AutoComplete').get(1).props.disabled).to.be.eql(true);
   });
 
+  it('calls onAllySelection prop when hero is selected', () => {
+    const wrapper = shallow(<LineUpSelection {...testDefaultProps}/>);
+    wrapper.find('AutoComplete').get(0).props.onNewRequest({valueKey: 1}, 0);
+    expect(onAllySelectionSpy.calledWith(1)).to.be.eql(true)
+  });
+
+  it('calls onEnemySelection prop when hero is selected', () => {
+    const wrapper = shallow(<LineUpSelection {...testDefaultProps}/>);
+    wrapper.find('AutoComplete').get(1).props.onNewRequest({valueKey: 2}, 0);
+    expect(onEnemySelectionSpy.calledWith(2)).to.be.eql(true)
+  });
+
 });

@@ -83,10 +83,10 @@ export default class Recommendation extends React.Component {
     return this.state.selectedAllies.length === MAX_TEAM_SIZE;
   }
 
-  selectAlly(chosen, index) {
-    const hero = this.state.heroes.filter((h) => h.heroId === chosen.valueKey);
+  selectAlly(heroId) {
+    const hero = this.state.heroes.filter((h) => h.heroId === heroId);
     this.setState({
-      heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
+      heroes: this.state.heroes.filter((h) => h.heroId !== heroId),
       selectedAllies: this.state.selectedAllies.concat(hero),
     }, () => {
       this.requestBundleRecommendations();
@@ -108,10 +108,10 @@ export default class Recommendation extends React.Component {
     });
   }
 
-  selectEnemy(chosen, index) {
-    const hero = this.state.heroes.filter((h) => h.heroId === chosen.valueKey);
+  selectEnemy(heroId) {
+    const hero = this.state.heroes.filter((h) => h.heroId === heroId);
     this.setState({
-      heroes: this.state.heroes.filter((h) => h.heroId !== chosen.valueKey),
+      heroes: this.state.heroes.filter((h) => h.heroId !== heroId),
       selectedEnemies: this.state.selectedEnemies.concat(hero),
     }, () => {
       this.requestCounterRecommendations();
