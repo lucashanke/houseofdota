@@ -34,8 +34,18 @@ describe('<LineUpSelection />', () => {
 
   it('sets AutoCompletes datasource corresponding to availableHeroes props', () => {
     const wrapper = shallow(<LineUpSelection {...testDefaultProps}/>);
-    expect(wrapper.find('AutoComplete').first().props().dataSource).to.have.length(3);
+    expect(wrapper.find('AutoComplete').get(0).props.dataSource).to.have.length(3);
+    expect(wrapper.find('AutoComplete').get(1).props.dataSource).to.have.length(3);
   });
 
+  it('disables allies\' AutoComplete if disableAllySelection is true', () => {
+    const wrapper = shallow(<LineUpSelection {...testDefaultProps} disableAllySelection/>);
+    expect(wrapper.find('AutoComplete').get(0).props.disabled).to.be.eql(true);
+  });
+
+  it('disables enemies\' AutoComplete if disableEnemySelection is true', () => {
+    const wrapper = shallow(<LineUpSelection {...testDefaultProps} disableEnemySelection/>);
+    expect(wrapper.find('AutoComplete').get(1).props.disabled).to.be.eql(true);
+  });
 
 });
