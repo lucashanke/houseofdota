@@ -22,6 +22,7 @@ const styles = {
     paddingLeft: '2%',
     paddingRight: '2%',
     paddingTop: '2%',
+    paddingBottom: '1%',
     textAlign: 'center',
     background: '-moz-linear-gradient(270deg, #E8E8E8 0%, #37474F 80%, #37474F 100%)',
     background: '-webkit-gradient(linear, left top, left bottom, color-stop(0%, #E8E8E8), color-stop(80%, #37474F), color-stop(100%, #37474F))',
