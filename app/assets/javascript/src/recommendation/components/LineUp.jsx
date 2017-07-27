@@ -42,6 +42,7 @@ export default class LineUp extends React.Component {
     for(let i = 0; i < MAX_TEAM_SIZE-heroesDefined; i++){
       tiles.push((
         <GridTile
+          className="tile-undefined"
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
           key={i}
@@ -58,7 +59,7 @@ export default class LineUp extends React.Component {
       <div>
         <div style={styles.wrapper}>
           ALLIES
-          <GridList cols={5} cellHeight={120}>
+          <GridList cols={5} cellHeight={120} className="allies-grid">
             {this.props.allies.map((ally) => (
               <GridTile
                 style={{borderRadius:'16px'}}
@@ -83,7 +84,7 @@ export default class LineUp extends React.Component {
         </div>
         <div style={styles.wrapper}>
           ENEMIES
-          <GridList style={styles.gridList} cols={5} cellHeight={120}>
+          <GridList cols={5} cellHeight={120} className="enemies-grid">
             {this.getUndefinedHeroesTiles(this.props.enemies.length)}
             {this.props.enemies.map((enemy) => (
               <GridTile
