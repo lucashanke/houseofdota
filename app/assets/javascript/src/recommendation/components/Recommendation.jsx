@@ -37,7 +37,7 @@ export default class Recommendation extends React.Component {
       this.setState({
         heroes: result.data.heroes,
       });
-    });
+    }).catch(() => {});
   }
 
   fetchBundleRecommendation() {
@@ -142,47 +142,47 @@ export default class Recommendation extends React.Component {
   render() {
     return (
       <div>
-      <ContentHolder>
-        <LineUpSelection
-          disableAllySelection={this.state.selectedAllies.length === MAX_TEAM_SIZE}
-          disableEnemySelection={this.state.selectedEnemies.length === MAX_TEAM_SIZE}
-          availableHeroes={this.state.heroes}
-          onAllySelection={this.selectAlly.bind(this)}
-          onEnemySelection={this.selectEnemy.bind(this)}
+        <ContentHolder>
+          <LineUpSelection
+            disableAllySelection={this.state.selectedAllies.length === MAX_TEAM_SIZE}
+            disableEnemySelection={this.state.selectedEnemies.length === MAX_TEAM_SIZE}
+            availableHeroes={this.state.heroes}
+            onAllySelection={this.selectAlly.bind(this)}
+            onEnemySelection={this.selectEnemy.bind(this)}
+          />
+          <LineUp
+            allies={this.state.selectedAllies}
+            enemies={this.state.selectedEnemies}
+            onAction={this.unselectHero.bind(this)}
+          />
+          <Toolbar style={{backgroundColor: '#37474F'}}>
+            <ToolbarGroup>
+              <RaisedButton
+                onTouchTap={this.reset.bind(this)}
+                label="Reset"
+                className="reset-button"
+                backgroundColor="#263238"
+                labelColor="#fff"
+              />
+            </ToolbarGroup>
+          </Toolbar>
+        </ContentHolder>
+        <Recommended
+          recommendedAllies={this.state.recommendedAllies}
+          recommendedCounters={this.state.recommendedCounters}
+          onTapOfRecommended={this.handleTapOfRecommended.bind(this)}
+          fullLineUp={this.fullLineUp()}
         />
-        <LineUp
-          allies={this.state.selectedAllies}
-          enemies={this.state.selectedEnemies}
-          onAction={this.unselectHero.bind(this)}
-        />
-        <Toolbar style={{backgroundColor: '#37474F'}}>
-          <ToolbarGroup>
-            <RaisedButton
-              onTouchTap={this.reset.bind(this)}
-              label="Reset"
-              className="reset-button"
-              backgroundColor="#263238"
-              labelColor="#fff"
-            />
-          </ToolbarGroup>
-        </Toolbar>
-      </ContentHolder>
-      <Recommended
-        recommendedAllies={this.state.recommendedAllies}
-        recommendedCounters={this.state.recommendedCounters}
-        onTapOfRecommended={this.handleTapOfRecommended.bind(this)}
-        fullLineUp={this.fullLineUp()}
-      />
-      <ContentHolder>
-        <Snackbar
-          open={this.recommendationWasFetched() || this.fullLineUp()}
-          message="Used the recommendation? How do you feel about giving us some help?"
-          autoHideDuration={7200000}
-          action="I'm in!"
-          onActionTouchTap={this.handleActionTouchTap}
-        />
-      </ContentHolder>
-    </div>
+        <ContentHolder>
+          <Snackbar
+            open={this.recommendationWasFetched() || this.fullLineUp()}
+            message="Used the recommendation? How do you feel about giving us some help?"
+            autoHideDuration={7200000}
+            action="I'm in!"
+            onActionTouchTap={this.handleActionTouchTap}
+          />
+        </ContentHolder>
+      </div>
     );
   }
 }
