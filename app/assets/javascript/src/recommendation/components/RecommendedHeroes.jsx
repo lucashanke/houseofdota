@@ -31,22 +31,6 @@ const styles = {
 
 export default class RecommendedHeroes extends React.Component {
 
-  getUndefinedHeroesTiles(quantity) {
-    const tiles = [];
-    for(let i = 0; i < quantity; i++){
-      tiles.push((
-        <GridTile
-          title={''}
-          titleStyle={styles.titleStyle}
-          titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-        >
-          <img src={'/static/images/logo_dota.png'} />
-        </GridTile>
-      ));
-    }
-    return tiles;
-  }
-
   render() {
     if (this.props.recommended.length === 0) {
       return (
