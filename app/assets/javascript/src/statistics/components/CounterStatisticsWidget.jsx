@@ -3,8 +3,6 @@ import StatisticsService from '../services/StatisticsService.js';
 import CounterStatisticsToolBar from './CounterStatisticsToolBar.jsx';
 import CounterStatistics from './CounterStatistics.jsx';
 
-import $ from 'jquery';
-
 export default class HeroesStatisticsWidget extends React.Component {
 
   constructor(props){
@@ -23,24 +21,20 @@ export default class HeroesStatisticsWidget extends React.Component {
 
   updateCounterStatistics(heroId){
     if (heroId != null){
-      $.when(
-        this.service.fetchCounterStatistics(heroId)
-      ).done(result => {
+      this.service.fetchCounterStatistics(heroId).then(result => {
         this.setState({
           heroId: heroId,
-          matchQuantity: result.results[0].matchQuantity,
-          counterPicks: result.results[0].counterPicks,
+          matchQuantity: result.data.results[0].matchQuantity,
+          counterPicks: result.data.results[0].counterPicks,
         });
       });
     }
   }
 
   getHeroesList(heroId){
-    $.when(
-      this.service.fetchHeroes()
-    ).done(result => {
+    this.service.fetchHeroes().then(result => {
       this.setState({
-        heroes: result.heroes,
+        heroes: result.data.heroes,
       });
     });
   }

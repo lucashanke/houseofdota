@@ -3,8 +3,6 @@ import StatisticsService from '../services/StatisticsService.js';
 import HeroesStatistics from './HeroesStatistics.jsx';
 import HeroesStatisticsToolBar from './HeroesStatisticsToolBar.jsx';
 
-import $ from 'jquery';
-
 export default class HeroesStatisticsWidget extends React.Component {
 
   constructor(props){
@@ -24,12 +22,10 @@ export default class HeroesStatisticsWidget extends React.Component {
   }
 
   updateStatistics(bundleSize){
-    $.when(
-      this.service.fetchHeroesStatistics(bundleSize)
-    ).done(result => {
+    this.service.fetchHeroesStatistics(bundleSize).then(result => {
       this.setState({
-        matchQuantity: result.matchQuantity,
-        statistics: result.statistics,
+        matchQuantity: result.data.matchQuantity,
+        statistics: result.data.statistics,
       });
     });
   }

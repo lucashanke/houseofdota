@@ -1,33 +1,33 @@
-import $ from 'jquery';
+import axios from 'axios';
 
 export default class StatisticsService {
 
   fetchHeroesStatistics(bundleSize){
-    return $.getJSON('/statistics/heroes?bundle_size='+bundleSize);
+    return axios.get('/statistics/heroes?bundle_size='+bundleSize);
   }
 
   fetchHeroesStatisticsRecommendation(heroes){
-    return $.getJSON(
+    return axios.get(
       '/recommendation/bundles/?hero_ids[]=' +
         heroes.map(h => h.heroId.toString()).join(',')
     );
   }
 
   fetchCounterStatistics(heroId){
-    return $.getJSON('/recommendation/counters?hero_ids[]='+heroId);
+    return axios.get('/recommendation/counters?hero_ids[]='+heroId);
   }
 
   fetchEnemiesCounterStatistics(heroes){
-    return $.getJSON('/recommendation/counters?hero_ids[]=' +
+    return axios.get('/recommendation/counters?hero_ids[]=' +
       heroes.map(h => h.heroId.toString()).join(','));
   }
 
   fetchExperiment(){
-    return $.getJSON('/experiments/random');
+    return axios.get('/experiments/random');
   }
 
   fetchHeroes(){
-    return $.getJSON('/heroes');
+    return axios.get('/heroes');
   }
 
 }

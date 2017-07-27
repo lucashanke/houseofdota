@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 import _ from 'lodash';
 import { Toolbar, ToolbarGroup, ToolbarTitle,
   ToolbarSeparator, FontIcon, AutoComplete, MenuItem, DropDownMenu, RaisedButton, Snackbar } from 'material-ui';
@@ -34,33 +33,31 @@ export default class Recommendation extends React.Component {
   }
 
   fetchHeroesList() {
-    $.when(
-      this.statisticsService.fetchHeroes()
-    ).done(result => {
+    this.statisticsService.fetchHeroes().then(result => {
       this.setState({
-        heroes: result.heroes,
+        heroes: result.data.heroes,
       });
     });
   }
 
   fetchBundleRecommendation() {
-    this.setState({ recommendedAllies: [] })
-    $.when(
-      this.statisticsService.fetchHeroesStatisticsRecommendation(this.state.selectedAllies)
-    ).done(response => {
+    this.setState({ recommendedAllies: [] });
+    this.statisticsService.fetchHeroesStatisticsRecommendation(
+      this.state.selectedAllies
+    ).then(response => {
       this.setState({
-        recommendedAllies: getAllies(response.statistics, this.getUnavailableHeroes())
+        recommendedAllies: getAllies(response.data.statistics, this.getUnavailableHeroes())
       });
     });
   }
 
   fetchCounterPicks() {
-    this.setState({ recommendedCounters: [] })
-    $.when(
-      this.statisticsService.fetchEnemiesCounterStatistics(this.state.selectedEnemies)
-    ).done(response => {
+    this.setState({ recommendedCounters: [] });
+    this.statisticsService.fetchEnemiesCounterStatistics(
+      this.state.selectedEnemies
+    ).then(response => {
       this.setState({
-        recommendedCounters: getCounters(response.results, this.getUnavailableHeroes()),
+        recommendedCounters: getCounters(response.data.results, this.getUnavailableHeroes()),
       });
     });
   }
