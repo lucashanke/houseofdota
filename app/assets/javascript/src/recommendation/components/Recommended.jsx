@@ -13,6 +13,7 @@ const Recommended = (props) => {
           <ToolbarTitle text="Recommended based on Allies"/>
         </Toolbar>
         <RecommendedHeroes
+          className="recommended-allies"
           recommended={props.recommendedAllies}
           onPickAction={props.onTapOfRecommended}
         />
@@ -28,6 +29,7 @@ const Recommended = (props) => {
           <ToolbarTitle text="Recommended based on Enemies"/>
         </Toolbar>
         <RecommendedHeroes
+          className="recommended-counters"
           recommended={props.recommendedCounters}
           onPickAction={props.onTapOfRecommended}
         />
