@@ -18,7 +18,7 @@ deploy:
   provider: heroku
   api_key:
     secure: E21g/LttG+N7tSuL5qDodsmfYjm2oi4y+5cPYXcj+CfjHBHm8SL5CbEPTdxg+Nb1dmGA7A2vGxCbnV3FTtKRIkJjQE9FHAsemyd/1B9WcB39kzledwCjQNYxkDmbOyNijiSnCZ1DszyAbKQMajrzhxhxHkQdLb4b3deNQHOJZ1cVZMMsZ/nh0yG1MTkS1P9IteJNWlq1qDTZtybJ4lFi9LaigY8Rgx+LSfBWHublsWWzmNR0ySyFJnXTHoal//DW92CwfHXoqtIOJmYETg7V78lH1pfdQxaA4FW8w23DShWuw7Y8kdVj0myEj2TSG1BcnHb+QdYKAFXItYfjiSbqfRQvyj/RpjEb13OHn8SGzz0gu2msUprEWBkIDP4kd/jkAMUcAx8uK7gEFeezGfmtQUCnTmgoIuri1f4x2qK7gvl4NrvwLyROdP49n9Vwnb0Z/OupdWzIfsRHTgU1hj1BUzBLToB45Q90AJ2vP82UuxnTfgN9UhP28KJ55jRp0zA2pKY2GZSdZiY278zsKN5fsHwpNeXhnUiKwAJe5OqhmBb2QkAdF4FOudoyAbiHI6cf30dxovtd2q5SzHvPymJdIPiU21oKzmDeVqJfO+JXYXAxgnuHJZtch+VZUQaj8Xb1H1hjY8kjMUUyNT7B/2hvSUp5S8IB9gtNSZRI9eV4e6w=
-after_success:
+after_deploy:
 - curl -o /tmp/travis-automerge https://raw.githubusercontent.com/cdown/travis-automerge/master/travis-automerge
 - chmod a+x /tmp/travis-automerge
 - BRANCHES_TO_MERGE_REGEX='^master$' BRANCH_TO_MERGE_INTO=master-beatworker GITHUB_REPO=lucashanke/houseofdota /tmp/travis-automerge
