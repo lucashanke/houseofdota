@@ -1,4 +1,4 @@
-# House o' Dota
+# House o' Dota [![Build Status](https://travis-ci.org/lucashanke/houseofdota.svg?branch=master)](https://travis-ci.org/lucashanke/houseofdota)
 
 House of Dota is a application where you can get several kinds of insights regarding the game current meta. What are the heroes most picked? What are the most powerful hero combos? Besides, we have a recommendation system in order to help you choosing the best hero for your line-up.
 
