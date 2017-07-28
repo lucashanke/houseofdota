@@ -1,33 +1,29 @@
+sudo: required
+services:
+- docker
 env:
-  # You may want to update this to whatever the latest version is, or keep it
-  # the same as your local machines. However, I have only tested it with 1.8.0+.
-  # There should be a time in the future when this is not necessary - it is
-  # explained in more detail below.
   DOCKER_COMPOSE_VERSION: 1.14.0
-
 before_install:
-  # update is required to update the repositories to see the new packages for
-  # Docker.
-  - sudo apt-get update
+- sudo apt-get update
+- sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
+- docker-compose --version
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- docker-compose --version
 
-  # Now we can install the newer docker-engine which is required for the newer
-  # docker-composer we will install next. The messy options are to force it to
-  # be non-interactive (normally it asks you a bunch of config questions).
-  - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
+before_script:
+  - docker-compose build
 
-  # Print out the current docker-compose version. Once this reports 1.6+ then we
-  # do not need the following steps.
-  - docker-compose --version
+script:
+  - docker-compose -p houseofdota_tests up --abort-on-container-exit python_unit_tests
+  - docker-compose -p houseofdota_tests up --abort-on-container-exit js_unit_tests
 
-  # As of the writing of this script Travis has docker-compose v1.4.2, we need
-  # to update it to 1.8+. $DOCKER_COMPOSE_VERSION is provide from the `env`
-  # above.
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
+before_deploy: docker-compose -p houseofdota_tests down
 
-  # Check that docker-compose is now running the latest version (or at least the
-  # one we specified). This is not to be confused with the version we printed
-  # before doing the update.
-  - docker-compose --version
+deploy:
+  provider: heroku
+  api_key:
+    secure: E21g/LttG+N7tSuL5qDodsmfYjm2oi4y+5cPYXcj+CfjHBHm8SL5CbEPTdxg+Nb1dmGA7A2vGxCbnV3FTtKRIkJjQE9FHAsemyd/1B9WcB39kzledwCjQNYxkDmbOyNijiSnCZ1DszyAbKQMajrzhxhxHkQdLb4b3deNQHOJZ1cVZMMsZ/nh0yG1MTkS1P9IteJNWlq1qDTZtybJ4lFi9LaigY8Rgx+LSfBWHublsWWzmNR0ySyFJnXTHoal//DW92CwfHXoqtIOJmYETg7V78lH1pfdQxaA4FW8w23DShWuw7Y8kdVj0myEj2TSG1BcnHb+QdYKAFXItYfjiSbqfRQvyj/RpjEb13OHn8SGzz0gu2msUprEWBkIDP4kd/jkAMUcAx8uK7gEFeezGfmtQUCnTmgoIuri1f4x2qK7gvl4NrvwLyROdP49n9Vwnb0Z/OupdWzIfsRHTgU1hj1BUzBLToB45Q90AJ2vP82UuxnTfgN9UhP28KJ55jRp0zA2pKY2GZSdZiY278zsKN5fsHwpNeXhnUiKwAJe5OqhmBb2QkAdF4FOudoyAbiHI6cf30dxovtd2q5SzHvPymJdIPiU21oKzmDeVqJfO+JXYXAxgnuHJZtch+VZUQaj8Xb1H1hjY8kjMUUyNT7B/2hvSUp5S8IB9gtNSZRI9eV4e6w=
