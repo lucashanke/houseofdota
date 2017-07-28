@@ -1,34 +1,35 @@
 sudo: required
 services:
-  - docker
+- docker
 env:
   DOCKER_COMPOSE_VERSION: 1.14.0
+  global:
+    secure: 25GIWdojNCP9k8ocViyKkeNqZ8hqomDgNjuGni/5FSq1YcK+JJaCzTm3TtZMiWM5csm7Eoe5HtXW1vqgJipDCMuu23l+Ck9HO8Q0iQyivr+k76RdZHjm/7jX+766lGI96uBc66kECz/8E/JaH74QbUCneULiQ46mJZlYvaXssOKdTTFw2nbczDB7ql7NpRrLR65eaD4beIibDnw2iYSiXvtohiu3xABPYQ39G1yQYHG1c+JlmBwThU835sPdgG+i3Bv8jqbX6MXPl2DpFzQtVVP+lkVSElguGsWE2dBjeFRyP6ll5xXXxN9asTzuir4iPGI/dEw8tcLQNbF3+xPI8Lfa7AcoU4cXKzx/Gfb5hUO43b+YzptIIzjwZopKFl0haRkUIPhEN2vElC0Rf/uOET4KSYnYqotI/6xtw/rftF1e99koQgbEJpC5mFabjYNoVFmxjPo49ExM6v2wjPNuG7SF/Ux3CjIrxkPDHqcwsd7Fb0uCbZEKK/ukVMCKo1zh3ETEN/wGiS7CM9lxIya6sv0pKioOBWd7KcD0bhCIn6sK2n1APzHo+qbFT6m8COkFdbgPmZrPs+V0XiJPKuJAKpx66NfNuB19ImeElgYFTCB5S0Oj0ozC/rV4PQTMljx/smgdfmcTmB/6A79VLOnIoufEQOVjenPUtQ9ODCnIEbs=
 
 language: generic
-
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
-  - docker-compose --version
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
-    -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - docker-compose --version
-  - mkdir /opt/houseofdota
-  - touch /opt/houseofdota/.env
-
+- sudo apt-get update
+- sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-ce
+- docker-compose --version
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- docker-compose --version
+- mkdir /opt/houseofdota
+- touch /opt/houseofdota/.env
 before_script:
-  - docker-compose build
-
+- docker-compose build
 script:
-  - docker-compose -p houseofdota_tests up --abort-on-container-exit python_unit_tests
-  - docker-compose -p houseofdota_tests up --abort-on-container-exit js_unit_tests
-
+- docker-compose -p houseofdota_tests up --abort-on-container-exit python_unit_tests
+- docker-compose -p houseofdota_tests up --abort-on-container-exit js_unit_tests
 before_deploy: docker-compose -p houseofdota_tests down
-
 deploy:
   provider: heroku
   api_key:
     secure: E21g/LttG+N7tSuL5qDodsmfYjm2oi4y+5cPYXcj+CfjHBHm8SL5CbEPTdxg+Nb1dmGA7A2vGxCbnV3FTtKRIkJjQE9FHAsemyd/1B9WcB39kzledwCjQNYxkDmbOyNijiSnCZ1DszyAbKQMajrzhxhxHkQdLb4b3deNQHOJZ1cVZMMsZ/nh0yG1MTkS1P9IteJNWlq1qDTZtybJ4lFi9LaigY8Rgx+LSfBWHublsWWzmNR0ySyFJnXTHoal//DW92CwfHXoqtIOJmYETg7V78lH1pfdQxaA4FW8w23DShWuw7Y8kdVj0myEj2TSG1BcnHb+QdYKAFXItYfjiSbqfRQvyj/RpjEb13OHn8SGzz0gu2msUprEWBkIDP4kd/jkAMUcAx8uK7gEFeezGfmtQUCnTmgoIuri1f4x2qK7gvl4NrvwLyROdP49n9Vwnb0Z/OupdWzIfsRHTgU1hj1BUzBLToB45Q90AJ2vP82UuxnTfgN9UhP28KJ55jRp0zA2pKY2GZSdZiY278zsKN5fsHwpNeXhnUiKwAJe5OqhmBb2QkAdF4FOudoyAbiHI6cf30dxovtd2q5SzHvPymJdIPiU21oKzmDeVqJfO+JXYXAxgnuHJZtch+VZUQaj8Xb1H1hjY8kjMUUyNT7B/2hvSUp5S8IB9gtNSZRI9eV4e6w=
+after_success:
+- curl -o /tmp/travis-automerge https://raw.githubusercontent.com/cdown/travis-automerge/master/travis-automerge
+- chmod a+x /tmp/travis-automerge
+- BRANCHES_TO_MERGE_REGEX='^master$' BRANCH_TO_MERGE_INTO=master-beatworker GITHUB_REPO=lucashanke/houseofdota /tmp/travis-automerge
