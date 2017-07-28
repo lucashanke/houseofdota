@@ -3,7 +3,7 @@
             [lambdacd-git.core :as lambdacd-git]))
 
 (def repo-uri "https://github.com/lucashanke/houseofdota.git")
-(def repo-branch "master")
+(def repo-branch "master-beatworker")
 (ns pipeline.steps
   (:require [lambdacd.steps.shell :as shell]))
 
@@ -19,17 +19,8 @@
 (defn build [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose build"))
 
-(defn run-python-unit-tests [args ctx]
-  (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests up --abort-on-container-exit python_unit_tests"))
-
-(defn run-js-unit-tests [args ctx]
-  (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests up --abort-on-container-exit js_unit_tests"))
-
 (defn migrate-db [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose -p houseofdota up --abort-on-container-exit db_migrate"))
-
-(defn stops-linked-containers [args ctx]
-  (shell/bash ctx (:cwd args) "docker-compose -p houseofdota_tests down"))
 
 (defn deploy-beat-worker [args ctx]
   (shell/bash ctx (:cwd args) "docker-compose -p houseofdota up -d --force-recreate beat worker"))
