@@ -13,6 +13,7 @@ before_install:
 - chmod +x docker-compose
 - sudo mv docker-compose /usr/local/bin
 - docker-compose --version
+- touch /opt/houseofdota/.env
 
 before_script:
   - docker-compose build
