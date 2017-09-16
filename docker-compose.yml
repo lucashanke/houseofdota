@@ -29,8 +29,6 @@ services:
       - /opt/houseofdota/.env
     links:
       - redis
-    depends_on:
-      - app
     restart: always
 
   worker:
@@ -43,8 +41,6 @@ services:
       - /opt/houseofdota/.env
     links:
       - redis
-    depends_on:
-      - app
     restart: always
 
   database:
